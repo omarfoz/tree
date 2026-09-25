@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
+<title>معاينة خاصة — الشجرة التفاعلية</title>
+<style>
+:root{
+  --paper:#f6f1e8;--ink:#2f2923;--muted:#81786c;--line:rgba(47,41,35,.14);
+  --green:#22302e;--accent:#0d76bd;--card:rgba(255,255,255,.94);--danger:#8d3a3a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;background:#181714;color:var(--ink);overflow:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+#gate,#app{position:fixed;inset:0}
+#gate{display:grid;place-items:center;background:linear-gradient(145deg,#24211c,#171613);padding:24px;color:#eee}
+.gate-card{width:min(440px,100%);background:#f6f1e8;border-radius:24px;padding:28px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.32)}
+.gate-card h1{font-size:1.25rem;margin:0 0 8px}.gate-card p{color:#786e62;margin:0;line-height:1.7}
+#app{display:none;background:#ddd}
+#app.ready{display:block}
+#viewerFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#e4dbcf}
+.top-badge{position:absolute;z-index:20;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(31,29,25,.86);color:#fff;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:999px;padding:8px 13px;font-size:.76rem;pointer-events:none;white-space:nowrap}
+.lockdot{width:8px;height:8px;border-radius:50%;background:#64d98a;box-shadow:0 0 0 4px rgba(100,217,138,.14)}
+.pick-toggle{position:absolute;z-index:21;left:14px;bottom:calc(18px + env(safe-area-inset-bottom));border:1px solid rgba(255,255,255,.5);background:rgba(31,29,25,.9);color:#fff;border-radius:999px;padding:11px 15px;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.pick-toggle.off{background:rgba(246,241,232,.94);color:#3b342d;border-color:var(--line)}
+.toast{position:absolute;z-index:25;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);background:#22302e;color:#fff;border-radius:999px;padding:10px 16px;font-size:.86rem;opacity:0;pointer-events:none;transition:.2s;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.sheet{position:absolute;z-index:30;right:10px;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));background:var(--card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.85);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.28);padding:14px 14px 16px;transform:translateY(calc(100% + 40px));transition:transform .28s ease;max-height:min(64vh,600px);overflow:auto}
+.sheet.open{transform:translateY(0)}
+.handle{width:42px;height:5px;border-radius:999px;background:#c8c0b5;margin:0 auto 12px}
+.sheet-head{display:flex;align-items:flex-start;gap:10px}
+.sheet-title{min-width:0;flex:1}
+.sheet-title h2{margin:0;font-size:1.45rem;line-height:1.25}
+.sheet-title p{margin:5px 0 0;color:var(--muted);font-size:.78rem}
+.close{width:38px;height:38px;border-radius:50%;border:0;background:#eee8df;color:#50483f;font-size:20px}
+.chainbox{margin-top:13px;border:1px solid var(--line);background:#fbf8f2;border-radius:18px;padding:13px}
+.chain-label{font-size:.74rem;color:var(--muted);margin-bottom:6px}
+.chain{font-weight:800;font-size:1.02rem;line-height:1.8;word-break:break-word}
+.helper{font-size:.75rem;color:var(--muted);line-height:1.65;margin-top:7px}
+.actions{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;margin-top:12px}
+.btn{min-height:44px;border-radius:13px;border:1px solid var(--line);background:#f3eee6;color:var(--ink);font-weight:750;padding:9px 10px}
+.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.danger{color:var(--danger)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.waiting .primary{background:var(--accent);border-color:var(--accent)}
+.subrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-size:.76rem;color:#4b433b}
+.near{margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
+.near h3{margin:0 0 8px;font-size:.82rem;color:#665d53}
+.near-list{display:flex;gap:7px;overflow:auto;padding-bottom:2px;scrollbar-width:none}
+.near-list::-webkit-scrollbar{display:none}
+.near-btn{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;color:var(--ink);font-weight:700}
+.empty{color:var(--muted);font-size:.78rem}
+@media(min-width:800px){
+  .sheet{right:18px;left:auto;width:430px;bottom:18px}
+  .pick-toggle{left:18px;bottom:18px}
+}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-card">
+    <h1 id="gateTitle">جاري التحقق من رابط المعاينة…</h1>
+    <p id="gateText">هذه نسخة تجريبية غير مربوطة بالموقع العام.</p>
+  </div>
+</div>
+
+<div id="app" aria-hidden="true">
+  <iframe id="viewerFrame" title="معاينة الشجرة التفاعلية" allow="fullscreen"></iframe>
+  <div class="top-badge"><span class="lockdot"></span>معاينة خاصة · غير مفهرسة</div>
+  <button id="pickToggle" class="pick-toggle" type="button">وضع تحديد الأسماء: مفعّل</button>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <section id="sheet" class="sheet" aria-live="polite">
+    <div class="handle"></div>
+    <div class="sheet-head">
+      <div class="sheet-title">
+        <h2 id="personName">—</h2>
+        <p id="personMeta">اضغط على اسم في الشجرة</p>
+      </div>
+      <button id="closeSheet" class="close" type="button" aria-label="إغلاق">×</button>
+    </div>
+
+    <div id="chainBox" class="chainbox">
+      <div class="chain-label">سلسلة الاسم الكاملة</div>
+      <div id="chainText" class="chain">—</div>
+      <div class="helper">في هذه النسخة التجريبية تختار الأب من الشجرة يدويًا للتأكد من صحة النسب. بعد اعتماد العلاقات يمكن جعل السلسلة تلقائية.</div>
+    </div>
+
+    <div id="actions" class="actions">
+      <button id="addFather" class="btn primary" type="button">أضف الأب من الشجرة</button>
+      <button id="undo" class="btn" type="button">تراجع</button>
+      <button id="reset" class="btn danger" type="button">مسح</button>
+    </div>
+
+    <div class="subrow">
+      <button id="genderConnector" class="chip" type="button">الرابط: بن</button>
+      <button id="focusSelected" class="chip" type="button">حدّد الاسم على الشجرة</button>
+    </div>
+
+    <div class="near">
+      <h3>أسماء قريبة في الرسم، للمساعدة على التنقل فقط</h3>
+      <div id="nearList" class="near-list"><span class="empty">اختر اسمًا أولًا.</span></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var EXPECTED_HASH="6b0868dd367e410fcb016097e27dedd12a1fee89fde91bc57c673d4df3bc92e7";
+  var gate=document.getElementById("gate"),app=document.getElementById("app"),frame=document.getElementById("viewerFrame");
+  var sheet=document.getElementById("sheet"),toast=document.getElementById("toast"),pickToggle=document.getElementById("pickToggle");
+  var personName=document.getElementById("personName"),personMeta=document.getElementById("personMeta"),chainText=document.getElementById("chainText");
+  var nearList=document.getElementById("nearList"),actions=document.getElementById("actions");
+  var entities=[],nameEntities=[],freq=new Map(),byBox=new Map(),chain=[],selected=null,waitingParent=false,pickMode=true,daughter=false;
+
+  function utf8Hash(s){
+    var data=new TextEncoder().encode(s);
+    return crypto.subtle.digest("SHA-256",data).then(function(buf){
+      return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+    });
+  }
+  function norm(s){
+    return String(s||"").normalize("NFKD").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").replace(/\u0640/g,"")
+      .replace(/[أإآٱ]/g,"ا").replace(/[ىئ]/g,"ي").replace(/ؤ/g,"و").replace(/ة/g,"ه").replace(/\s+/g,"").replace(/ا{2,}/g,"ا");
+  }
+  function keyBox(e){return [Math.round(+e.x),Math.round(+e.y),Math.round(+e.w),Math.round(+e.h)].join("|");}
+  function post(msg){if(frame.contentWindow)frame.contentWindow.postMessage(msg,location.origin);}
+  function showToast(msg,ms){
+    toast.textContent=msg;toast.classList.add("on");
+    clearTimeout(showToast.t);showToast.t=setTimeout(function(){toast.classList.remove("on");},ms||2200);
+  }
+  function safeText(s){return String(s==null?"":s);}
+  function chainString(){
+    if(!chain.length)return "—";
+    var out=safeText(chain[0].text);
+    for(var i=1;i<chain.length;i++)out+=(i===1&&daughter?" بنت ":" بن ")+safeText(chain[i].text);
+    return out;
+  }
+  function refresh(){
+    chainText.textContent=chainString();
+    document.getElementById("undo").disabled=chain.length<2;
+    document.getElementById("reset").disabled=chain.length===0;
+    document.getElementById("genderConnector").textContent="الرابط: "+(daughter?"بنت":"بن");
+    actions.classList.toggle("waiting",waitingParent);
+    document.getElementById("addFather").textContent=waitingParent?"اضغط الآن على اسم الأب":"أضف الأب من الشجرة";
+    if(selected){
+      personName.textContent=selected.text;
+      var c=freq.get(norm(selected.text))||0;
+      personMeta.textContent="معرّف "+(selected.id||"—")+" · "+(c?("ظهر "+c+" مرة في النصوص"):"موضع نصي في الشجرة");
+      renderNear(selected);
+    }
+  }
+  function renderNear(base){
+    if(!nameEntities.length){nearList.innerHTML='<span class="empty">جارٍ تحميل البيانات…</span>';return;}
+    var bx=+base.x+(+base.w||0)/2,by=+base.y+(+base.h||0)/2;
+    var list=nameEntities.filter(function(e){return e.id!==base.id;}).map(function(e){
+      var x=+e.x+(+e.w||0)/2,y=+e.y+(+e.h||0)/2,dx=x-bx,dy=y-by;
+      return {e:e,d:Math.sqrt(dx*dx+dy*dy)};
+    }).sort(function(a,b){return a.d-b.d;}).slice(0,8);
+    nearList.innerHTML="";
+    list.forEach(function(item){
+      var b=document.createElement("button");b.type="button";b.className="near-btn";b.textContent=item.e.text;
+      b.addEventListener("click",function(){acceptEntity(item.e,true);});
+      nearList.appendChild(b);
+    });
+  }
+  function locate(e){
+    post({type:"locate",q:e.text,cur:0,items:[{x:e.x,y:e.y,w:e.w,h:e.h,label:e.text}]});
+  }
+  function acceptEntity(e,doLocate){
+    if(!e||e.type&&e.type!=="name"){showToast("هذا النص ليس اسمًا معتمدًا في البيانات.");return;}
+    selected=e;
+    if(waitingParent&&chain.length){
+      chain.push(e);waitingParent=false;showToast("تمت إضافة "+e.text+" إلى سلسلة النسب.");
+    }else{
+      chain=[e];waitingParent=false;
+    }
+    if(doLocate)locate(e);
+    sheet.classList.add("open");
+    refresh();
+  }
+  function resolvePicked(d){
+    var box=keyBox(d),e=byBox.get(box);
+    if(!e){
+      var best=null,bd=1e9;
+      for(var i=0;i<nameEntities.length;i++){
+        var n=nameEntities[i],dx=(+n.x)-(+d.x),dy=(+n.y)-(+d.y),v=dx*dx+dy*dy;
+        if(v<bd&&v<100){bd=v;best=n;}
+      }
+      e=best||{id:null,x:d.x,y:d.y,w:d.w,h:d.h,text:d.label,type:"name"};
+    }
+    acceptEntity(e,false);
+  }
+
+  document.getElementById("addFather").addEventListener("click",function(){
+    if(!chain.length){showToast("اختر الشخص أولًا من الشجرة.");return;}
+    waitingParent=!waitingParent;refresh();
+    if(waitingParent){sheet.classList.remove("open");showToast("اضغط الآن على اسم الأب في الشجرة.",3200);}
+  });
+  document.getElementById("undo").addEventListener("click",function(){
+    if(chain.length>1){chain.pop();selected=chain[chain.length-1];locate(selected);refresh();}
+  });
+  document.getElementById("reset").addEventListener("click",function(){
+    chain=[];selected=null;waitingParent=false;sheet.classList.remove("open");refresh();post({type:"search",q:""});
+  });
+  document.getElementById("genderConnector").addEventListener("click",function(){daughter=!daughter;refresh();});
+  document.getElementById("focusSelected").addEventListener("click",function(){if(selected){locate(selected);showToast("تم تحديد الاسم.");}});
+  document.getElementById("closeSheet").addEventListener("click",function(){sheet.classList.remove("open");});
+  pickToggle.addEventListener("click",function(){
+    pickMode=!pickMode;post({type:"pickMode",on:pickMode});
+    pickToggle.classList.toggle("off",!pickMode);
+    pickToggle.textContent="وضع تحديد الأسماء: "+(pickMode?"مفعّل":"متوقف");
+    showToast(pickMode?"اضغط على أي اسم لعرضه.":"يمكنك الآن تحريك الشجرة بدون تحديد أسماء.");
+  });
+
+  window.addEventListener("message",function(ev){
+    if(ev.origin!==location.origin||!ev.data)return;
+    if(ev.data.type==="ready"){post({type:"pickMode",on:pickMode});}
+    if(ev.data.type==="picked"){resolvePicked(ev.data);}
+  });
+
+  function loadData(){
+    Promise.all([
+      fetch("/data/entities.json",{cache:"no-store"}).then(function(r){return r.json();}),
+      fetch("/data/names.json",{cache:"no-store"}).then(function(r){return r.json();})
+    ]).then(function(data){
+      entities=data[0]||[];nameEntities=entities.filter(function(e){return e.type==="name";});
+      nameEntities.forEach(function(e){byBox.set(keyBox(e),e);});
+      ((data[1]&&data[1].entityFrequency)||[]).forEach(function(n){freq.set(norm(n.text),n.count);});
+      if(selected)refresh();
+    }).catch(function(){showToast("تعذر تحميل بيانات الأسماء، العارض نفسه ما زال يعمل.",3500);});
+  }
+
+  var supplied=new URLSearchParams(location.search).get("key")||"";
+  utf8Hash(supplied).then(function(hash){
+    if(hash!==EXPECTED_HASH){
+      document.getElementById("gateTitle").textContent="رابط المعاينة غير صالح";
+      document.getElementById("gateText").textContent="هذه المعاينة غير متاحة بدون مفتاح الرابط الصحيح.";
+      return;
+    }
+    gate.style.display="none";app.classList.add("ready");app.setAttribute("aria-hidden","false");
+    frame.src="/pages/v10.html";loadData();
+    setTimeout(function(){post({type:"ping"});},1200);
+  }).catch(function(){
+    document.getElementById("gateTitle").textContent="تعذر فتح المعاينة";
+    document.getElementById("gateText").textContent="المتصفح لا يدعم التحقق المطلوب لهذا الرابط.";
+  });
+})();
+</script>
+</body>
+</html>
