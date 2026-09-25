@@ -89,7 +89,7 @@
   {
     "category": "duplicate_normalized_names",
     "description": "Different text forms that normalize to the same string",
-    "count": 260,
+    "count": 252,
     "examples": [
       [
         "محمد",
@@ -220,20 +220,24 @@
   },
   {
     "category": "label_type_distribution",
-    "description": "Distribution of connector vs name vs non-name labels",
+    "description": "Distribution of connector vs name vs non-name vs lineage-chain labels",
     "count": null,
     "examples": [
       {
         "type": "connector",
-        "count": 23
+        "count": 2
       },
       {
         "type": "name",
-        "count": 3509
+        "count": 3439
       },
       {
         "type": "non-name",
         "count": 52
+      },
+      {
+        "type": "lineage-chain",
+        "count": 91
       },
       {
         "total": 3584
@@ -242,12 +246,16 @@
   },
   {
     "category": "name_omar_occurrences",
-    "description": "Occurrences of the name عمر in the tree text labels",
+    "description": "Occurrences of the name عمر (incl. variant عمرو) among family name labels",
     "count": 27,
     "examples": [
       {
         "variant": "عمر",
         "exact_count": 27
+      },
+      {
+        "variant": "عمرو",
+        "exact_count": 0
       },
       {
         "variant": "All normalized matches",

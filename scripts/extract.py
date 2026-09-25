@@ -1,23 +1,31 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Al-Suwailem Family Tree Extraction Pipeline
 Extracts structured data from the official website's tree viewers
 """
 import json, re, os, unicodedata
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 # ============================================================
 # Configuration
 # ============================================================
-V10_HTML = '/tmp/tree_v10.html'
-INFO_HTML = '/tmp/info.html'
-OUTPUT_DIR = 'data'
+V10_HTML = os.environ.get('V10_HTML', os.path.join(os.path.dirname(__file__), '..', 'pages', 'v10.html'))
+INFO_HTML = os.environ.get('INFO_HTML', os.path.join(os.path.dirname(__file__), '..', 'data', 'info.html'))
+OUTPUT_DIR = os.environ.get('OUTPUT_DIR', os.path.join(os.path.dirname(__file__), '..', 'data'))
 
 # Connectors and non-name tokens
 CONNECTORS = {'بن', 'بنت', 'ابن', 'ابنة', 'ال', 'آل', 'بنو', 'بني',
                'من', 'إلى', 'في', 'على', 'عن', 'وه', 'وها', 'الله',
                'الرحمن', 'الرحيم', 'عبد'}
+
+# The tree image contains a pre-Islamic lineage chain (هود عليه السلام → قحطان → سبأ → ...
+# → عامر بن عمرو بن وداعة) rendered as overlapping text windows in one horizontal band
+# above the actual family tree. Each ancestor there appears as up to three labels
+# ("عمرو", "عمرو بن", "بن عمرو") that all refer to the SAME single occurrence.
+# This band is not part of the family; its labels must not be counted as family names.
+LINEAGE_CHAIN_Y_MIN = 6400
+LINEAGE_CHAIN_Y_MAX = 6500
 
 def ar_normalize(text):
     """Remove Arabic diacritics, normalize alef variants, standardize."""
@@ -26,9 +34,15 @@ def ar_normalize(text):
     text = text.replace('أ', 'ا').replace('إ', 'ا').replace('آ', 'ا').replace('ٱ', 'ا')
     text = text.replace('ة', 'ه')
     text = text.replace('ى', 'ي')
+    # Space-insensitive compact form for matching عبدالعزيز == عبد العزيز
+    text = re.sub(r'\s+', ' ', text)
     text = re.sub(r'[^\u0600-\u06FFa-zA-Z0-9\s]', '', text)
     text = ' '.join(text.split())
     return text.strip().lower()
+
+def ar_compact(text):
+    """Space-insensitive normalized form: عبدالعزيز == عبد العزيز."""
+    return ar_normalize(text).replace(' ', '')
 
 def remove_tashkeel(text):
     """Remove diacritics only."""
@@ -63,11 +77,17 @@ def extract_entities():
         norm = ar_normalize(clean)
         parts = clean.split()
         nparts = [ar_normalize(p) for p in parts if ar_normalize(p)]
-        type_tag = 'connector' if clean in CONNECTORS else (
-            'non-name' if any(c.isdigit() for c in clean) or len(clean) < 2 or clean.startswith('الطبعة')
-            or clean.startswith('الإصدار') or 'أجداد' in clean or 'المصادر' in clean
-            or 'التحديث' in clean or 'الأعوام' in clean or 'العدد' in clean
-            else 'name'
+        # Labels in the ancient lineage chain band are not family names.
+        # The band produces overlapping windows like "عمرو" / "عمرو بن" / "بن عمرو"
+        # for a single occurrence — all of it belongs to the decorative genealogy header.
+        in_lineage_chain = LINEAGE_CHAIN_Y_MIN <= y <= LINEAGE_CHAIN_Y_MAX
+        type_tag = 'lineage-chain' if in_lineage_chain else (
+            'connector' if clean in CONNECTORS else (
+                'non-name' if any(c.isdigit() for c in clean) or len(clean) < 2 or clean.startswith('الطبعة')
+                or clean.startswith('الإصدار') or 'أجداد' in clean or 'المصادر' in clean
+                or 'التحديث' in clean or 'الأعوام' in clean or 'العدد' in clean
+                else 'name'
+            )
         )
         entities.append({
             "id": i,
@@ -118,17 +138,30 @@ def analyze_names(entities):
             if pnorm and p not in CONNECTORS and len(pnorm) >= 2:
                 token_norm_counter[pnorm] += 1
 
-    # Build detailed name stats
+    # Build detailed name stats, merging space-insensitive duplicates
+    # (عبدالعزيز == عبد العزيز) under the most frequent original form.
+    compact_counter = Counter()          # compact form -> total occurrences
+    compact_best_text = {}              # compact form -> representative original text
+    for e in name_labels:
+        comp = ar_compact(e['text'])
+        compact_counter[comp] += 1
+        # Prefer the most frequent original spelling for display
+        cur = compact_best_text.get(comp)
+        if cur is None or entity_counter[e['text']] > entity_counter.get(cur, 0):
+            if e['text'] in entity_counter:
+                compact_best_text[comp] = e['text']
+
     name_stats = []
-    for text, count in entity_counter.most_common():
-        norm = ar_normalize(text)
-        parts = text.split()
-        first_part = parts[0] if parts else text
+    for comp, total in compact_counter.most_common():
+        rep = compact_best_text.get(comp) or comp
+        norm = ar_normalize(rep)
+        parts = rep.split()
+        first_part = parts[0] if parts else rep
         first_norm = ar_normalize(first_part)
         name_stats.append({
-            "text": text,
+            "text": rep,
             "normalized": norm,
-            "count": count,
+            "count": total,
             "firstPart": first_part,
             "firstPartNormalized": first_norm,
             "length": len(parts),
@@ -154,7 +187,7 @@ def analyze_names(entities):
 
     return {
         "totalEntities": len(name_labels),
-        "uniqueEntityTexts": len(entity_counter),
+        "uniqueEntityTexts": len(compact_counter),
         "uniqueTokens": len(token_norm_counter),
         "entityFrequency": name_stats,
         "tokenFrequency": token_stats
@@ -378,27 +411,31 @@ def build_quality_issues(entities):
     conn_count = sum(1 for e in entities if e['type'] == 'connector')
     name_count = sum(1 for e in entities if e['type'] == 'name')
     non_count = sum(1 for e in entities if e['type'] == 'non-name')
+    chain_count = sum(1 for e in entities if e['type'] == 'lineage-chain')
     issues.append({
         "category": "label_type_distribution",
-        "description": "Distribution of connector vs name vs non-name labels",
+        "description": "Distribution of connector vs name vs non-name vs lineage-chain labels",
         "count": None,
         "examples": [
             {"type": "connector", "count": conn_count},
             {"type": "name", "count": name_count},
             {"type": "non-name", "count": non_count},
+            {"type": "lineage-chain", "count": chain_count},
             {"total": len(entities)}
         ]
     })
 
-    # For عمر specifically
-    omar_exact = [e for e in entities if e['text'] == 'عمر']
-    omar_norm = [e for e in entities if e['normalized'] == 'عمر']
+    # For عمر specifically (includes عمرو variant — the lineage chain عمرو is
+    # excluded via type, but real family members named عمرو still merge with عمر)
+    omar_norm = [e for e in entities if e['type'] == 'name' and e['normalized'] == 'عمر']
+    omar_amr = [e for e in entities if e['type'] == 'name' and e['normalized'] == 'عمرو']
     issues.append({
         "category": "name_omar_occurrences",
-        "description": "Occurrences of the name عمر in the tree text labels",
+        "description": "Occurrences of the name عمر (incl. variant عمرو) among family name labels",
         "count": len(omar_norm),
         "examples": [
-            {"variant": "عمر", "exact_count": len(omar_exact)},
+            {"variant": "عمر", "exact_count": len(omar_norm)},
+            {"variant": "عمرو", "exact_count": len(omar_amr)},
             {"variant": "All normalized matches", "normalized_count": len(omar_norm)}
         ]
     })
@@ -411,7 +448,7 @@ def build_quality_issues(entities):
 def build_extraction_report(entities, official):
     name_entities = [e for e in entities if e['type'] == 'name']
     return {
-        "date": datetime.utcnow().isoformat() + "Z",
+        "date": datetime.now(timezone.utc).isoformat(),
         "sources": {
             "tree_viewer": "https://tree.alswailem.app/tree-viewer/v10.html",
             "info_page": "https://tree.alswailem.app/family-tree/info",
@@ -430,6 +467,7 @@ def build_extraction_report(entities, official):
             "name_entities": len(name_entities),
             "connector_entities": sum(1 for e in entities if e['type'] == 'connector'),
             "non_name_entities": sum(1 for e in entities if e['type'] == 'non-name'),
+            "lineage_chain_entities": sum(1 for e in entities if e['type'] == 'lineage-chain'),
             "unique_texts": len(set(e['text'] for e in entities)),
             "unique_name_texts": len(set(e['text'] for e in name_entities))
         },
@@ -533,17 +571,18 @@ def main():
     print("=" * 60)
     print(f"Total entities extracted: {len(entities)}")
     print(f"Name-like entities: {len([e for e in entities if e['type'] == 'name'])}")
-    print(f"Connectors (بن/بنت/etc): {len([e for e in entities if e['type'] == 'connector'])}")
+    print(f"Connectors: {len([e for e in entities if e['type'] == 'connector'])}")
     print(f"Non-name (headers/numbers): {len([e for e in entities if e['type'] == 'non-name'])}")
+    print(f"Lineage-chain (excluded): {len([e for e in entities if e['type'] == 'lineage-chain'])}")
     print(f"Unique name texts: {name_analysis['uniqueEntityTexts']}")
     print(f"Unique normalized tokens: {name_analysis['uniqueTokens']}")
     print(f"Official total people: 3,400")
     omar_norm = sum(1 for e in entities if e['normalized'] == 'عمر')
     omar_exact = sum(1 for e in entities if e['text'] == 'عمر')
-    print(f'Exact count of "عمر" (normalized): {omar_norm}')
-    print(f'Exact text "عمر": {omar_exact}')
+    print(f"Omar (normalized) count: {omar_norm}")
+    print(f"Omar (exact text) count: {omar_exact}")
     top = name_analysis['entityFrequency'][:5]
-    print(f"Top 5 name texts: {', '.join(f'{t['text']} ({t['count']})' for t in top)}")
+    print("Top 5 name texts: " + ', '.join(f"{t['count']}x" for t in top))
     print("=" * 60)
     print(f"All files output to: {OUTPUT_DIR}/")
 

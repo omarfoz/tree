@@ -14,7 +14,7 @@
 
   <div class="page-hero">
     <h1>إحصائيات الأسماء</h1>
-    <p>توزيع الأسماء في شجرة العائلة وفق النصوص الظاهرة على الشجرة. الأرقام تشمل ظهور الاسم بأي موضع (اسم أول، أب، جد).</p>
+    <p>توزيع الأسماء في شجرة العائلة وفق النصوص الظاهرة على الشجرة. الأرقام تشمل ظهور الاسم بأي موضع (اسم أول، أب، جد)، مع دمج الصيغ المختلفة كتابةً (مثل عبدالعزيز وعبد العزيز).</p>
   </div>
 
   <!-- Search -->
@@ -52,8 +52,8 @@
             <th>#</th>
             <th>الاسم</th>
             <th>التكرار</th>
-            <th>النسبة</th>
-            <th>طول الاسم</th>
+            <th>النسبة من نصوص الأسماء</th>
+            <th>عدد الكلمات</th>
           </tr>
         </thead>
         <tbody id="names-tbody"></tbody>
@@ -183,7 +183,7 @@ function showDetail(nameObj) {
   const pct = ((nameObj.count / (entitiesData.filter(e => e.type === 'name').length)) * 100).toFixed(2);
   document.getElementById('detail-stats').innerHTML = `
     <span class="badge badge-green">${nameObj.count} تكرار</span>
-    <span class="badge badge-gold">${pct}% من النصوص</span>
+    <span class="badge badge-gold">${pct}% من نصوص الأسماء</span>
     <span class="badge badge-muted">${nameObj.length > 1 ? 'مركب' : 'مفرد'}</span>
   `;
 

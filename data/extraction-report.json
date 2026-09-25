@@ -1,10 +1,10 @@
 {
-  "date": "2026-09-25T01:47:17.421498Z",
+  "date": "2026-09-25T05:50:03.499291+00:00",
   "sources": {
     "tree_viewer": "https://tree.alswailem.app/tree-viewer/v10.html",
     "info_page": "https://tree.alswailem.app/family-tree/info",
-    "tree_html_size_bytes": 8991160,
-    "info_html_size_bytes": 113316
+    "tree_html_size_bytes": 8991161,
+    "info_html_size_bytes": null
   },
   "official_totals": {
     "total_people": 3400,
@@ -15,11 +15,12 @@
   },
   "extracted": {
     "total_entities": 3584,
-    "name_entities": 3509,
-    "connector_entities": 23,
+    "name_entities": 3439,
+    "connector_entities": 2,
     "non_name_entities": 52,
+    "lineage_chain_entities": 91,
     "unique_texts": 580,
-    "unique_name_texts": 526
+    "unique_name_texts": 471
   },
   "differences": {
     "entity_vs_people_count": 184,
@@ -37,7 +38,7 @@
     {
       "check": "Entities count close to official total",
       "status": "PASS",
-      "detail": "3509 name labels + connectors ≈ 3,400 official total"
+      "detail": "3439 name labels + connectors ≈ 3,400 official total"
     },
     {
       "check": "Generations match official",

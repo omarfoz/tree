@@ -1,7 +1,7 @@
 {
-  "totalEntities": 3509,
-  "uniqueEntityTexts": 526,
-  "uniqueTokens": 484,
+  "totalEntities": 3439,
+  "uniqueEntityTexts": 463,
+  "uniqueTokens": 469,
   "entityFrequency": [
     {
       "text": "محمد",
@@ -9,6 +9,15 @@
       "count": 215,
       "firstPart": "محمد",
       "firstPartNormalized": "محمد",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "عبدالعزيز",
+      "normalized": "عبدالعزيز",
+      "count": 192,
+      "firstPart": "عبدالعزيز",
+      "firstPartNormalized": "عبدالعزيز",
       "length": 1,
       "isCompound": false
     },
@@ -22,20 +31,20 @@
       "isCompound": false
     },
     {
-      "text": "عبدالعزيز",
-      "normalized": "عبدالعزيز",
-      "count": 113,
-      "firstPart": "عبدالعزيز",
-      "firstPartNormalized": "عبدالعزيز",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "نورة",
       "normalized": "نوره",
       "count": 113,
       "firstPart": "نورة",
       "firstPartNormalized": "نوره",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "عبدالرحمن",
+      "normalized": "عبدالرحمن",
+      "count": 111,
+      "firstPart": "عبدالرحمن",
+      "firstPartNormalized": "عبدالرحمن",
       "length": 1,
       "isCompound": false
     },
@@ -56,15 +65,6 @@
       "firstPartNormalized": "ابراهيم",
       "length": 1,
       "isCompound": false
-    },
-    {
-      "text": "عبد العزيز",
-      "normalized": "عبد العزيز",
-      "count": 79,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
     },
     {
       "text": "خالد",
@@ -90,15 +90,6 @@
       "count": 67,
       "firstPart": "فهد",
       "firstPartNormalized": "فهد",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبدالرحمن",
-      "normalized": "عبدالرحمن",
-      "count": 62,
-      "firstPart": "عبدالرحمن",
-      "firstPartNormalized": "عبدالرحمن",
       "length": 1,
       "isCompound": false
     },
@@ -137,15 +128,6 @@
       "firstPartNormalized": "فارس",
       "length": 1,
       "isCompound": false
-    },
-    {
-      "text": "عبد الرحمن",
-      "normalized": "عبد الرحمن",
-      "count": 49,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
     },
     {
       "text": "منيرة",
@@ -234,6 +216,15 @@
       "count": 28,
       "firstPart": "سعود",
       "firstPartNormalized": "سعود",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "عبدالمحسن",
+      "normalized": "عبدالمحسن",
+      "count": 27,
+      "firstPart": "عبدالمحسن",
+      "firstPartNormalized": "عبدالمحسن",
       "length": 1,
       "isCompound": false
     },
@@ -445,15 +436,6 @@
       "isCompound": false
     },
     {
-      "text": "عبدالمحسن",
-      "normalized": "عبدالمحسن",
-      "count": 14,
-      "firstPart": "عبدالمحسن",
-      "firstPartNormalized": "عبدالمحسن",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "أسماء",
       "normalized": "اسماء",
       "count": 14,
@@ -463,17 +445,8 @@
       "isCompound": false
     },
     {
-      "text": "زياد",
-      "normalized": "زياد",
-      "count": 13,
-      "firstPart": "زياد",
-      "firstPartNormalized": "زياد",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبد المحسن",
-      "normalized": "عبد المحسن",
+      "text": "عبد المجيد",
+      "normalized": "عبد المجيد",
       "count": 13,
       "firstPart": "عبد",
       "firstPartNormalized": "عبد",
@@ -513,6 +486,15 @@
       "count": 12,
       "firstPart": "عبدالملك",
       "firstPartNormalized": "عبدالملك",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "زياد",
+      "normalized": "زياد",
+      "count": 12,
+      "firstPart": "زياد",
+      "firstPartNormalized": "زياد",
       "length": 1,
       "isCompound": false
     },
@@ -787,24 +769,6 @@
       "isCompound": false
     },
     {
-      "text": "عامر",
-      "normalized": "عامر",
-      "count": 7,
-      "firstPart": "عامر",
-      "firstPartNormalized": "عامر",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبد المجيد",
-      "normalized": "عبد المجيد",
-      "count": 7,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
       "text": "بدران",
       "normalized": "بدران",
       "count": 7,
@@ -1021,6 +985,15 @@
       "isCompound": false
     },
     {
+      "text": "عامر",
+      "normalized": "عامر",
+      "count": 6,
+      "firstPart": "عامر",
+      "firstPartNormalized": "عامر",
+      "length": 1,
+      "isCompound": false
+    },
+    {
       "text": "طلال",
       "normalized": "طلال",
       "count": 6,
@@ -1044,15 +1017,6 @@
       "count": 6,
       "firstPart": "بندر",
       "firstPartNormalized": "بندر",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبدالمجيد",
-      "normalized": "عبدالمجيد",
-      "count": 6,
-      "firstPart": "عبدالمجيد",
-      "firstPartNormalized": "عبدالمجيد",
       "length": 1,
       "isCompound": false
     },
@@ -1138,6 +1102,15 @@
       "isCompound": false
     },
     {
+      "text": "عبدالكريم",
+      "normalized": "عبدالكريم",
+      "count": 5,
+      "firstPart": "عبدالكريم",
+      "firstPartNormalized": "عبدالكريم",
+      "length": 1,
+      "isCompound": false
+    },
+    {
       "text": "وليد",
       "normalized": "وليد",
       "count": 5,
@@ -1197,6 +1170,15 @@
       "count": 5,
       "firstPart": "نوال",
       "firstPartNormalized": "نوال",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "بشائر",
+      "normalized": "بشاير",
+      "count": 5,
+      "firstPart": "بشائر",
+      "firstPartNormalized": "بشاير",
       "length": 1,
       "isCompound": false
     },
@@ -1291,24 +1273,6 @@
       "isCompound": false
     },
     {
-      "text": "سالم",
-      "normalized": "سالم",
-      "count": 4,
-      "firstPart": "سالم",
-      "firstPartNormalized": "سالم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "زايد",
-      "normalized": "زايد",
-      "count": 4,
-      "firstPart": "زايد",
-      "firstPartNormalized": "زايد",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "زامل",
       "normalized": "زامل",
       "count": 4,
@@ -1327,29 +1291,11 @@
       "isCompound": false
     },
     {
-      "text": "عبدالكريم",
-      "normalized": "عبدالكريم",
-      "count": 4,
-      "firstPart": "عبدالكريم",
-      "firstPartNormalized": "عبدالكريم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "فواز",
       "normalized": "فواز",
       "count": 4,
       "firstPart": "فواز",
       "firstPartNormalized": "فواز",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "بشائر",
-      "normalized": "بشاير",
-      "count": 4,
-      "firstPart": "بشائر",
-      "firstPartNormalized": "بشاير",
       "length": 1,
       "isCompound": false
     },
@@ -1435,24 +1381,6 @@
       "isCompound": false
     },
     {
-      "text": "بن سالم",
-      "normalized": "بن سالم",
-      "count": 3,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "سالم بن",
-      "normalized": "سالم بن",
-      "count": 3,
-      "firstPart": "سالم",
-      "firstPartNormalized": "سالم",
-      "length": 2,
-      "isCompound": true
-    },
-    {
       "text": "مصعب",
       "normalized": "مصعب",
       "count": 3,
@@ -1485,6 +1413,15 @@
       "count": 3,
       "firstPart": "يزن",
       "firstPartNormalized": "يزن",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "زايد",
+      "normalized": "زايد",
+      "count": 3,
+      "firstPart": "زايد",
+      "firstPartNormalized": "زايد",
       "length": 1,
       "isCompound": false
     },
@@ -1714,47 +1651,20 @@
       "isCompound": false
     },
     {
-      "text": "مالك",
-      "normalized": "مالك",
+      "text": "عبد السلام",
+      "normalized": "عبد السلام",
       "count": 2,
-      "firstPart": "مالك",
-      "firstPartNormalized": "مالك",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "زيد",
-      "normalized": "زيد",
-      "count": 2,
-      "firstPart": "زيد",
-      "firstPartNormalized": "زيد",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "سبأ",
-      "normalized": "سبا",
-      "count": 2,
-      "firstPart": "سبأ",
-      "firstPartNormalized": "سبا",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "بن مالك",
-      "normalized": "بن مالك",
-      "count": 2,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
+      "firstPart": "عبد",
+      "firstPartNormalized": "عبد",
       "length": 2,
       "isCompound": true
     },
     {
-      "text": "مالك بن",
-      "normalized": "مالك بن",
+      "text": "عبد الحميد",
+      "normalized": "عبد الحميد",
       "count": 2,
-      "firstPart": "مالك",
-      "firstPartNormalized": "مالك",
+      "firstPart": "عبد",
+      "firstPartNormalized": "عبد",
       "length": 2,
       "isCompound": true
     },
@@ -2344,483 +2254,6 @@
       "isCompound": false
     },
     {
-      "text": "وداعة",
-      "normalized": "وداعه",
-      "count": 1,
-      "firstPart": "وداعة",
-      "firstPartNormalized": "وداعه",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عمرو",
-      "normalized": "عمرو",
-      "count": 1,
-      "firstPart": "عمرو",
-      "firstPartNormalized": "عمرو",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "حارثة",
-      "normalized": "حارثه",
-      "count": 1,
-      "firstPart": "حارثة",
-      "firstPartNormalized": "حارثه",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "امرئ",
-      "normalized": "امري",
-      "count": 1,
-      "firstPart": "امرئ",
-      "firstPartNormalized": "امري",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "القيس",
-      "normalized": "القيس",
-      "count": 1,
-      "firstPart": "القيس",
-      "firstPartNormalized": "القيس",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "الأزدي",
-      "normalized": "الازدي",
-      "count": 1,
-      "firstPart": "الأزدي",
-      "firstPartNormalized": "الازدي",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "يغوث",
-      "normalized": "يغوث",
-      "count": 1,
-      "firstPart": "يغوث",
-      "firstPartNormalized": "يغوث",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "نبت",
-      "normalized": "نبت",
-      "count": 1,
-      "firstPart": "نبت",
-      "firstPartNormalized": "نبت",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "كهلان",
-      "normalized": "كهلان",
-      "count": 1,
-      "firstPart": "كهلان",
-      "firstPartNormalized": "كهلان",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "يشجب",
-      "normalized": "يشجب",
-      "count": 1,
-      "firstPart": "يشجب",
-      "firstPartNormalized": "يشجب",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "يعرب",
-      "normalized": "يعرب",
-      "count": 1,
-      "firstPart": "يعرب",
-      "firstPartNormalized": "يعرب",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "قحطان",
-      "normalized": "قحطان",
-      "count": 1,
-      "firstPart": "قحطان",
-      "firstPartNormalized": "قحطان",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "هود",
-      "normalized": "هود",
-      "count": 1,
-      "firstPart": "هود",
-      "firstPartNormalized": "هود",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عليه",
-      "normalized": "عليه",
-      "count": 1,
-      "firstPart": "عليه",
-      "firstPartNormalized": "عليه",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "السلام",
-      "normalized": "السلام",
-      "count": 1,
-      "firstPart": "السلام",
-      "firstPartNormalized": "السلام",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "بن زايد",
-      "normalized": "بن زايد",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "زايد بن",
-      "normalized": "زايد بن",
-      "count": 1,
-      "firstPart": "زايد",
-      "firstPartNormalized": "زايد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن زياد",
-      "normalized": "بن زياد",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "زياد بن",
-      "normalized": "زياد بن",
-      "count": 1,
-      "firstPart": "زياد",
-      "firstPartNormalized": "زياد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن وداعة",
-      "normalized": "بن وداعه",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "وداعة بن",
-      "normalized": "وداعه بن",
-      "count": 1,
-      "firstPart": "وداعة",
-      "firstPartNormalized": "وداعه",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن عمرو",
-      "normalized": "بن عمرو",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عمرو بن",
-      "normalized": "عمرو بن",
-      "count": 1,
-      "firstPart": "عمرو",
-      "firstPartNormalized": "عمرو",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن عامر",
-      "normalized": "بن عامر",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عامر بن",
-      "normalized": "عامر بن",
-      "count": 1,
-      "firstPart": "عامر",
-      "firstPartNormalized": "عامر",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن حارثة",
-      "normalized": "بن حارثه",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "حارثة بن",
-      "normalized": "حارثه بن",
-      "count": 1,
-      "firstPart": "حارثة",
-      "firstPartNormalized": "حارثه",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن امرئ",
-      "normalized": "بن امري",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "امرئ القيس",
-      "normalized": "امري القيس",
-      "count": 1,
-      "firstPart": "امرئ",
-      "firstPartNormalized": "امري",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "القيس الأزدي",
-      "normalized": "القيس الازدي",
-      "count": 1,
-      "firstPart": "القيس",
-      "firstPartNormalized": "القيس",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "الأزدي بن",
-      "normalized": "الازدي بن",
-      "count": 1,
-      "firstPart": "الأزدي",
-      "firstPartNormalized": "الازدي",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن يغوث",
-      "normalized": "بن يغوث",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "يغوث بن",
-      "normalized": "يغوث بن",
-      "count": 1,
-      "firstPart": "يغوث",
-      "firstPartNormalized": "يغوث",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن نبت",
-      "normalized": "بن نبت",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "نبت بن",
-      "normalized": "نبت بن",
-      "count": 1,
-      "firstPart": "نبت",
-      "firstPartNormalized": "نبت",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن زيد",
-      "normalized": "بن زيد",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "زيد بن",
-      "normalized": "زيد بن",
-      "count": 1,
-      "firstPart": "زيد",
-      "firstPartNormalized": "زيد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن كهلان",
-      "normalized": "بن كهلان",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "كهلان بن",
-      "normalized": "كهلان بن",
-      "count": 1,
-      "firstPart": "كهلان",
-      "firstPartNormalized": "كهلان",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن سبأ",
-      "normalized": "بن سبا",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "سبأ بن",
-      "normalized": "سبا بن",
-      "count": 1,
-      "firstPart": "سبأ",
-      "firstPartNormalized": "سبا",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن يشجب",
-      "normalized": "بن يشجب",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "يشجب بن",
-      "normalized": "يشجب بن",
-      "count": 1,
-      "firstPart": "يشجب",
-      "firstPartNormalized": "يشجب",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن يعرب",
-      "normalized": "بن يعرب",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "يعرب بن",
-      "normalized": "يعرب بن",
-      "count": 1,
-      "firstPart": "يعرب",
-      "firstPartNormalized": "يعرب",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن قحطان",
-      "normalized": "بن قحطان",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "قحطان بن",
-      "normalized": "قحطان بن",
-      "count": 1,
-      "firstPart": "قحطان",
-      "firstPartNormalized": "قحطان",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "بن هود",
-      "normalized": "بن هود",
-      "count": 1,
-      "firstPart": "بن",
-      "firstPartNormalized": "بن",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "هود عليه",
-      "normalized": "هود عليه",
-      "count": 1,
-      "firstPart": "هود",
-      "firstPartNormalized": "هود",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عليه السلام",
-      "normalized": "عليه السلام",
-      "count": 1,
-      "firstPart": "عليه",
-      "firstPartNormalized": "عليه",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عبد السلام",
-      "normalized": "عبد السلام",
-      "count": 1,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عبد الكريم",
-      "normalized": "عبد الكريم",
-      "count": 1,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
-      "text": "عبد الحميد",
-      "normalized": "عبد الحميد",
-      "count": 1,
-      "firstPart": "عبد",
-      "firstPartNormalized": "عبد",
-      "length": 2,
-      "isCompound": true
-    },
-    {
       "text": "غالب",
       "normalized": "غالب",
       "count": 1,
@@ -2965,6 +2398,15 @@
       "isCompound": false
     },
     {
+      "text": "سالم",
+      "normalized": "سالم",
+      "count": 1,
+      "firstPart": "سالم",
+      "firstPartNormalized": "سالم",
+      "length": 1,
+      "isCompound": false
+    },
+    {
       "text": "سمير",
       "normalized": "سمير",
       "count": 1,
@@ -3033,24 +2475,6 @@
       "count": 1,
       "firstPart": "نجيب",
       "firstPartNormalized": "نجيب",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبدالسلام",
-      "normalized": "عبدالسلام",
-      "count": 1,
-      "firstPart": "عبدالسلام",
-      "firstPartNormalized": "عبدالسلام",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبدالحميد",
-      "normalized": "عبدالحميد",
-      "count": 1,
-      "firstPart": "عبدالحميد",
-      "firstPartNormalized": "عبدالحميد",
       "length": 1,
       "isCompound": false
     },
@@ -3294,6 +2718,15 @@
       "count": 1,
       "firstPart": "موسى",
       "firstPartNormalized": "موسي",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "زيد",
+      "normalized": "زيد",
+      "count": 1,
+      "firstPart": "زيد",
+      "firstPartNormalized": "زيد",
       "length": 1,
       "isCompound": false
     },
@@ -3982,15 +3415,6 @@
       "isCompound": false
     },
     {
-      "text": "بشاير",
-      "normalized": "بشاير",
-      "count": 1,
-      "firstPart": "بشاير",
-      "firstPartNormalized": "بشاير",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "مسك",
       "normalized": "مسك",
       "count": 1,
@@ -4347,6 +3771,15 @@
       "count": 1,
       "firstPart": "ريماس",
       "firstPartNormalized": "ريماس",
+      "length": 1,
+      "isCompound": false
+    },
+    {
+      "text": "سبأ",
+      "normalized": "سبا",
+      "count": 1,
+      "firstPart": "سبأ",
+      "firstPartNormalized": "سبا",
       "length": 1,
       "isCompound": false
     },
@@ -4960,11 +4393,6 @@
       "count": 16
     },
     {
-      "tokenNormalized": "زياد",
-      "tokenOriginal": "زياد",
-      "count": 15
-    },
-    {
       "tokenNormalized": "سلطان",
       "tokenOriginal": "سلطان",
       "count": 15
@@ -5020,6 +4448,11 @@
       "count": 12
     },
     {
+      "tokenNormalized": "زياد",
+      "tokenOriginal": "زياد",
+      "count": 12
+    },
+    {
       "tokenNormalized": "ندي",
       "tokenOriginal": "ندى",
       "count": 12
@@ -5060,11 +4493,6 @@
       "count": 11
     },
     {
-      "tokenNormalized": "سالم",
-      "tokenOriginal": "سالم",
-      "count": 10
-    },
-    {
       "tokenNormalized": "مشعل",
       "tokenOriginal": "مشعل",
       "count": 10
@@ -5088,11 +4516,6 @@
       "tokenNormalized": "اروي",
       "tokenOriginal": "أروى",
       "count": 10
-    },
-    {
-      "tokenNormalized": "عامر",
-      "tokenOriginal": "عامر",
-      "count": 9
     },
     {
       "tokenNormalized": "دباس",
@@ -5305,13 +4728,8 @@
       "count": 7
     },
     {
-      "tokenNormalized": "زايد",
-      "tokenOriginal": "زايد",
-      "count": 6
-    },
-    {
-      "tokenNormalized": "مالك",
-      "tokenOriginal": "مالك",
+      "tokenNormalized": "عامر",
+      "tokenOriginal": "عامر",
       "count": 6
     },
     {
@@ -5470,16 +4888,6 @@
       "count": 5
     },
     {
-      "tokenNormalized": "زيد",
-      "tokenOriginal": "زيد",
-      "count": 4
-    },
-    {
-      "tokenNormalized": "سبا",
-      "tokenOriginal": "سبأ",
-      "count": 4
-    },
-    {
       "tokenNormalized": "زامل",
       "tokenOriginal": "زامل",
       "count": 4
@@ -5545,81 +4953,6 @@
       "count": 4
     },
     {
-      "tokenNormalized": "وداعه",
-      "tokenOriginal": "وداعة",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "عمرو",
-      "tokenOriginal": "عمرو",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "حارثه",
-      "tokenOriginal": "حارثة",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "امري",
-      "tokenOriginal": "امرئ",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "القيس",
-      "tokenOriginal": "القيس",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "الازدي",
-      "tokenOriginal": "الأزدي",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "يغوث",
-      "tokenOriginal": "يغوث",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "نبت",
-      "tokenOriginal": "نبت",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "كهلان",
-      "tokenOriginal": "كهلان",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "يشجب",
-      "tokenOriginal": "يشجب",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "يعرب",
-      "tokenOriginal": "يعرب",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "قحطان",
-      "tokenOriginal": "قحطان",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "هود",
-      "tokenOriginal": "هود",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "عليه",
-      "tokenOriginal": "عليه",
-      "count": 3
-    },
-    {
-      "tokenNormalized": "السلام",
-      "tokenOriginal": "السلام",
-      "count": 3
-    },
-    {
       "tokenNormalized": "مصعب",
       "tokenOriginal": "مصعب",
       "count": 3
@@ -5637,6 +4970,11 @@
     {
       "tokenNormalized": "يزن",
       "tokenOriginal": "يزن",
+      "count": 3
+    },
+    {
+      "tokenNormalized": "زايد",
+      "tokenOriginal": "زايد",
       "count": 3
     },
     {
@@ -6090,6 +5428,11 @@
       "count": 2
     },
     {
+      "tokenNormalized": "السلام",
+      "tokenOriginal": "السلام",
+      "count": 1
+    },
+    {
       "tokenNormalized": "الكريم",
       "tokenOriginal": "الكريم",
       "count": 1
@@ -6177,6 +5520,11 @@
     {
       "tokenNormalized": "ثامر",
       "tokenOriginal": "ثامر",
+      "count": 1
+    },
+    {
+      "tokenNormalized": "سالم",
+      "tokenOriginal": "سالم",
       "count": 1
     },
     {
@@ -6362,6 +5710,11 @@
     {
       "tokenNormalized": "موسي",
       "tokenOriginal": "موسى",
+      "count": 1
+    },
+    {
+      "tokenNormalized": "زيد",
+      "tokenOriginal": "زيد",
       "count": 1
     },
     {
@@ -6942,6 +6295,11 @@
     {
       "tokenNormalized": "ريماس",
       "tokenOriginal": "ريماس",
+      "count": 1
+    },
+    {
+      "tokenNormalized": "سبا",
+      "tokenOriginal": "سبأ",
       "count": 1
     },
     {

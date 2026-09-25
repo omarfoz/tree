@@ -13,7 +13,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 1,
@@ -29,7 +29,7 @@
     "normalizedParts": [
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 2,
@@ -45,7 +45,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 3,
@@ -61,7 +61,7 @@
     "normalizedParts": [
       "زايد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 4,
@@ -77,7 +77,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 5,
@@ -93,7 +93,7 @@
     "normalizedParts": [
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 6,
@@ -109,7 +109,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 7,
@@ -125,7 +125,7 @@
     "normalizedParts": [
       "زياد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 8,
@@ -141,7 +141,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 9,
@@ -157,7 +157,7 @@
     "normalizedParts": [
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 10,
@@ -173,7 +173,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 11,
@@ -189,7 +189,7 @@
     "normalizedParts": [
       "وداعه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 12,
@@ -205,7 +205,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 13,
@@ -221,7 +221,7 @@
     "normalizedParts": [
       "عمرو"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 14,
@@ -237,7 +237,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 15,
@@ -253,7 +253,7 @@
     "normalizedParts": [
       "عامر"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 16,
@@ -269,7 +269,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 17,
@@ -285,7 +285,7 @@
     "normalizedParts": [
       "حارثه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 18,
@@ -301,7 +301,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 19,
@@ -317,7 +317,7 @@
     "normalizedParts": [
       "امري"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 20,
@@ -333,7 +333,7 @@
     "normalizedParts": [
       "القيس"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 21,
@@ -349,7 +349,7 @@
     "normalizedParts": [
       "الازدي"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 22,
@@ -365,7 +365,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 23,
@@ -381,7 +381,7 @@
     "normalizedParts": [
       "يغوث"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 24,
@@ -397,7 +397,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 25,
@@ -413,7 +413,7 @@
     "normalizedParts": [
       "مالك"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 26,
@@ -429,7 +429,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 27,
@@ -445,7 +445,7 @@
     "normalizedParts": [
       "نبت"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 28,
@@ -461,7 +461,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 29,
@@ -477,7 +477,7 @@
     "normalizedParts": [
       "مالك"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 30,
@@ -493,7 +493,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 31,
@@ -509,7 +509,7 @@
     "normalizedParts": [
       "زيد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 32,
@@ -525,7 +525,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 33,
@@ -541,7 +541,7 @@
     "normalizedParts": [
       "كهلان"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 34,
@@ -557,7 +557,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 35,
@@ -573,7 +573,7 @@
     "normalizedParts": [
       "سبا"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 36,
@@ -589,7 +589,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 37,
@@ -605,7 +605,7 @@
     "normalizedParts": [
       "يشجب"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 38,
@@ -621,7 +621,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 39,
@@ -637,7 +637,7 @@
     "normalizedParts": [
       "يعرب"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 40,
@@ -653,7 +653,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 41,
@@ -669,7 +669,7 @@
     "normalizedParts": [
       "قحطان"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 42,
@@ -685,7 +685,7 @@
     "normalizedParts": [
       "بن"
     ],
-    "type": "connector"
+    "type": "lineage-chain"
   },
   {
     "id": 43,
@@ -701,7 +701,7 @@
     "normalizedParts": [
       "هود"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 44,
@@ -717,7 +717,7 @@
     "normalizedParts": [
       "عليه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 45,
@@ -733,7 +733,7 @@
     "normalizedParts": [
       "السلام"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 46,
@@ -751,7 +751,7 @@
       "بن",
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 47,
@@ -769,7 +769,7 @@
       "سالم",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 48,
@@ -787,7 +787,7 @@
       "بن",
       "زايد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 49,
@@ -805,7 +805,7 @@
       "زايد",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 50,
@@ -823,7 +823,7 @@
       "بن",
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 51,
@@ -841,7 +841,7 @@
       "سالم",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 52,
@@ -859,7 +859,7 @@
       "بن",
       "زياد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 53,
@@ -877,7 +877,7 @@
       "زياد",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 54,
@@ -895,7 +895,7 @@
       "بن",
       "سالم"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 55,
@@ -913,7 +913,7 @@
       "سالم",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 56,
@@ -931,7 +931,7 @@
       "بن",
       "وداعه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 57,
@@ -949,7 +949,7 @@
       "وداعه",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 58,
@@ -967,7 +967,7 @@
       "بن",
       "عمرو"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 59,
@@ -985,7 +985,7 @@
       "عمرو",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 60,
@@ -1003,7 +1003,7 @@
       "بن",
       "عامر"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 61,
@@ -1021,7 +1021,7 @@
       "عامر",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 62,
@@ -1039,7 +1039,7 @@
       "بن",
       "حارثه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 63,
@@ -1057,7 +1057,7 @@
       "حارثه",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 64,
@@ -1075,7 +1075,7 @@
       "بن",
       "امري"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 65,
@@ -1093,7 +1093,7 @@
       "امري",
       "القيس"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 66,
@@ -1111,7 +1111,7 @@
       "القيس",
       "الازدي"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 67,
@@ -1129,7 +1129,7 @@
       "الازدي",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 68,
@@ -1147,7 +1147,7 @@
       "بن",
       "يغوث"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 69,
@@ -1165,7 +1165,7 @@
       "يغوث",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 70,
@@ -1183,7 +1183,7 @@
       "بن",
       "مالك"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 71,
@@ -1201,7 +1201,7 @@
       "مالك",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 72,
@@ -1219,7 +1219,7 @@
       "بن",
       "نبت"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 73,
@@ -1237,7 +1237,7 @@
       "نبت",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 74,
@@ -1255,7 +1255,7 @@
       "بن",
       "مالك"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 75,
@@ -1273,7 +1273,7 @@
       "مالك",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 76,
@@ -1291,7 +1291,7 @@
       "بن",
       "زيد"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 77,
@@ -1309,7 +1309,7 @@
       "زيد",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 78,
@@ -1327,7 +1327,7 @@
       "بن",
       "كهلان"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 79,
@@ -1345,7 +1345,7 @@
       "كهلان",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 80,
@@ -1363,7 +1363,7 @@
       "بن",
       "سبا"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 81,
@@ -1381,7 +1381,7 @@
       "سبا",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 82,
@@ -1399,7 +1399,7 @@
       "بن",
       "يشجب"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 83,
@@ -1417,7 +1417,7 @@
       "يشجب",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 84,
@@ -1435,7 +1435,7 @@
       "بن",
       "يعرب"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 85,
@@ -1453,7 +1453,7 @@
       "يعرب",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 86,
@@ -1471,7 +1471,7 @@
       "بن",
       "قحطان"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 87,
@@ -1489,7 +1489,7 @@
       "قحطان",
       "بن"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 88,
@@ -1507,7 +1507,7 @@
       "بن",
       "هود"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 89,
@@ -1525,7 +1525,7 @@
       "هود",
       "عليه"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 90,
@@ -1543,7 +1543,7 @@
       "عليه",
       "السلام"
     ],
-    "type": "name"
+    "type": "lineage-chain"
   },
   {
     "id": 91,

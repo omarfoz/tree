@@ -32,7 +32,7 @@
     <div class="section-header">
       <div>
         <h2 class="section-title">اختبار التحقق: اسم عمر</h2>
-        <p class="section-desc">عدد مرات ظهور الاسم "عمر" في نصوص الشجرة</p>
+        <p class="section-desc">عدد مرات ظهور الاسم "عمر" في نصوص الأسماء (بعد استبعاد سلسلة النسب القديمة ودمج عمرو مع عمر)</p>
       </div>
     </div>
     <div class="grid grid-3" id="omar-test"></div>
@@ -84,12 +84,12 @@ async function load() {
       <div class="card-value">${omar.exact_text_count}</div>
     </div>
     <div class="card card-stat">
-      <div class="card-label">بعد التطبيع</div>
+      <div class="card-label">بعد التطبيع (شامل عمرو)</div>
       <div class="card-value">${omar.normalized_count}</div>
     </div>
     <div class="card card-stat">
-      <div class="card-label">النسبة من النصوص</div>
-      <div class="card-value">${((omar.normalized_count / report.extracted.total_entities) * 100).toFixed(2)}%</div>
+      <div class="card-label">النسبة من نصوص الأسماء</div>
+      <div class="card-value">${((omar.normalized_count / report.extracted.name_entities) * 100).toFixed(2)}%</div>
     </div>
   `;
 
@@ -101,8 +101,9 @@ async function load() {
         <div><strong>النصوص المستخرجة:</strong> ${report.extracted.total_entities.toLocaleString('ar-SA')}</div>
         <div><strong>نصوص الأسماء:</strong> ${report.extracted.name_entities.toLocaleString('ar-SA')}</div>
         <div><strong>الموصلات:</strong> ${report.extracted.connector_entities.toLocaleString('ar-SA')}</div>
-        <div><strong>النصوص غير الأسماء:</strong> ${report.extracted.non_name_entities.toLocaleString('ar-SA')}</div>
-        <div><strong>نصوص فريدة:</strong> ${report.extracted.unique_texts.toLocaleString('ar-SA')}</div>
+      <div><strong>النصوص غير الأسماء:</strong> ${report.extracted.non_name_entities.toLocaleString('ar-SA')}</div>
+      <div><strong>نصوص سلسلة النسب القديمة (مستبعدة):</strong> ${report.extracted.lineage_chain_entities.toLocaleString('ar-SA')}</div>
+      <div><strong>نصوص فريدة:</strong> ${report.extracted.unique_texts.toLocaleString('ar-SA')}</div>
       </div>
       <p><strong>التحقق:</strong></p>
       <ul style="margin:0; padding-right:20px;">
