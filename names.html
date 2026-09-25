@@ -104,9 +104,10 @@ function render(searchQ, limit) {
   let filtered = allNames;
 
   if (normQ) {
+    const compactQ = window.arCompact(searchQ);
     filtered = allNames.filter(n =>
-      window.arNormalize(n.text).includes(normQ) ||
-      window.arNormalize(n.firstPart).includes(normQ)
+      window.arCompact(n.text).includes(compactQ) ||
+      window.arCompact(n.firstPart).includes(compactQ)
     );
   }
 
@@ -175,7 +176,7 @@ function renderChart(data) {
 function showDetail(nameObj) {
   // Find all entities matching this name
   const matches = entitiesData.filter(e =>
-    window.arNormalize(e.text) === window.arNormalize(nameObj.text) || e.text === nameObj.text
+    window.arCompact(e.text) === window.arCompact(nameObj.text) || e.text === nameObj.text
   );
 
   document.getElementById('detail-name').textContent = nameObj.text;

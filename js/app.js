@@ -175,17 +175,26 @@
   }
 
   // ─── Arabic normalization for search ───
+  // Normalizes spelling variants (أ/إ/آ → ا, ة → ه, ى → ي), strips diacritics,
+  // and removes tatweel. Spaces are collapsed but kept, so callers can use
+  // arCompact() for space-insensitive matching (عبدالعزيز == عبد العزيز).
   window.arNormalize = function (text) {
     if (!text) return '';
     return text
+      .replace(/[\u0640\u064B-\u0652\u0670\u06D6-\u06ED]/g, '')
       .replace(/[أإآٱ]/g, 'ا')
       .replace(/ة/g, 'ه')
-      .replace(/ى/g, 'ي')
-      .replace(/[ًٌٍَُِّْ]/g, '')
+      .replace(/[ىئي]/g, 'ي')
+      .replace(/ؤ/g, 'و')
       .replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, '')
       .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
+  };
+
+  // Space-insensitive form: عبدالعزيز and عبد العزيز both → عبدالعزيز
+  window.arCompact = function (text) {
+    return window.arNormalize(text).replace(/\s+/g, '');
   };
 
   // ─── Init ───
