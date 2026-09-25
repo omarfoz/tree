@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Al-Suwailem Tree Analytics — Shared Application Logic
  */
 
@@ -63,12 +63,12 @@
     header.className = 'site-header';
     header.innerHTML = `
       <div class="container site-header-inner">
-        <a href="index.html" class="brand" dir="rtl">
+        <a href="./" class="brand" dir="rtl">
           <img src="assets/logo.png" alt="شعار شجرة عائلة السويلم" class="brand-logo">
           <span>شجرة عائلة السويلم</span>
         </a>
         <nav class="main-nav" dir="rtl">
-          <a href="index.html">الرئيسية</a>
+          <a href="./">الرئيسية</a>
           <a href="tree.html">الشجرة</a>
           <a href="names.html">الأسماء</a>
           <a href="generations.html">الأجيال</a>
@@ -94,7 +94,7 @@
           <span class="brand" style="font-weight:700;font-size:1.1rem;">القائمة</span>
           <button class="theme-toggle" onclick="toggleMobileMenu()">${ICON_X}</button>
         </div>
-        <a href="index.html">الرئيسية</a>
+        <a href="./">الرئيسية</a>
         <a href="tree.html">الشجرة</a>
         <a href="names.html">الأسماء</a>
         <a href="generations.html">الأجيال</a>

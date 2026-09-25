@@ -116,7 +116,7 @@ async function load() {
     <div style="margin-bottom:10px;"><span class="badge badge-gold">${rare}</span> اسم يظهر ٣ مرات أو أقل</div>
     <div style="margin-bottom:10px;"><span class="badge badge-muted">${common}</span> اسم يظهر ١٠ مرات أو أكثر</div>
     <div style="margin-bottom:10px;">عدد الأسماء الفريدة: <strong>${namesData.uniqueEntityTexts.toLocaleString('ar-SA')}</strong></div>
-    <div>عدد الرموز المميزة (tokens): <strong>${namesData.uniqueTokens.toLocaleString('ar-SA')}</strong></div>
+    <div>عدد الكلمات المفردة في الأسماء (بعد تجاهل أدوات الربط): <strong>${namesData.uniqueTokens.toLocaleString('ar-SA')}</strong></div>
   `;
 
   new Chart(document.getElementById('diversityChart'), {
