@@ -7,9 +7,9 @@
 <title>إحصائيات الأسماء — شجرة عائلة السويلم</title>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<style>
-.pill-list{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.mini-title{margin:0 0 12px;font-size:.95rem;font-weight:700}.name-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.locations-list{max-height:360px;overflow:auto;border:1px solid var(--color-border);border-radius:var(--radius-md)}.location-row{display:flex;justify-content:space-between;gap:16px;padding:9px 12px;border-bottom:1px solid var(--color-border);font-size:.84rem}.diversity-meter{padding-bottom:18px;border-bottom:1px solid var(--color-border)}@media(max-width:760px){.name-detail-grid{grid-template-columns:1fr}}
-</style>
+  <style>
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.mini-title{margin:0 0 12px;font-size:.95rem;font-weight:700}.name-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.locations-list{max-height:360px;overflow:auto;border:1px solid var(--color-border);border-radius:var(--radius-md)}.location-row{display:flex;justify-content:space-between;gap:16px;padding:9px 12px;border-bottom:1px solid var(--color-border);font-size:.84rem}.diversity-meter{padding-bottom:18px;border-bottom:1px solid var(--color-border)}.verify-ok{color:var(--color-primary-text);font-weight:700}.verify-fix{color:#0D76BD;font-weight:700}.verify-review{color:var(--color-gold2);font-weight:700}@media(max-width:760px){.name-detail-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
 
@@ -37,6 +37,11 @@
     <button class="btn btn-ghost btn-sm top-filter" data-n="20">أول ٢٠</button>
     <button class="btn btn-ghost btn-sm top-filter" data-n="50">أول ٥٠</button>
     <button class="btn btn-ghost btn-sm top-filter" data-n="99999">الكل</button>
+    <span style="width:1px;height:24px;background:var(--color-border-strong);margin-inline:4px;"></span>
+    <button class="btn btn-ghost btn-sm count-filter active" data-c="all">كل التكرارات</button>
+    <button class="btn btn-ghost btn-sm count-filter" data-c="1">مرة واحدة</button>
+    <button class="btn btn-ghost btn-sm count-filter" data-c="2">مرتان</button>
+    <button class="btn btn-ghost btn-sm count-filter" data-c="3">٣ مرات</button>
   </div>
 
   <!-- Results count -->

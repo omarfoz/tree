@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  let allNames=[], entitiesData=[], nameEntities=[], totalNameEntities=0, chartInstance=null, diversityChart=null, rankMap=new Map();
+  let allNames=[], entitiesData=[], nameEntities=[], totalNameEntities=0, chartInstance=null, diversityChart=null, rankMap=new Map(), validationMap=new Map(), countFilter="all", rareNames=[];
 
   function esc(value){return String(value==null?"":value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
   function arNum(n,digits){return digits!=null?Number(n).toLocaleString("ar-SA",{minimumFractionDigits:digits,maximumFractionDigits:digits}):Number(n).toLocaleString("ar-SA");}
@@ -11,8 +11,9 @@
   function variantsFor(target){const key=window.arCompact(target.text),map=new Map();nameEntities.forEach(e=>{if(window.arCompact(e.text)===key)map.set(e.text,(map.get(e.text)||0)+1);});return[...map.entries()].sort((a,b)=>b[1]-a[1]);}
 
   async function load(){
-    const data=await Promise.all([fetch("data/names.json").then(r=>r.json()),fetch("data/entities.json").then(r=>r.json())]);
+    const data=await Promise.all([fetch("data/names.json").then(r=>r.json()),fetch("data/entities.json").then(r=>r.json()),fetch("data/name-validation.json").then(r=>r.ok?r.json():{results:[]}).catch(()=>({results:[]}))]);
     const namesRes=data[0];entitiesData=data[1];allNames=namesRes.entityFrequency;nameEntities=entitiesData.filter(e=>e.type==="name");totalNameEntities=nameEntities.length;
+    (data[2].results||[]).forEach(v=>{validationMap.set(window.arCompact(v.current),v);if(v.treeLabel)validationMap.set(window.arCompact(v.treeLabel),v);});
     rankMap=new Map(allNames.map((n,i)=>[window.arCompact(n.text),i+1]));renderDiversity(namesRes);
     const q=new URLSearchParams(location.search).get("q");
     if(q){document.getElementById("name-search").value=q;render(q,99999);const exact=allNames.find(n=>window.arCompact(n.text)===window.arCompact(q));if(exact)setTimeout(()=>showDetail(exact,false),80);}else render("",10);
@@ -20,18 +21,35 @@
 
   function renderDiversity(namesRes){
     const once=allNames.filter(n=>n.count===1).length,rare=allNames.filter(n=>n.count<=3).length,top10=allNames.slice(0,10).reduce((s,n)=>s+n.count,0);
+    rareNames=allNames.filter(n=>n.count<=3).slice().sort((a,b)=>a.count-b.count||a.text.localeCompare(b.text,"ar"));
     const probs=allNames.map(n=>n.count/namesRes.totalEntities),entropy=-probs.reduce((s,p)=>s+(p?p*Math.log2(p):0),0),maxEntropy=Math.log2(allNames.length),diversity=maxEntropy?entropy/maxEntropy*100:0;
     document.getElementById("name-metrics").innerHTML=metricCard("الأسماء الفريدة",arNum(namesRes.uniqueEntityTexts),"بعد دمج الصيغ المتقاربة")+metricCard("تظهر مرة واحدة",arNum(once),(once/allNames.length*100).toFixed(1)+"% من الأسماء الفريدة")+metricCard("٣ مرات أو أقل",arNum(rare),(rare/allNames.length*100).toFixed(1)+"% من الأسماء الفريدة")+metricCard("حصة أعلى ١٠",(top10/namesRes.totalEntities*100).toFixed(1)+"%","من كل مرات ظهور الأسماء");
-    document.getElementById("diversity-extra").innerHTML="<div class=\"diversity-meter\"><div class=\"flex justify-between items-center\"><strong>مؤشر تنوع الأسماء</strong><strong>"+diversity.toFixed(1)+"%</strong></div><div class=\"progress-bar mt-1\"><div class=\"progress-bar-fill\" style=\"width:"+diversity.toFixed(1)+"%\"></div></div><p class=\"text-muted\" style=\"font-size:.82rem;margin:10px 0 0\">مؤشر Shannon مطبّع: كلما اقترب من ١٠٠٪ كان التوزيع أقل اعتمادًا على عدد صغير من الأسماء.</p></div><div class=\"mt-3\"><strong>أسماء نادرة (١–٣ مرات)</strong><div class=\"text-muted\" style=\"font-size:.8rem;margin-top:4px\">تشمل النادرة جدًا (مرة واحدة) والنادرة (مرتين أو ثلاث).</div><div id=\"rare-name-pills\" class=\"pill-list mt-2\"></div></div>";
-    const rareNames=allNames.filter(n=>n.count<=3).slice().sort((a,b)=>a.count-b.count||a.text.localeCompare(b.text,"ar"));
-    document.getElementById("rare-name-pills").innerHTML=rareNames.map(n=>"<button class=\"name-pill\" data-name=\""+esc(n.text)+"\" title=\"ظهر "+arNum(n.count)+" مرة\">"+esc(n.text)+" <small style=\"opacity:.65\">"+arNum(n.count)+"×</small></button>").join("");
-    document.querySelectorAll("#rare-name-pills [data-name]").forEach(btn=>btn.addEventListener("click",()=>{const item=allNames.find(x=>x.text===btn.dataset.name);if(item)showDetail(item,true);}));
-    if(diversityChart)diversityChart.destroy();
-    diversityChart=new Chart(document.getElementById("nameDiversityChart"),{type:"doughnut",data:{labels:["مرة واحدة","٢–٥ مرات","٦–٢٠ مرة","أكثر من ٢٠"],datasets:[{data:[allNames.filter(n=>n.count===1).length,allNames.filter(n=>n.count>=2&&n.count<=5).length,allNames.filter(n=>n.count>=6&&n.count<=20).length,allNames.filter(n=>n.count>20).length],backgroundColor:["#0D76BD","#4ACD7B","#666258","#342B24"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",rtl:true},tooltip:{rtl:true}}}});
+    document.getElementById("diversity-extra").innerHTML="<div class=\"diversity-meter\"><div class=\"flex justify-between items-center\"><strong>مؤشر تنوع الأسماء</strong><strong>"+diversity.toFixed(1)+"%</strong></div><div class=\"progress-bar mt-1\"><div class=\"progress-bar-fill\" style=\"width:"+diversity.toFixed(1)+"%\"></div></div><p class=\"text-muted\" style=\"font-size:.82rem;margin:10px 0 0\">مؤشر Shannon مطبّع: كلما اقترب من ١٠٠٪ كان التوزيع أقل اعتمادًا على عدد صغير من الأسماء.</p></div><div class=\"mt-3\"><strong>أسماء نادرة (١–٣ مرات) — "+arNum(rare)+" اسمًا</strong><div class=\"text-muted\" style=\"font-size:.8rem;margin-top:4px\">تشمل النادرة جدًا (مرة واحدة) والنادرة (مرتين أو ثلاث). تم التحقق من كل اسم مقابل بحث الشجرة الأصلية.</div><input type=\"text\" id=\"rare-search\" placeholder=\"ابحث في الأسماء النادرة...\" autocomplete=\"off\" style=\"width:100%;margin-top:10px;padding:10px 14px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-ink);font-family:inherit;font-size:.9rem\"><div id=\"rare-name-pills\" class=\"pill-list mt-2\"></div></div>";
+    renderRarePills("");
+    if(diversityChart)diversityChart.destroy();    diversityChart=new Chart(document.getElementById("nameDiversityChart"),{type:"doughnut",data:{labels:["مرة واحدة","٢–٥ مرات","٦–٢٠ مرة","أكثر من ٢٠"],datasets:[{data:[allNames.filter(n=>n.count===1).length,allNames.filter(n=>n.count>=2&&n.count<=5).length,allNames.filter(n=>n.count>=6&&n.count<=20).length,allNames.filter(n=>n.count>20).length],backgroundColor:["#0D76BD","#4ACD7B","#666258","#342B24"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",rtl:true},tooltip:{rtl:true}}}});
+  }
+
+  function verificationBadge(nameText){
+    const v=validationMap.get(window.arCompact(nameText));
+    if(!v)return"";
+    if(v.status==="verified")return" <small class=\"verify-ok\" title=\"تم التحقق مقابل بحث الشجرة الأصلية\">✓</small>";
+    if(v.status==="corrected"||v.status==="reverted")return" <small class=\"verify-fix\" title=\""+esc(v.note||"")+"\">✓صُحّح</small>";
+    if(v.status==="needs_review")return" <small class=\"verify-review\" title=\"بحاجة إلى مراجعة\">؟</small>";
+    return"";
+  }
+
+  function renderRarePills(query){
+    const pills=document.getElementById("rare-name-pills");if(!pills)return;
+    const compactQ=window.arCompact(query);
+    const list=compactQ?rareNames.filter(n=>window.arCompact(n.text).includes(compactQ)):rareNames;
+    pills.innerHTML=list.length?list.map(n=>"<button class=\"name-pill\" data-name=\""+esc(n.text)+"\" title=\"ظهر "+arNum(n.count)+" مرة\">"+esc(n.text)+" <small style=\"opacity:.65\">"+arNum(n.count)+"×</small>"+verificationBadge(n.text)+"</button>").join(""):"<span class=\"text-muted\">لا توجد أسماء نادرة مطابقة للبحث.</span>";
+    pills.querySelectorAll("[data-name]").forEach(btn=>btn.addEventListener("click",()=>{const item=allNames.find(x=>x.text===btn.dataset.name);if(item)showDetail(item,true);}));
   }
 
   function render(searchQ,limit){
-    const compactQ=window.arCompact(searchQ);let filtered=allNames;if(compactQ)filtered=allNames.filter(n=>window.arCompact(n.text).includes(compactQ)||window.arCompact(n.firstPart).includes(compactQ));filtered=filtered.slice(0,limit);
+    const compactQ=window.arCompact(searchQ);let filtered=allNames;if(compactQ)filtered=allNames.filter(n=>window.arCompact(n.text).includes(compactQ)||window.arCompact(n.firstPart).includes(compactQ));
+    if(countFilter!=="all")filtered=filtered.filter(n=>n.count===parseInt(countFilter,10));
+    filtered=filtered.slice(0,limit);
     document.getElementById("results-info").textContent="عرض "+arNum(filtered.length)+" من "+arNum(allNames.length)+" اسم فريد"+(searchQ?" — نتائج البحث عن \""+searchQ+"\"":"");renderChart(filtered.slice(0,30));
     const tbody=document.getElementById("names-tbody");tbody.innerHTML="";
     filtered.forEach(n=>{const r=rarity(n),tr=document.createElement("tr");tr.style.cursor="pointer";tr.addEventListener("click",()=>showDetail(n,true));tr.innerHTML="<td class=\"rank\">"+arNum(rankMap.get(window.arCompact(n.text))||0)+"</td><td class=\"name-cell\">"+esc(n.text)+"</td><td class=\"number\">"+arNum(n.count)+"</td><td class=\"number\">"+(n.count/totalNameEntities*100).toFixed(2)+"%</td><td><span class=\"badge "+r.cls+"\">"+r.label+"</span></td><td>"+(n.length>1?arNum(n.length)+" كلمات":"كلمة واحدة")+"</td>";tbody.appendChild(tr);});
@@ -43,9 +61,9 @@
   }
 
   function showDetail(nameObj,updateUrl){
-    const key=window.arCompact(nameObj.text),matches=nameEntities.filter(e=>window.arCompact(e.text)===key),variants=variantsFor(nameObj),similars=similarNames(nameObj),r=rarity(nameObj),rank=rankMap.get(key)||0,pct=nameObj.count/totalNameEntities*100;
+    const key=window.arCompact(nameObj.text),matches=nameEntities.filter(e=>window.arCompact(e.text)===key),variants=variantsFor(nameObj),similars=similarNames(nameObj),r=rarity(nameObj),rank=rankMap.get(key)||0,pct=nameObj.count/totalNameEntities*100,v=validationMap.get(key);
     document.getElementById("detail-name").textContent=nameObj.text;
-    document.getElementById("detail-stats").innerHTML="<span class=\"badge badge-green\">الترتيب "+arNum(rank)+"</span><span class=\"badge badge-green\">"+arNum(nameObj.count)+" ظهور</span><span class=\"badge badge-gold\">"+pct.toFixed(2)+"%</span><span class=\"badge "+r.cls+"\">"+r.label+"</span>";
+    document.getElementById("detail-stats").innerHTML="<span class=\"badge badge-green\">الترتيب "+arNum(rank)+"</span><span class=\"badge badge-green\">"+arNum(nameObj.count)+" ظهور</span><span class=\"badge badge-gold\">"+pct.toFixed(2)+"%</span><span class=\"badge "+r.cls+"\">"+r.label+"</span>"+(v?("<span class=\"badge "+(v.status==="needs_review"?"badge-muted":"badge-green")+"\" title=\""+esc(v.note||"")+"\">"+(v.status==="verified"?"تم التحقق من الشجرة الأصلية":v.status==="corrected"?"صحّحنا الإملاء وفق الشجرة":v.status==="reverted"?"أعيد للأصل وفق الشجرة":"بحاجة إلى مراجعة")+"</span>"):"");
     document.getElementById("detail-variants").innerHTML=variants.length?variants.map(v=>"<span class=\"name-pill\">"+esc(v[0])+" <small>"+arNum(v[1])+"</small></span>").join(""):"<span class=\"text-muted\">لا توجد صيغ أخرى.</span>";
     document.getElementById("detail-similar").innerHTML=similars.length?similars.map(x=>"<button class=\"name-pill similar-name\" data-name=\""+esc(x.name.text)+"\">"+esc(x.name.text)+" <small>Δ"+x.distance+" · "+arNum(x.name.count)+"</small></button>").join(""):"<span class=\"text-muted\">لا توجد أسماء قريبة كتابيًا ضمن الحد المستخدم.</span>";
     document.querySelectorAll("#detail-similar .similar-name").forEach(btn=>btn.addEventListener("click",()=>{const item=allNames.find(x=>x.text===btn.dataset.name);if(item)showDetail(item,true);}));
@@ -56,5 +74,7 @@
   window.closeDetail=function(){document.getElementById("name-detail").style.display="none";history.replaceState(null,"","names.html");};
   const searchEl=document.getElementById("name-search");let timer;searchEl.addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(()=>{const active=document.querySelector(".top-filter.active");render(searchEl.value,active?parseInt(active.dataset.n,10):99999);},220);});
   document.querySelectorAll(".top-filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".top-filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");render(searchEl.value,parseInt(btn.dataset.n,10));}));
+  document.querySelectorAll(".count-filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".count-filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");countFilter=btn.dataset.c;render(searchEl.value,document.querySelector(".top-filter.active")?parseInt(document.querySelector(".top-filter.active").dataset.n,10):99999);}));
+  document.addEventListener("input",e=>{if(e.target&&e.target.id==="rare-search")renderRarePills(e.target.value);});
   load();
 })();

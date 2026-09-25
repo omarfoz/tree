@@ -62,10 +62,13 @@ EXCLUDED_NAME_LABELS = {
 }
 
 # Known OCR/source-text corrections verified against the tree.
-TEXT_CORRECTIONS = {
-    "أحالم": "أحلام",
-    "إيالن": "إيلان",
-}
+# IMPORTANT: each entry below was validated against the ORIGINAL tree search
+# (https://tree.alswailem.app/tree-viewer/v10.html) on 2026-09-25 — see
+# data/name-validation.json for the full audit. Both entries below are now
+# EMPTY because the previously applied "corrections" were WRONG and were
+# reverted: the tree itself spells them أحالم (1/1) and إيالن (1/1), and the
+# "corrected" spellings أحلام / إيلان return zero results on the tree.
+TEXT_CORRECTIONS = {}
 
 def ar_normalize(text):
     """Remove Arabic diacritics, normalize alef variants, standardize."""
