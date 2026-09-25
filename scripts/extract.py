@@ -61,6 +61,12 @@ EXCLUDED_NAME_LABELS = {
     "شيخةلطيفة",
 }
 
+# Known OCR/source-text corrections verified against the tree.
+TEXT_CORRECTIONS = {
+    "أحالم": "أحلام",
+    "إيالن": "إيلان",
+}
+
 def ar_normalize(text):
     """Remove Arabic diacritics, normalize alef variants, standardize."""
     text = unicodedata.normalize('NFKD', text)
@@ -106,6 +112,7 @@ def extract_entities():
         x, y, w, h, text = e
         # Clean text: remove tatweel and extra spaces
         clean = text.replace('\u0640', '').strip()
+        clean = TEXT_CORRECTIONS.get(clean, clean)
         if not clean:
             continue
         norm = ar_normalize(clean)
