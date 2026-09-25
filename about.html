@@ -6,6 +6,9 @@
 <meta name="description" content="عن شجرة عائلة السويلم - المصادر والمراجع والإصدارات">
 <title>عن الشجرة — شجرة عائلة السويلم</title>
 <link rel="stylesheet" href="css/styles.css">
+<style>
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.source-row{padding:7px 0;border-bottom:1px solid var(--color-border);font-size:.9rem}.timeline{position:relative;padding:6px 30px 6px 0}.timeline:before{content:"";position:absolute;right:8px;top:0;bottom:0;width:2px;background:var(--color-border-strong)}.timeline-item{position:relative;padding:0 20px 20px 0}.timeline-dot{position:absolute;right:-28px;top:25px;width:13px;height:13px;border-radius:50%;background:var(--color-primary);border:3px solid var(--color-bg);box-shadow:0 0 0 2px var(--color-border-strong)}.timeline-card{padding:18px 20px}.timeline-card h3{margin:3px 0 0;font-size:1.05rem}.timeline-year{font-size:.8rem;font-weight:700;color:var(--color-primary-text)}@media(max-width:760px){.timeline{padding-right:24px}.timeline-item{padding-right:14px}.timeline-dot{right:-22px}}
+</style>
 </head>
 <body>
 
@@ -56,26 +59,12 @@
     </div>
   </section>
 
-  <!-- Amirs -->
   <section class="section">
-    <div class="section-header">
-      <div><h2 class="section-title">أمراء ثادق من الأسرة</h2></div>
-    </div>
-    <div class="card" style="padding:0;overflow:hidden;">
-      <div class="overflow-x-auto">
-        <table class="data-table" id="amirs-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الاسم</th>
-              <th>الجيل</th>
-              <th>تاريخ الإمارة</th>
-            </tr>
-          </thead>
-          <tbody id="amirs-tbody"></tbody>
-        </table>
-      </div>
-    </div>
+    <div class="section-header"><div><h2 class="section-title">الخط الزمني لأمراء ثادق من الأسرة</h2><p class="section-desc">ترتيب زمني للفترات المسجلة في بيانات الشجرة، مع الجيل والمدة التقريبية المسجلة.</p></div></div>
+    <div class="grid grid-4" id="amir-metrics"></div>
+    <div id="amirs-timeline" class="timeline mt-3"></div>
+    <div class="disclaimer mt-2">المدة المحسوبة تقريبية من السنوات الهجرية المكتوبة في المصدر، والفترات المنفصلة تُجمع حسابيًا لأغراض العرض.</div>
+    <div class="card mt-3" style="padding:0;overflow:hidden"><div class="overflow-x-auto"><table class="data-table" id="amirs-table"><thead><tr><th>#</th><th>الاسم</th><th>الجيل</th><th>تاريخ الإمارة</th><th>مدة مسجلة تقريبية</th></tr></thead><tbody id="amirs-tbody"></tbody></table></div></div>
   </section>
 
   <!-- Methodology -->
@@ -107,52 +96,6 @@
 </main>
 
 <script src="js/app.js"></script>
-<script>
-async function load() {
-  const stats = await fetch('data/statistics.json').then(r => r.json());
-
-  // Editions
-  const edGrid = document.getElementById('editions-grid');
-  stats.editions.forEach((e, i) => {
-    const card = document.createElement('div');
-    card.className = 'card animate-in';
-    card.style.animationDelay = (i * 0.08) + 's';
-    card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span class="badge ${i === stats.editions.length - 1 ? 'badge-green' : 'badge-muted'}">${e.year}هـ</span>
-        <span class="text-muted" style="font-size:0.8rem;">${e.label}</span>
-      </div>
-      <div style="font-size:1.8rem;font-weight:700;margin-bottom:4px;">${e.total.toLocaleString('ar-SA')}</div>
-      <div class="text-muted" style="font-size:0.85rem;">${e.total} فرد</div>
-      <div style="margin-top:10px;font-size:0.8rem;color:var(--color-ink-muted);">
-        ${e.male.toLocaleString('ar-SA')} ذكر — ${e.female.toLocaleString('ar-SA')} أنثى
-      </div>
-      <div style="margin-top:6px;font-size:0.75rem;color:var(--color-ink-muted);">${e.details}</div>
-    `;
-    edGrid.appendChild(card);
-  });
-
-  // Sources
-  document.getElementById('oral-sources').innerHTML =
-    stats.oralSources.map(s => `<div style="padding:6px 0;border-bottom:1px solid var(--color-border);font-size:0.9rem;">${s}</div>`).join('');
-  document.getElementById('book-sources').innerHTML =
-    stats.sources.map(s => `<div style="padding:6px 0;border-bottom:1px solid var(--color-border);font-size:0.9rem;">${s}</div>`).join('');
-
-  // Amirs
-  const tbody = document.getElementById('amirs-tbody');
-  stats.amirs.forEach((a, i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="rank">${i + 1}</td>
-      <td class="name-cell">${a.name}</td>
-      <td class="number">${a.generation}</td>
-      <td class="text-muted">${a.datesH}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-load();
-</script>
+<script src="js/about-page.js"></script>
 </body>
 </html>

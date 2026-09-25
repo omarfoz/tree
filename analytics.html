@@ -7,6 +7,9 @@
 <title>الإحصائيات المتقدمة — شجرة عائلة السويلم</title>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+.heatmap-wrap{width:100%;padding:16px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg)}.heatmap-wrap canvas{display:block;max-width:100%;margin:auto;border-radius:var(--radius-md)}.spatial-mode.active{background:var(--color-primary-soft);color:var(--color-ink);border-color:var(--color-primary)}
+</style>
 </head>
 <body>
 
@@ -60,6 +63,21 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">التحليل المكاني للشجرة</h2><p class="section-desc">خريطة استكشافية مبنية على إحداثيات النصوص الأصلية، لقياس الكثافة واكتشاف مناطق التداخل المحتملة.</p></div>
+      <div class="flex items-center" style="gap:8px"><button class="btn btn-ghost btn-sm spatial-mode active" data-mode="heat">خريطة حرارية</button><button class="btn btn-ghost btn-sm spatial-mode" data-mode="points">نقاط النصوص</button></div>
+    </div>
+    <div class="grid grid-4" id="spatial-metrics"></div>
+    <div class="heatmap-wrap mt-3"><canvas id="spatial-map"></canvas></div>
+    <div class="disclaimer mt-2">الخريطة تمثل مواقع التسميات النصية فقط، ولا تستنتج قرابة أو فرعًا أو جيلًا من الإحداثيات.</div>
+    <div class="grid grid-2 mt-3">
+      <div class="chart-container" style="min-height:330px"><canvas id="spatialBandChart"></canvas></div>
+      <div class="card" style="padding:0;overflow:hidden"><div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700">أكثر خلايا الخريطة كثافة</div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>صف</th><th>عمود</th><th>النصوص</th><th>النطاق</th></tr></thead><tbody id="dense-cells-tbody"></tbody></table></div></div>
+    </div>
+    <div class="card mt-3" style="padding:0;overflow:hidden"><div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700">أعلى مرشحات التداخل الهندسي للمراجعة</div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>النص الأول</th><th>النص الثاني</th><th>مساحة التداخل</th><th>الموضع</th></tr></thead><tbody id="overlap-tbody"></tbody></table></div></div>
+  </section>
+
   <!-- Extraction report summary -->
   <section class="section">
     <div class="section-header">
@@ -74,120 +92,6 @@
 </main>
 
 <script src="js/app.js"></script>
-<script>
-async function load() {
-  const stats = await fetch('data/statistics.json').then(r => r.json());
-  const namesData = await fetch('data/names.json').then(r => r.json());
-  const report = await fetch('data/extraction-report.json').then(r => r.json());
-  const entities = await fetch('data/entities.json').then(r => r.json());
-
-  // Compare grid
-  const compare = document.getElementById('compare-grid');
-  compare.innerHTML = `
-    <div class="card card-stat">
-      <div class="card-label">الإجمالي الرسمي</div>
-      <div class="card-value">${report.official_totals.total_people.toLocaleString('ar-SA')}</div>
-      <div class="card-sublabel">من صفحة المعلومات</div>
-    </div>
-    <div class="card card-stat">
-      <div class="card-label">النصوص المستخرجة</div>
-      <div class="card-value">${report.extracted.total_entities.toLocaleString('ar-SA')}</div>
-      <div class="card-sublabel">كيانات نصية من الشجرة</div>
-    </div>
-    <div class="card card-stat">
-      <div class="card-label">الفرق</div>
-      <div class="card-value" style="color:var(--color-gold2);">+${report.differences.entity_vs_people_count.toLocaleString('ar-SA')}</div>
-      <div class="card-sublabel">بسبب تكرار الأسماء كآباء/أجداد</div>
-    </div>
-  `;
-
-  // Diversity
-  const freqCounts = {};
-  namesData.entityFrequency.forEach(n => {
-    freqCounts[n.count] = (freqCounts[n.count] || 0) + 1;
-  });
-
-  const once = namesData.entityFrequency.filter(n => n.count === 1).length;
-  const rare = namesData.entityFrequency.filter(n => n.count <= 3).length;
-  const common = namesData.entityFrequency.filter(n => n.count >= 10).length;
-
-  document.getElementById('diversity-summary').innerHTML = `
-    <div style="margin-bottom:10px;"><span class="badge badge-green">${once}</span> اسم يظهر مرة واحدة فقط</div>
-    <div style="margin-bottom:10px;"><span class="badge badge-gold">${rare}</span> اسم يظهر ٣ مرات أو أقل</div>
-    <div style="margin-bottom:10px;"><span class="badge badge-muted">${common}</span> اسم يظهر ١٠ مرات أو أكثر</div>
-    <div style="margin-bottom:10px;">عدد الأسماء الفريدة: <strong>${namesData.uniqueEntityTexts.toLocaleString('ar-SA')}</strong></div>
-    <div>عدد الكلمات المفردة في الأسماء (بعد تجاهل أدوات الربط): <strong>${namesData.uniqueTokens.toLocaleString('ar-SA')}</strong></div>
-  `;
-
-  new Chart(document.getElementById('diversityChart'), {
-    type: 'doughnut',
-    data: {
-      labels: ['مرة واحدة', '٢–٥ مرات', '٦–٢٠ مرة', 'أكثر من ٢٠'],
-      datasets: [{
-        data: [
-          namesData.entityFrequency.filter(n => n.count === 1).length,
-          namesData.entityFrequency.filter(n => n.count >= 2 && n.count <= 5).length,
-          namesData.entityFrequency.filter(n => n.count >= 6 && n.count <= 20).length,
-          namesData.entityFrequency.filter(n => n.count > 20).length
-        ],
-        backgroundColor: ['#0D76BD', '#4ACD7B', '#666258', '#342B24'],
-        borderWidth: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'top', rtl: true, labels: { font: { family: "'IBM Plex Sans Arabic'" } } },
-        tooltip: { rtl: true }
-      }
-    }
-  });
-
-  // Edition chart
-  const eds = stats.editions;
-  new Chart(document.getElementById('editionChart'), {
-    type: 'bar',
-    data: {
-      labels: eds.map(e => e.year + 'هـ'),
-      datasets: [
-        { label: 'الإجمالي', data: eds.map(e => e.total), backgroundColor: '#0D76BD', borderRadius: 6 },
-        { label: 'الذكور', data: eds.map(e => e.male), backgroundColor: '#342B24', borderRadius: 6 },
-        { label: 'الإناث', data: eds.map(e => e.female), backgroundColor: '#4ACD7B', borderRadius: 6 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'top', rtl: true }, tooltip: { rtl: true } },
-      scales: {
-        x: { grid: { display: false } },
-        y: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' } }
-      }
-    }
-  });
-
-  // Report card
-  document.getElementById('report-card').innerHTML = `
-    <div style="font-size:0.9rem;line-height:1.8;" dir="rtl">
-      <p><strong>تاريخ الاستخراج:</strong> ${report.date}</p>
-      <p><strong>المصادر:</strong></p>
-      <ul style="margin:0; padding-right:20px;">
-        <li>عارض الشجرة: ${report.sources.tree_viewer}</li>
-        <li>صفحة المعلومات: ${report.sources.info_page}</li>
-      </ul>
-      <p><strong>القيود:</strong></p>
-      <ul style="margin:0; padding-right:20px;">
-        ${report.limitations.map(l => '<li>' + l + '</li>').join('')}
-      </ul>
-      <p style="margin-top:16px;">
-        <a href="data/extraction-report.json" class="btn btn-ghost btn-sm" download>تنزيل تقرير JSON الكامل</a>
-      </p>
-    </div>
-  `;
-}
-
-load();
-</script>
+<script src="js/analytics-page.js"></script>
 </body>
 </html>

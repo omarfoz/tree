@@ -7,6 +7,9 @@
 <title>فروع العائلة — شجرة عائلة السويلم</title>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.mini-title{margin:0 0 12px;font-size:.95rem;font-weight:700}.shared-rep-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--color-border)}@media(max-width:760px){.shared-rep-row{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
 <body>
 
@@ -22,6 +25,20 @@
     <canvas id="branchChart"></canvas>
   </div>
 
+  <section class="section">
+    <div class="section-header"><div><h2 class="section-title">لوحة ممثلي الفروع</h2><p class="section-desc">تحليل التكليفات المشتركة والتجميعات المسماة في بيانات ممثلي الفروع.</p></div></div>
+    <div class="grid grid-4" id="rep-metrics"></div>
+    <div class="grid grid-2 mt-3">
+      <div class="card"><h3 class="mini-title">ممثلون لأكثر من فرع</h3><div id="shared-reps"></div></div>
+      <div class="chart-container" style="min-height:380px"><canvas id="repGroupsChart"></canvas></div>
+    </div>
+    <div class="card mt-3" style="padding:0;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700">التجميع حسب الاسم المختصر للممثل</div>
+      <div class="overflow-x-auto"><table class="data-table"><thead><tr><th>التجميع</th><th>الفروع</th><th>المجموع ١٤٤٨</th><th>الحصة من الفروع</th><th>التغير من ١٤٤٥</th></tr></thead><tbody id="rep-groups-tbody"></tbody></table></div>
+    </div>
+    <div class="disclaimer mt-2">التجميعات مثل «الفوزان» و«الحمد» مستخرجة من النص بين القوسين في الاسم المختصر للممثل، وليست تصنيفًا نسبيًا جديدًا أنشأه الموقع.</div>
+  </section>
+
   <!-- Representatives -->
   <section class="section">
     <div class="section-header">
@@ -30,7 +47,12 @@
         <p class="section-desc">سفراء الصندوق وممثلو الفروع حسب الإصدار الثالث ١٤٤٨هـ</p>
       </div>
     </div>
-    <div class="grid grid-2" id="reps-grid"></div>
+    <div class="search-wrap" style="max-width:100%;margin-bottom:12px">
+      <span class="search-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input id="rep-search" class="search-input" placeholder="ابحث باسم الممثل أو الفرع..." autocomplete="off">
+    </div>
+    <div id="rep-results" class="text-muted" style="font-size:.85rem;margin-bottom:16px"></div>
+    <div class="grid grid-3" id="reps-grid"></div>
   </section>
 
   <!-- Branch Table -->
@@ -71,96 +93,6 @@
 </main>
 
 <script src="js/app.js"></script>
-<script>
-let branchesData = [];
-let repsData = [];
-
-async function load() {
-  const branchesRes = await fetch('data/branches.json').then(r => r.json());
-  const repsRes = await fetch('data/representatives.json').then(r => r.json());
-  branchesData = branchesRes.branches;
-  repsData = repsRes;
-
-  renderBranchChart();
-  renderReps();
-  renderTable('num');
-}
-
-function renderBranchChart() {
-  const labels = branchesData.map(b => 'فرع ' + b.number);
-  const data1448 = branchesData.map(b => b.size1448);
-  const data1445 = branchesData.map(b => b.sizesByYear['1445']);
-
-  new Chart(document.getElementById('branchChart'), {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [
-        { label: '١٤٤٨هـ', data: data1448, backgroundColor: 'rgba(13,118,189,0.8)', borderRadius: 4, barPercentage: 0.7 },
-        { label: '١٤٤٥هـ', data: data1445, backgroundColor: 'rgba(74,205,123,0.6)', borderRadius: 4, barPercentage: 0.7 }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'top', rtl: true, labels: { font: { family: "'IBM Plex Sans Arabic'" } } },
-        tooltip: { rtl: true }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans Arabic'", size: 10 } } },
-        y: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' } }
-      }
-    }
-  });
-}
-
-function renderReps() {
-  const container = document.getElementById('reps-grid');
-  repsData.forEach((r, i) => {
-    const card = document.createElement('div');
-    card.className = 'card animate-in';
-    card.style.animationDelay = (i * 0.04) + 's';
-    card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-        <span class="badge ${r.isSuperRepresentative ? 'badge-gold' : 'badge-green'}">${r.isSuperRepresentative ? 'ممثل عام' : 'ممثل فرع ' + r.num}</span>
-        <span class="text-muted" style="font-size:0.8rem;">#${r.treeNumber}</span>
-      </div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--color-ink);margin-bottom:6px;">${r.nameShort}</div>
-      <div class="text-muted" style="font-size:0.85rem;">${r.name}</div>
-      <div class="mt-2" style="font-size:0.8rem;color:var(--color-ink-muted);">${r.branch}</div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-function renderTable(sortBy) {
-  let sorted = [...branchesData];
-  if (sortBy === 'size') sorted.sort((a, b) => b.size1448 - a.size1448);
-  else if (sortBy === 'size-asc') sorted.sort((a, b) => a.size1448 - b.size1448);
-  else if (sortBy === 'alpha') sorted.sort((a, b) => a.ancestor.localeCompare(b.ancestor, 'ar'));
-
-  const tbody = document.getElementById('branch-tbody');
-  tbody.innerHTML = '';
-  sorted.forEach(b => {
-    const growth = ((b.size1448 - b.sizesByYear['1445']) / b.sizesByYear['1445'] * 100).toFixed(1);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="number" style="font-weight:700;">${b.number}</td>
-      <td class="name-cell">${b.ancestor}</td>
-      <td class="text-muted">${b.location}</td>
-      <td class="number">${b.size1448}</td>
-      <td><span class="badge badge-green">+${growth}%</span></td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-document.getElementById('branch-sort').addEventListener('change', (e) => {
-  renderTable(e.target.value);
-});
-
-load();
-</script>
+<script src="js/branches-page.js"></script>
 </body>
 </html>

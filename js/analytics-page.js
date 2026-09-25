@@ -1,0 +1,42 @@
+(function () {
+  "use strict";
+  let spatial=null,entities=[],spatialMode="heat",diversityChart=null,editionChart=null,bandChart=null;
+  function n(v){return Number(v).toLocaleString("ar-SA");}
+  function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+  function metric(label,value,sub){return "<div class=\"card card-stat\"><div class=\"card-label\">"+label+"</div><div class=\"card-value\">"+value+"</div><div class=\"card-sublabel\">"+sub+"</div></div>";}
+
+  async function load(){
+    const data=await Promise.all([fetch("data/statistics.json").then(r=>r.json()),fetch("data/names.json").then(r=>r.json()),fetch("data/extraction-report.json").then(r=>r.json()),fetch("data/entities.json").then(r=>r.json()),fetch("data/spatial-analysis.json").then(r=>r.json())]);
+    const stats=data[0],namesData=data[1],report=data[2];entities=data[3].filter(e=>e.type==="name");spatial=data[4];
+    renderCompare(report);renderDiversity(namesData);renderEditions(stats);renderSpatial();renderReport(report);
+  }
+  function renderCompare(report){document.getElementById("compare-grid").innerHTML=metric("الإجمالي الرسمي",n(report.official_totals.total_people),"من صفحة المعلومات")+metric("النصوص المستخرجة",n(report.extracted.total_entities),"كيانات نصية من الشجرة")+metric("نصوص الأسماء",n(report.extracted.name_entities),"بعد استبعاد العناوين والسلاسل غير العائلية");}
+  function renderDiversity(namesData){
+    const once=namesData.entityFrequency.filter(x=>x.count===1).length,rare=namesData.entityFrequency.filter(x=>x.count<=3).length,common=namesData.entityFrequency.filter(x=>x.count>=10).length,top10=namesData.entityFrequency.slice(0,10).reduce((s,x)=>s+x.count,0);
+    document.getElementById("diversity-summary").innerHTML="<div style=\"margin-bottom:10px\"><span class=\"badge badge-green\">"+n(once)+"</span> اسم يظهر مرة واحدة فقط</div><div style=\"margin-bottom:10px\"><span class=\"badge badge-gold\">"+n(rare)+"</span> اسم يظهر ٣ مرات أو أقل</div><div style=\"margin-bottom:10px\"><span class=\"badge badge-muted\">"+n(common)+"</span> اسم يظهر ١٠ مرات أو أكثر</div><div style=\"margin-bottom:10px\">عدد الأسماء الفريدة: <strong>"+n(namesData.uniqueEntityTexts)+"</strong></div><div>حصة أعلى ١٠ أسماء: <strong>"+(top10/namesData.totalEntities*100).toFixed(1)+"%</strong></div>";
+    diversityChart=new Chart(document.getElementById("diversityChart"),{type:"doughnut",data:{labels:["مرة واحدة","٢–٥ مرات","٦–٢٠ مرة","أكثر من ٢٠"],datasets:[{data:[namesData.entityFrequency.filter(x=>x.count===1).length,namesData.entityFrequency.filter(x=>x.count>=2&&x.count<=5).length,namesData.entityFrequency.filter(x=>x.count>=6&&x.count<=20).length,namesData.entityFrequency.filter(x=>x.count>20).length],backgroundColor:["#0D76BD","#4ACD7B","#666258","#342B24"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",rtl:true},tooltip:{rtl:true}}}});
+  }
+  function renderEditions(stats){
+    const eds=stats.editions;editionChart=new Chart(document.getElementById("editionChart"),{type:"bar",data:{labels:eds.map(e=>e.year+"هـ"),datasets:[{label:"الإجمالي",data:eds.map(e=>e.total),backgroundColor:"#0D76BD",borderRadius:6},{label:"الذكور",data:eds.map(e=>e.male),backgroundColor:"#342B24",borderRadius:6},{label:"الإناث",data:eds.map(e=>e.female),backgroundColor:"#4ACD7B",borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",rtl:true},tooltip:{rtl:true}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:"rgba(47,36,21,.06)"}}}}});
+  }
+  function renderSpatial(){
+    const maxCell=spatial.grid.densest[0];
+    document.getElementById("spatial-metrics").innerHTML=metric("نصوص الأسماء",n(spatial.nameLabelCount),"المستخدمة في التحليل المكاني")+metric("أعلى خلية كثافة",n(maxCell.count),"صف "+n(maxCell.row)+" · عمود "+n(maxCell.col))+metric("مرشحات تداخل",n(spatial.potentialOverlaps.count),"تداخل هندسي محتمل، وليس خطأ مؤكداً")+metric("نطاق الشجرة",n(spatial.bounds.width)+" × "+n(spatial.bounds.height),"بوحدات إحداثيات المصدر");
+    document.getElementById("dense-cells-tbody").innerHTML=spatial.grid.densest.slice(0,10).map(c=>"<tr><td class=\"number\">"+n(c.row)+"</td><td class=\"number\">"+n(c.col)+"</td><td class=\"number\"><strong>"+n(c.count)+"</strong></td><td class=\"text-muted\">X "+n(c.xMin)+"–"+n(c.xMax)+" · Y "+n(c.yMin)+"–"+n(c.yMax)+"</td></tr>").join("");
+    document.getElementById("overlap-tbody").innerHTML=spatial.potentialOverlaps.top.slice(0,15).map(p=>"<tr><td class=\"name-cell\">"+esc(p.aText)+"</td><td class=\"name-cell\">"+esc(p.bText)+"</td><td class=\"number\">"+n(p.overlapArea)+"</td><td class=\"text-muted\">("+n(p.x)+", "+n(p.y)+")</td></tr>").join("");
+    bandChart=new Chart(document.getElementById("spatialBandChart"),{type:"bar",data:{labels:spatial.horizontalBands.map(b=>"النطاق "+b.band),datasets:[{label:"عدد نصوص الأسماء",data:spatial.horizontalBands.map(b=>b.count),backgroundColor:"rgba(74,205,123,.75)",borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{rtl:true}},scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}});
+    document.querySelectorAll(".spatial-mode").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".spatial-mode").forEach(b=>b.classList.remove("active"));btn.classList.add("active");spatialMode=btn.dataset.mode;drawSpatial();}));
+    drawSpatial();window.addEventListener("resize",drawSpatial);new MutationObserver(drawSpatial).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  }
+  function parseHex(hex){const h=hex.trim().replace("#","");if(h.length!==6)return[13,118,189];return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+  function drawSpatial(){
+    if(!spatial)return;const canvas=document.getElementById("spatial-map"),wrap=canvas.parentElement,cssW=Math.max(300,wrap.clientWidth-2),aspect=spatial.bounds.height/spatial.bounds.width,cssH=Math.min(760,Math.max(420,cssW*aspect)),dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(cssW*dpr);canvas.height=Math.round(cssH*dpr);canvas.style.width=cssW+"px";canvas.style.height=cssH+"px";const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);
+    const styles=getComputedStyle(document.documentElement),bg=styles.getPropertyValue("--color-bg-elevated").trim()||"#fff",ink=styles.getPropertyValue("--color-ink-muted").trim()||"#666",rgb=parseHex(styles.getPropertyValue("--color-chart-1").trim()||"#0D76BD");ctx.fillStyle=bg;ctx.fillRect(0,0,cssW,cssH);
+    const pad=28,W=cssW-pad*2,H=cssH-pad*2;
+    if(spatialMode==="heat"){const cellW=W/spatial.grid.cols,cellH=H/spatial.grid.rows;spatial.grid.cells.forEach(c=>{const alpha=.06+.82*(c.count/spatial.grid.maxCount);ctx.fillStyle="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+","+alpha.toFixed(3)+")";ctx.fillRect(pad+(c.col-1)*cellW,pad+(c.row-1)*cellH,cellW+.5,cellH+.5);if(c.count>=spatial.grid.maxCount*.6){ctx.fillStyle=alpha>.5?"#fff":ink;ctx.font="600 11px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(c.count,pad+(c.col-.5)*cellW,pad+(c.row-.5)*cellH);}});}else{ctx.fillStyle="rgba("+rgb[0]+","+rgb[1]+","+rgb[2]+",.42)";entities.forEach(e=>{const px=pad+(e.x-spatial.bounds.xMin)/spatial.bounds.width*W,py=pad+(e.y-spatial.bounds.yMin)/spatial.bounds.height*H;ctx.beginPath();ctx.arc(px,py,1.8,0,Math.PI*2);ctx.fill();});}
+    ctx.strokeStyle=ink;ctx.globalAlpha=.35;ctx.strokeRect(pad,pad,W,H);ctx.globalAlpha=1;
+  }
+  function renderReport(report){document.getElementById("report-card").innerHTML="<div style=\"font-size:.9rem;line-height:1.8\" dir=\"rtl\"><p><strong>تاريخ الاستخراج:</strong> "+esc(report.date)+"</p><p><strong>المصادر:</strong></p><ul style=\"margin:0;padding-right:20px\"><li>عارض الشجرة: "+esc(report.sources.tree_viewer)+"</li><li>صفحة المعلومات: "+esc(report.sources.info_page)+"</li></ul><p><strong>القيود:</strong></p><ul style=\"margin:0;padding-right:20px\">"+report.limitations.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul><p style=\"margin-top:16px\"><a href=\"data/extraction-report.json\" class=\"btn btn-ghost btn-sm\" download>تنزيل تقرير JSON الكامل</a></p></div>";}
+  load();
+})();
