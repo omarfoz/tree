@@ -27,6 +27,40 @@ CONNECTORS = {'بن', 'بنت', 'ابن', 'ابنة', 'ال', 'آل', 'بنو', 
 LINEAGE_CHAIN_Y_MIN = 6400
 LINEAGE_CHAIN_Y_MAX = 6500
 
+# Curated source labels that are visible in the tree artwork but are not family names.
+# Keep these excluded so regenerated analytics do not reintroduce known OCR/metadata artifacts.
+EXCLUDED_NAME_LABELS = {
+    "الفوزانالسويلم",
+    "ابلدارɋنادلوارسأهايلثادق",
+    "–رحمهماالله–ومنأبرزهم:-",
+    "ناصربنمحمدبنزاملالسويلم",
+    "عبدالمحسنبنفوزانبنإبراهيمالسويلم",
+    "إبراهيمبنفوزانبنإبراهيمالسويلم",
+    "محمدبنعبدالعزيزبنحمدالشيخ",
+    "إبراهيمبنعبداللهبنإبراهيمالسويلم",
+    "حمدبنمحمدبنحمدالشيخ",
+    "سلينبنحمدبنسلينالسويلم",
+    "عبداللهبنعبدالعزيزبنمحمدالسويلم",
+    "فوزانبنسويلمبنفوزانالسويلم",
+    "دباسبنعبدالرحمنبندباسالسويلم",
+    "المراجعمنالكتب:-",
+    "بعضالوثائقوالمخطوطات",
+    "لدىأبناءالعمومة.",
+    "ممثلوالفروعفيصندوق",
+    "الأسرة)الإصدارالثالث(.",
+    "جمعوإعدادوتحقيق",
+    "الأستاذ/عبدااللهبنعبدالرحمنبنسويلم",
+    "إدارةبياناتالعائلة",
+    "إصداراتالشجرة",
+    "عبداللهبنعبدالرحمنبنسويلم",
+    "جمعوإعدادوتنفيذ",
+    "للملاحظاتوالمعلومات",
+    "الاضافيةعنالشجرة",
+    "امسحالرمز",
+    "سارةهيلة",
+    "شيخةلطيفة",
+}
+
 def ar_normalize(text):
     """Remove Arabic diacritics, normalize alef variants, standardize."""
     text = unicodedata.normalize('NFKD', text)
@@ -83,7 +117,7 @@ def extract_entities():
         in_lineage_chain = LINEAGE_CHAIN_Y_MIN <= y <= LINEAGE_CHAIN_Y_MAX
         type_tag = 'lineage-chain' if in_lineage_chain else (
             'connector' if clean in CONNECTORS else (
-                'non-name' if any(c.isdigit() for c in clean) or len(clean) < 2 or clean.startswith('الطبعة')
+                'non-name' if clean in EXCLUDED_NAME_LABELS or any(c.isdigit() for c in clean) or len(clean) < 2 or clean.startswith('الطبعة')
                 or clean.startswith('الإصدار') or 'أجداد' in clean or 'المصادر' in clean
                 or 'التحديث' in clean or 'الأعوام' in clean or 'العدد' in clean
                 else 'name'

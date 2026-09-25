@@ -32357,7 +32357,7 @@
     "normalizedParts": [
       "ابلدارنادلوارساهايلثادق"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 1998,
@@ -32389,7 +32389,7 @@
     "normalizedParts": [
       "رحمهمااللهومنابرزهم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2000,
@@ -32405,7 +32405,7 @@
     "normalizedParts": [
       "ناصربنمحمدبنزاملالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2001,
@@ -32421,7 +32421,7 @@
     "normalizedParts": [
       "عبدالمحسنبنفوزانبنابراهيمالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2002,
@@ -32437,7 +32437,7 @@
     "normalizedParts": [
       "ابراهيمبنفوزانبنابراهيمالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2003,
@@ -32453,7 +32453,7 @@
     "normalizedParts": [
       "محمدبنعبدالعزيزبنحمدالشيخ"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2004,
@@ -32469,7 +32469,7 @@
     "normalizedParts": [
       "ابراهيمبنعبداللهبنابراهيمالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2005,
@@ -32485,7 +32485,7 @@
     "normalizedParts": [
       "حمدبنمحمدبنحمدالشيخ"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2006,
@@ -32501,7 +32501,7 @@
     "normalizedParts": [
       "سلينبنحمدبنسلينالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2007,
@@ -32517,7 +32517,7 @@
     "normalizedParts": [
       "عبداللهبنعبدالعزيزبنمحمدالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2008,
@@ -32533,7 +32533,7 @@
     "normalizedParts": [
       "فوزانبنسويلمبنفوزانالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2009,
@@ -32549,7 +32549,7 @@
     "normalizedParts": [
       "دباسبنعبدالرحمنبندباسالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2010,
@@ -32565,7 +32565,7 @@
     "normalizedParts": [
       "المراجعمنالكتب"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2011,
@@ -32661,7 +32661,7 @@
     "normalizedParts": [
       "بعضالوثايقوالمخطوطات"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2017,
@@ -32677,7 +32677,7 @@
     "normalizedParts": [
       "لديابناءالعمومه"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2018,
@@ -32693,7 +32693,7 @@
     "normalizedParts": [
       "ممثلوالفروعفيصندوق"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2019,
@@ -32709,7 +32709,7 @@
     "normalizedParts": [
       "الاسرهالاصدارالثالث"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2020,
@@ -32773,7 +32773,7 @@
     "normalizedParts": [
       "جمعواعدادوتحقيق"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2024,
@@ -32789,7 +32789,7 @@
     "normalizedParts": [
       "الاستاذعبدااللهبنعبدالرحمنبنسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2025,
@@ -32805,7 +32805,7 @@
     "normalizedParts": [
       "الفوزانالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2026,
@@ -32853,7 +32853,7 @@
     "normalizedParts": [
       "ادارهبياناتالعايله"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2029,
@@ -32869,7 +32869,7 @@
     "normalizedParts": [
       "اصداراتالشجره"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2030,
@@ -32965,7 +32965,7 @@
     "normalizedParts": [
       "عبداللهبنعبدالرحمنبنسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2036,
@@ -32981,7 +32981,7 @@
     "normalizedParts": [
       "الفوزانالسويلم"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2037,
@@ -32997,7 +32997,7 @@
     "normalizedParts": [
       "جمعواعدادوتنفيذ"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2038,
@@ -33045,7 +33045,7 @@
     "normalizedParts": [
       "للملاحظاتوالمعلومات"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2041,
@@ -33061,7 +33061,7 @@
     "normalizedParts": [
       "الاضافيهعنالشجره"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2042,
@@ -33077,7 +33077,7 @@
     "normalizedParts": [
       "امسحالرمز"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2043,
@@ -41669,7 +41669,7 @@
     "normalizedParts": [
       "سارههيله"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2580,
@@ -43653,7 +43653,7 @@
     "normalizedParts": [
       "شيخهلطيفه"
     ],
-    "type": "name"
+    "type": "non-name"
   },
   {
     "id": 2704,

@@ -1,7 +1,7 @@
 {
-  "totalEntities": 3439,
-  "uniqueEntityTexts": 463,
-  "uniqueTokens": 469,
+  "totalEntities": 3409,
+  "uniqueEntityTexts": 434,
+  "uniqueTokens": 440,
   "entityFrequency": [
     {
       "text": "محمد",
@@ -1804,15 +1804,6 @@
       "isCompound": false
     },
     {
-      "text": "الفوزانالسويلم",
-      "normalized": "الفوزانالسويلم",
-      "count": 2,
-      "firstPart": "الفوزانالسويلم",
-      "firstPartNormalized": "الفوزانالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "ريوف",
       "normalized": "ريوف",
       "count": 2,
@@ -2776,240 +2767,6 @@
       "isCompound": false
     },
     {
-      "text": "ابلدارɋنادلوارسأهايلثادق",
-      "normalized": "ابلدارنادلوارساهايلثادق",
-      "count": 1,
-      "firstPart": "ابلدارɋنادلوارسأهايلثادق",
-      "firstPartNormalized": "ابلدارنادلوارساهايلثادق",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "–رحمهماالله–ومنأبرزهم:-",
-      "normalized": "رحمهمااللهومنابرزهم",
-      "count": 1,
-      "firstPart": "–رحمهماالله–ومنأبرزهم:-",
-      "firstPartNormalized": "رحمهمااللهومنابرزهم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "ناصربنمحمدبنزاملالسويلم",
-      "normalized": "ناصربنمحمدبنزاملالسويلم",
-      "count": 1,
-      "firstPart": "ناصربنمحمدبنزاملالسويلم",
-      "firstPartNormalized": "ناصربنمحمدبنزاملالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبدالمحسنبنفوزانبنإبراهيمالسويلم",
-      "normalized": "عبدالمحسنبنفوزانبنابراهيمالسويلم",
-      "count": 1,
-      "firstPart": "عبدالمحسنبنفوزانبنإبراهيمالسويلم",
-      "firstPartNormalized": "عبدالمحسنبنفوزانبنابراهيمالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "إبراهيمبنفوزانبنإبراهيمالسويلم",
-      "normalized": "ابراهيمبنفوزانبنابراهيمالسويلم",
-      "count": 1,
-      "firstPart": "إبراهيمبنفوزانبنإبراهيمالسويلم",
-      "firstPartNormalized": "ابراهيمبنفوزانبنابراهيمالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "normalized": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "count": 1,
-      "firstPart": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "firstPartNormalized": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "إبراهيمبنعبداللهبنإبراهيمالسويلم",
-      "normalized": "ابراهيمبنعبداللهبنابراهيمالسويلم",
-      "count": 1,
-      "firstPart": "إبراهيمبنعبداللهبنإبراهيمالسويلم",
-      "firstPartNormalized": "ابراهيمبنعبداللهبنابراهيمالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "حمدبنمحمدبنحمدالشيخ",
-      "normalized": "حمدبنمحمدبنحمدالشيخ",
-      "count": 1,
-      "firstPart": "حمدبنمحمدبنحمدالشيخ",
-      "firstPartNormalized": "حمدبنمحمدبنحمدالشيخ",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "سلينبنحمدبنسلينالسويلم",
-      "normalized": "سلينبنحمدبنسلينالسويلم",
-      "count": 1,
-      "firstPart": "سلينبنحمدبنسلينالسويلم",
-      "firstPartNormalized": "سلينبنحمدبنسلينالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "normalized": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "count": 1,
-      "firstPart": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "firstPartNormalized": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "فوزانبنسويلمبنفوزانالسويلم",
-      "normalized": "فوزانبنسويلمبنفوزانالسويلم",
-      "count": 1,
-      "firstPart": "فوزانبنسويلمبنفوزانالسويلم",
-      "firstPartNormalized": "فوزانبنسويلمبنفوزانالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "دباسبنعبدالرحمنبندباسالسويلم",
-      "normalized": "دباسبنعبدالرحمنبندباسالسويلم",
-      "count": 1,
-      "firstPart": "دباسبنعبدالرحمنبندباسالسويلم",
-      "firstPartNormalized": "دباسبنعبدالرحمنبندباسالسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "المراجعمنالكتب:-",
-      "normalized": "المراجعمنالكتب",
-      "count": 1,
-      "firstPart": "المراجعمنالكتب:-",
-      "firstPartNormalized": "المراجعمنالكتب",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "بعضالوثائقوالمخطوطات",
-      "normalized": "بعضالوثايقوالمخطوطات",
-      "count": 1,
-      "firstPart": "بعضالوثائقوالمخطوطات",
-      "firstPartNormalized": "بعضالوثايقوالمخطوطات",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "لدىأبناءالعمومة.",
-      "normalized": "لديابناءالعمومه",
-      "count": 1,
-      "firstPart": "لدىأبناءالعمومة.",
-      "firstPartNormalized": "لديابناءالعمومه",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "ممثلوالفروعفيصندوق",
-      "normalized": "ممثلوالفروعفيصندوق",
-      "count": 1,
-      "firstPart": "ممثلوالفروعفيصندوق",
-      "firstPartNormalized": "ممثلوالفروعفيصندوق",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "الأسرة)الإصدارالثالث(.",
-      "normalized": "الاسرهالاصدارالثالث",
-      "count": 1,
-      "firstPart": "الأسرة)الإصدارالثالث(.",
-      "firstPartNormalized": "الاسرهالاصدارالثالث",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "جمعوإعدادوتحقيق",
-      "normalized": "جمعواعدادوتحقيق",
-      "count": 1,
-      "firstPart": "جمعوإعدادوتحقيق",
-      "firstPartNormalized": "جمعواعدادوتحقيق",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "الأستاذ/عبدااللهبنعبدالرحمنبنسويلم",
-      "normalized": "الاستاذعبدااللهبنعبدالرحمنبنسويلم",
-      "count": 1,
-      "firstPart": "الأستاذ/عبدااللهبنعبدالرحمنبنسويلم",
-      "firstPartNormalized": "الاستاذعبدااللهبنعبدالرحمنبنسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "إدارةبياناتالعائلة",
-      "normalized": "ادارهبياناتالعايله",
-      "count": 1,
-      "firstPart": "إدارةبياناتالعائلة",
-      "firstPartNormalized": "ادارهبياناتالعايله",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "إصداراتالشجرة",
-      "normalized": "اصداراتالشجره",
-      "count": 1,
-      "firstPart": "إصداراتالشجرة",
-      "firstPartNormalized": "اصداراتالشجره",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "عبداللهبنعبدالرحمنبنسويلم",
-      "normalized": "عبداللهبنعبدالرحمنبنسويلم",
-      "count": 1,
-      "firstPart": "عبداللهبنعبدالرحمنبنسويلم",
-      "firstPartNormalized": "عبداللهبنعبدالرحمنبنسويلم",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "جمعوإعدادوتنفيذ",
-      "normalized": "جمعواعدادوتنفيذ",
-      "count": 1,
-      "firstPart": "جمعوإعدادوتنفيذ",
-      "firstPartNormalized": "جمعواعدادوتنفيذ",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "للملاحظاتوالمعلومات",
-      "normalized": "للملاحظاتوالمعلومات",
-      "count": 1,
-      "firstPart": "للملاحظاتوالمعلومات",
-      "firstPartNormalized": "للملاحظاتوالمعلومات",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "الاضافيةعنالشجرة",
-      "normalized": "الاضافيهعنالشجره",
-      "count": 1,
-      "firstPart": "الاضافيةعنالشجرة",
-      "firstPartNormalized": "الاضافيهعنالشجره",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "امسحالرمز",
-      "normalized": "امسحالرمز",
-      "count": 1,
-      "firstPart": "امسحالرمز",
-      "firstPartNormalized": "امسحالرمز",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "سارا",
       "normalized": "سارا",
       "count": 1,
@@ -3370,15 +3127,6 @@
       "isCompound": false
     },
     {
-      "text": "سارةهيلة",
-      "normalized": "سارههيله",
-      "count": 1,
-      "firstPart": "سارةهيلة",
-      "firstPartNormalized": "سارههيله",
-      "length": 1,
-      "isCompound": false
-    },
-    {
       "text": "مزون",
       "normalized": "مزون",
       "count": 1,
@@ -3465,15 +3213,6 @@
       "count": 1,
       "firstPart": "سراء",
       "firstPartNormalized": "سراء",
-      "length": 1,
-      "isCompound": false
-    },
-    {
-      "text": "شيخةلطيفة",
-      "normalized": "شيخهلطيفه",
-      "count": 1,
-      "firstPart": "شيخةلطيفة",
-      "firstPartNormalized": "شيخهلطيفه",
       "length": 1,
       "isCompound": false
     },
@@ -5178,11 +4917,6 @@
       "count": 2
     },
     {
-      "tokenNormalized": "الفوزانالسويلم",
-      "tokenOriginal": "الفوزانالسويلم",
-      "count": 2
-    },
-    {
       "tokenNormalized": "ريوف",
       "tokenOriginal": "ريوف",
       "count": 2
@@ -5743,136 +5477,6 @@
       "count": 1
     },
     {
-      "tokenNormalized": "ابلدارنادلوارساهايلثادق",
-      "tokenOriginal": "ابلدارɋنادلوارسأهايلثادق",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "رحمهمااللهومنابرزهم",
-      "tokenOriginal": "–رحمهماالله–ومنأبرزهم:-",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "ناصربنمحمدبنزاملالسويلم",
-      "tokenOriginal": "ناصربنمحمدبنزاملالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "عبدالمحسنبنفوزانبنابراهيمالسويلم",
-      "tokenOriginal": "عبدالمحسنبنفوزانبنإبراهيمالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "ابراهيمبنفوزانبنابراهيمالسويلم",
-      "tokenOriginal": "إبراهيمبنفوزانبنإبراهيمالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "tokenOriginal": "محمدبنعبدالعزيزبنحمدالشيخ",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "ابراهيمبنعبداللهبنابراهيمالسويلم",
-      "tokenOriginal": "إبراهيمبنعبداللهبنإبراهيمالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "حمدبنمحمدبنحمدالشيخ",
-      "tokenOriginal": "حمدبنمحمدبنحمدالشيخ",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "سلينبنحمدبنسلينالسويلم",
-      "tokenOriginal": "سلينبنحمدبنسلينالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "tokenOriginal": "عبداللهبنعبدالعزيزبنمحمدالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "فوزانبنسويلمبنفوزانالسويلم",
-      "tokenOriginal": "فوزانبنسويلمبنفوزانالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "دباسبنعبدالرحمنبندباسالسويلم",
-      "tokenOriginal": "دباسبنعبدالرحمنبندباسالسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "المراجعمنالكتب",
-      "tokenOriginal": "المراجعمنالكتب:-",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "بعضالوثايقوالمخطوطات",
-      "tokenOriginal": "بعضالوثائقوالمخطوطات",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "لديابناءالعمومه",
-      "tokenOriginal": "لدىأبناءالعمومة.",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "ممثلوالفروعفيصندوق",
-      "tokenOriginal": "ممثلوالفروعفيصندوق",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "الاسرهالاصدارالثالث",
-      "tokenOriginal": "الأسرة)الإصدارالثالث(.",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "جمعواعدادوتحقيق",
-      "tokenOriginal": "جمعوإعدادوتحقيق",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "الاستاذعبدااللهبنعبدالرحمنبنسويلم",
-      "tokenOriginal": "الأستاذ/عبدااللهبنعبدالرحمنبنسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "ادارهبياناتالعايله",
-      "tokenOriginal": "إدارةبياناتالعائلة",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "اصداراتالشجره",
-      "tokenOriginal": "إصداراتالشجرة",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "عبداللهبنعبدالرحمنبنسويلم",
-      "tokenOriginal": "عبداللهبنعبدالرحمنبنسويلم",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "جمعواعدادوتنفيذ",
-      "tokenOriginal": "جمعوإعدادوتنفيذ",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "للملاحظاتوالمعلومات",
-      "tokenOriginal": "للملاحظاتوالمعلومات",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "الاضافيهعنالشجره",
-      "tokenOriginal": "الاضافيةعنالشجرة",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "امسحالرمز",
-      "tokenOriginal": "امسحالرمز",
-      "count": 1
-    },
-    {
       "tokenNormalized": "سارا",
       "tokenOriginal": "سارا",
       "count": 1
@@ -6073,11 +5677,6 @@
       "count": 1
     },
     {
-      "tokenNormalized": "سارههيله",
-      "tokenOriginal": "سارةهيلة",
-      "count": 1
-    },
-    {
       "tokenNormalized": "مزون",
       "tokenOriginal": "مزون",
       "count": 1
@@ -6125,11 +5724,6 @@
     {
       "tokenNormalized": "سراء",
       "tokenOriginal": "سراء",
-      "count": 1
-    },
-    {
-      "tokenNormalized": "شيخهلطيفه",
-      "tokenOriginal": "شيخةلطيفة",
       "count": 1
     },
     {

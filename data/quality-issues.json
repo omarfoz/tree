@@ -89,7 +89,7 @@
   {
     "category": "duplicate_normalized_names",
     "description": "Different text forms that normalize to the same string",
-    "count": 252,
+    "count": 251,
     "examples": [
       [
         "محمد",
@@ -229,11 +229,11 @@
       },
       {
         "type": "name",
-        "count": 3439
+        "count": 3409
       },
       {
         "type": "non-name",
-        "count": 52
+        "count": 82
       },
       {
         "type": "lineage-chain",
