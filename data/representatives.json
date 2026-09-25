@@ -1,0 +1,282 @@
+[
+  {
+    "num": 0,
+    "name": "ياسر عبدالله عبدالرحمن سويلم فوزان ابراهيم السويلم",
+    "nameShort": "ياسر عبدالله عبدالرحمن (الفوزان) السويلم",
+    "branch": "جميع الفروع العليا فوق الجد السادس إلى الجد سويلم وأبنائهم",
+    "treeNumber": 500,
+    "isSuperRepresentative": true
+  },
+  {
+    "num": 1,
+    "name": "عبدالمحسن علي عبدالكريم احمد عبدالله حمد السويلم",
+    "nameShort": "عبدالمحسن علي عبدالكريم (الحمد) السويلم",
+    "branch": "الفرع 1",
+    "treeNumber": 240,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 2,
+    "name": "حمد سعود محمد حمد ابراهيم حمد السويلم",
+    "nameShort": "حمد سعود محمد حمد (الحمد) السويلم",
+    "branch": "الفرع 2",
+    "treeNumber": 443,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 3,
+    "name": "ابراهيم عبدالمحسن عبدالله حمد سليمان حمد السويلم",
+    "nameShort": "ابراهيم عبدالمحسن عبدالله حمد (الحمد) السويلم",
+    "branch": "الفرع 3",
+    "treeNumber": 748,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 4,
+    "name": "ساري حمد دباس عبدالرحمن حمد عبدالله السويلم",
+    "nameShort": "ساري حمد دباس عبدالرحمن حمد (الحمد) السويلم",
+    "branch": "الفرع 4",
+    "treeNumber": 1133,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 5,
+    "name": "فارس حمد فارس ابراهيم دباس فارس السويلم",
+    "nameShort": "فارس حمد فارس ابراهيم (الدباس) السويلم",
+    "branch": "الفرع 5",
+    "treeNumber": 1701,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 6,
+    "name": "عبدالله سليمان فوزان عبدالله عبدالله محمد السويلم",
+    "nameShort": "عبدالله سليمان فوزان عبدالله عبدالله (العبدالعزيز) السويلم",
+    "branch": "الفرع 6",
+    "treeNumber": 445,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 7,
+    "name": "فارس حمد فارس ابراهيم دباس فارس السويلم",
+    "nameShort": "فارس حمد فارس ابراهيم (الدباس) السويلم",
+    "branch": "الفرع 7",
+    "treeNumber": 1701,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 8,
+    "name": "يوسف عبدالرحمن ابراهيم عبدالرحمن ابراهيم حمد السويلم",
+    "nameShort": "يوسف عبدالرحمن ابراهيم (الحجي) السويلم",
+    "branch": "الفرع 8",
+    "treeNumber": 466,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 9,
+    "name": "ساري عبدالعزيز عبدالله زامل ناصر زامل السويلم",
+    "nameShort": "ساري عبدالعزيز عبدالله (الزامل) السويلم",
+    "branch": "الفرع 9",
+    "treeNumber": 915,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 10,
+    "name": "عبدالله سليمان فوزان عبدالله عبدالله محمد السويلم",
+    "nameShort": "عبدالله سليمان فوزان عبدالله (العبدالعزيز) السويلم",
+    "branch": "الفرع 10",
+    "treeNumber": 445,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 11,
+    "name": "فارس حمد فارس ابراهيم دباس فارس السويلم",
+    "nameShort": "فارس حمد فارس ابراهيم (الدباس) السويلم",
+    "branch": "الفرع 11",
+    "treeNumber": 1701,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 12,
+    "name": "عبدالسلام ناصر ابراهيم ناصر محمد ناصر السويلم",
+    "nameShort": "عبدالسلام ناصر ابراهيم (الفوزان) السويلم",
+    "branch": "الفرع 12",
+    "treeNumber": 580,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 13,
+    "name": "عمر عبدالعزيز ابراهيم عبدالعزيز ابراهيم حمد السويلم",
+    "nameShort": "عمر عبدالعزيز ابراهيم (الحمد) السويلم",
+    "branch": "الفرع 13",
+    "treeNumber": 471,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 14,
+    "name": "احمد عبدالله محمد عبدالعزيز سعد عبدالعزيز السويلم",
+    "nameShort": "احمد عبدالله محمد عبدالعزيز (العبدالعزيز) السويلم",
+    "branch": "الفرع 14",
+    "treeNumber": 2007,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 15,
+    "name": "يوسف ناصر محمد فوزان محمد فوزان السويلم",
+    "nameShort": "يوسف ناصر محمد (الفوزان) السويلم",
+    "branch": "الفرع 15",
+    "treeNumber": 1313,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 16,
+    "name": "عبدالله سلطان عبدالله محمد عبدالرحمن عبدالعزيز السويلم",
+    "nameShort": "عبدالله سلطان عبدالله (السليمان) السويلم",
+    "branch": "الفرع 16",
+    "treeNumber": 1244,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 17,
+    "name": "محمد عبدالعزيز محمد عبدالعزيز ناصر محمد السويلم",
+    "nameShort": "محمد عبدالعزيز محمد (الفوزان) السويلم",
+    "branch": "الفرع 17",
+    "treeNumber": 1153,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 18,
+    "name": "عمر عبدالله محمد عبدالله ابراهيم حمد السويلم",
+    "nameShort": "عمر عبدالله محمد (الحمد) السويلم",
+    "branch": "الفرع 18",
+    "treeNumber": 635,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 19,
+    "name": "يحيى ابراهيم يحيى محمد عبدالله فوزان السويلم",
+    "nameShort": "يحيى ابراهيم يحيى محمد (الفوزان) السويلم",
+    "branch": "الفرع 19",
+    "treeNumber": 340,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 20,
+    "name": "عبدالله محمد عبدالله محمد عبدالله فهد السويلم",
+    "nameShort": "عبدالله محمد عبدالله (الفهد) السويلم",
+    "branch": "الفرع 20",
+    "treeNumber": 563,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 21,
+    "name": "سعد مساعد عبدالله مساعد سعد محمد السويلم",
+    "nameShort": "سعد مساعد عبدالله (السعد) السويلم",
+    "branch": "الفرع 21",
+    "treeNumber": 573,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 22,
+    "name": "مشاري عبدالله عبدالمحسن عبدالله مشاري عبدالمحسن السويلم",
+    "nameShort": "مشاري عبدالله عبدالمحسن (المشاري) السويلم",
+    "branch": "الفرع 22",
+    "treeNumber": 508,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 23,
+    "name": "عامر فوزان احمد فوزان ابراهيم محمد السويلم",
+    "nameShort": "عامر فوزان احمد (الفوزان) السويلم",
+    "branch": "الفرع 23",
+    "treeNumber": 643,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 24,
+    "name": "عامر فوزان احمد فوزان ابراهيم محمد السويلم",
+    "nameShort": "عامر فوزان احمد (الفوزان) السويلم",
+    "branch": "الفرع 24",
+    "treeNumber": 643,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 25,
+    "name": "عبدالله سامي ابراهيم ابراهيم محمد ابراهيم السويلم",
+    "nameShort": "عبدالله سامي ابراهيم (العبدالعزيز) السويلم",
+    "branch": "الفرع 25",
+    "treeNumber": 1652,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 26,
+    "name": "محمد عبدالعزيز ناصر محمد زامل ابراهيم السويلم",
+    "nameShort": "محمد عبدالعزيز ناصر (الزامل) السويلم",
+    "branch": "الفرع 26",
+    "treeNumber": 306,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 27,
+    "name": "سعد مساعد عبدالله مساعد سعد محمد السويلم",
+    "nameShort": "سعد مساعد عبدالله (السعد) السويلم",
+    "branch": "الفرع 27",
+    "treeNumber": 573,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 28,
+    "name": "عبدالله سليمان فوزان عبدالله عبدالله محمد السويلم",
+    "nameShort": "عبدالله سليمان فوزان (العبدالعزيز) السويلم",
+    "branch": "الفرع 28",
+    "treeNumber": 445,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 29,
+    "name": "يوسف ناصر محمد فوزان محمد فوزان السويلم",
+    "nameShort": "يوسف ناصر محمد (الفوزان) السويلم",
+    "branch": "الفرع 29",
+    "treeNumber": 1313,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 30,
+    "name": "عبدالسلام ناصر ابراهيم ناصر محمد ناصر السويلم",
+    "nameShort": "عبدالسلام ناصر ابراهيم (الفوزان) السويلم",
+    "branch": "الفرع 30",
+    "treeNumber": 580,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 31,
+    "name": "وليد ساري محمد مشاري عبدالله سعد السويلم",
+    "nameShort": "وليد ساري محمد مشاري (السعد) السويلم",
+    "branch": "الفرع 31",
+    "treeNumber": 430,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 32,
+    "name": "ساري عبدالعزيز عبدالله زامل ناصر زامل السويلم",
+    "nameShort": "ساري عبدالعزيز عبدالله (الزامل) السويلم",
+    "branch": "الفرع 32",
+    "treeNumber": 915,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 33,
+    "name": "سلطان عبدالله محمد عبدالرحمن عبدالعزيز محمد السويلم",
+    "nameShort": "سلطان عبدالله محمد (السليمان) السويلم",
+    "branch": "الفرع 33",
+    "treeNumber": 104,
+    "isSuperRepresentative": false
+  },
+  {
+    "num": 34,
+    "name": "يحيى ابراهيم يحيى محمد عبدالله فوزان السويلم",
+    "nameShort": "يحيى ابراهيم يحيى محمد (الفوزان) السويلم",
+    "branch": "الفرع 34",
+    "treeNumber": 340,
+    "isSuperRepresentative": false
+  }
+]

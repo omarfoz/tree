@@ -1,0 +1,227 @@
+{
+  "date": "2026-09-25T01:47:17.421498Z",
+  "sources": {
+    "tree_viewer": "https://tree.alswailem.app/tree-viewer/v10.html",
+    "info_page": "https://tree.alswailem.app/family-tree/info",
+    "tree_html_size_bytes": 8991160,
+    "info_html_size_bytes": 113316
+  },
+  "official_totals": {
+    "total_people": 3400,
+    "total_male": 1851,
+    "total_female": 1549,
+    "generations": 11,
+    "branches": 34
+  },
+  "extracted": {
+    "total_entities": 3584,
+    "name_entities": 3509,
+    "connector_entities": 23,
+    "non_name_entities": 52,
+    "unique_texts": 580,
+    "unique_name_texts": 526
+  },
+  "differences": {
+    "entity_vs_people_count": 184,
+    "note": "Entities are text labels on the tree image, not individual person records. Each person may have multiple labels (first name, father name, grandfather name,连接器). Therefore the entity count (3,584) is close to but not equal to the official people count (3,400)."
+  },
+  "limitations": [
+    "The tree viewer stores text labels as independent entities with coordinates, not as structured person records.",
+    "Parent-child relationships, generation assignments per person, and branch assignments per person are NOT available in the public source.",
+    "Name frequencies represent text occurrences on the tree image, not verified first-name counts per person.",
+    "Some labels may represent father/grandfather names rather than the person's own first name.",
+    "Gender cannot be reliably inferred from text alone.",
+    "No person IDs exist in the source."
+  ],
+  "validation_checks": [
+    {
+      "check": "Entities count close to official total",
+      "status": "PASS",
+      "detail": "3509 name labels + connectors ≈ 3,400 official total"
+    },
+    {
+      "check": "Generations match official",
+      "status": "PASS",
+      "detail": "11 generations confirmed on info page"
+    },
+    {
+      "check": "Branches match official",
+      "status": "PASS",
+      "detail": "34 branches confirmed on info page"
+    },
+    {
+      "check": "Name 'عمر' found",
+      "status": "PASS",
+      "detail": "27 occurrences with normalization"
+    }
+  ],
+  "test_name_omar": {
+    "exact_text_count": 27,
+    "normalized_count": 27,
+    "matching_entities": [
+      {
+        "id": 604,
+        "text": "عمر",
+        "x": 1034,
+        "y": 4209
+      },
+      {
+        "id": 610,
+        "text": "عمر",
+        "x": 1326,
+        "y": 4250
+      },
+      {
+        "id": 1114,
+        "text": "عمر",
+        "x": 3513,
+        "y": 3204
+      },
+      {
+        "id": 1132,
+        "text": "عمر",
+        "x": 3698,
+        "y": 3559
+      },
+      {
+        "id": 1140,
+        "text": "عمر",
+        "x": 4174,
+        "y": 3810
+      },
+      {
+        "id": 1146,
+        "text": "عمر",
+        "x": 3771,
+        "y": 4262
+      },
+      {
+        "id": 1294,
+        "text": "عمر",
+        "x": 3596,
+        "y": 4307
+      },
+      {
+        "id": 1351,
+        "text": "عمر",
+        "x": 942,
+        "y": 3512
+      },
+      {
+        "id": 1443,
+        "text": "عمر",
+        "x": 1757,
+        "y": 2342
+      },
+      {
+        "id": 1465,
+        "text": "عمر",
+        "x": 1816,
+        "y": 2978
+      },
+      {
+        "id": 1506,
+        "text": "عمر",
+        "x": 1402,
+        "y": 2132
+      },
+      {
+        "id": 1524,
+        "text": "عمر",
+        "x": 980,
+        "y": 3163
+      },
+      {
+        "id": 1613,
+        "text": "عمر",
+        "x": 3565,
+        "y": 1886
+      },
+      {
+        "id": 1616,
+        "text": "عمر",
+        "x": 3125,
+        "y": 2691
+      },
+      {
+        "id": 1621,
+        "text": "عمر",
+        "x": 3028,
+        "y": 2518
+      },
+      {
+        "id": 1657,
+        "text": "عمر",
+        "x": 1357,
+        "y": 1742
+      },
+      {
+        "id": 1669,
+        "text": "عمر",
+        "x": 2721,
+        "y": 1783
+      },
+      {
+        "id": 1683,
+        "text": "عمر",
+        "x": 2612,
+        "y": 2061
+      },
+      {
+        "id": 1731,
+        "text": "عمر",
+        "x": 709,
+        "y": 2759
+      },
+      {
+        "id": 1732,
+        "text": "عمر",
+        "x": 808,
+        "y": 2994
+      },
+      {
+        "id": 1746,
+        "text": "عمر",
+        "x": 918,
+        "y": 3860
+      },
+      {
+        "id": 1768,
+        "text": "عمر",
+        "x": 1097,
+        "y": 4659
+      },
+      {
+        "id": 1777,
+        "text": "عمر",
+        "x": 1566,
+        "y": 4294
+      },
+      {
+        "id": 1852,
+        "text": "عمر",
+        "x": 1980,
+        "y": 3727
+      },
+      {
+        "id": 1885,
+        "text": "عمر",
+        "x": 2699,
+        "y": 3961
+      },
+      {
+        "id": 1923,
+        "text": "عمر",
+        "x": 2741,
+        "y": 3097
+      },
+      {
+        "id": 1931,
+        "text": "عمر",
+        "x": 3108,
+        "y": 3308
+      }
+    ]
+  },
+  "extraction_methodology": "Parsed the ENTS JSON array from the tree viewer HTML. Each entry is a text label with (x, y, width, height, text) on the tree image. Labels were classified as 'name', 'connector' (بن, بنت, etc.), or 'non-name' (headers, numbers, non-Arabic). For name frequencies, we count token occurrences after filtering connectors and normalizing Arabic text."
+}

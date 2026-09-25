@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="إحصائيات أسماء عائلة السويلم - البحث والتوزيع والتكرار">
+<title>إحصائيات الأسماء — شجرة عائلة السويلم</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<main class="container">
+
+  <div class="page-hero">
+    <h1>إحصائيات الأسماء</h1>
+    <p>توزيع الأسماء في شجرة العائلة وفق النصوص الظاهرة على الشجرة. الأرقام تشمل ظهور الاسم بأي موضع (اسم أول، أب، جد).</p>
+  </div>
+
+  <!-- Search -->
+  <div class="search-wrap" style="max-width:100%;margin-bottom:24px;">
+    <span class="search-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </span>
+    <input type="text" id="name-search" class="search-input" placeholder="ابحث عن اسم..." autocomplete="off">
+    <span class="search-kbd">/</span>
+  </div>
+
+  <!-- Controls -->
+  <div class="flex items-center gap-2 wrap mb-3" style="gap:8px;">
+    <button class="btn btn-ghost btn-sm top-filter active" data-n="10">أول ١٠</button>
+    <button class="btn btn-ghost btn-sm top-filter" data-n="20">أول ٢٠</button>
+    <button class="btn btn-ghost btn-sm top-filter" data-n="50">أول ٥٠</button>
+    <button class="btn btn-ghost btn-sm top-filter" data-n="99999">الكل</button>
+  </div>
+
+  <!-- Results count -->
+  <div id="results-info" style="margin-bottom:16px;font-size:0.9rem;color:var(--color-ink-muted);"></div>
+
+  <!-- Chart -->
+  <div class="chart-container mb-3" style="min-height:380px;">
+    <canvas id="namesChart"></canvas>
+  </div>
+
+  <!-- Table -->
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700;">الأسماء حسب التكرار</div>
+    <div class="overflow-x-auto">
+      <table class="data-table" id="names-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>التكرار</th>
+            <th>النسبة</th>
+            <th>طول الاسم</th>
+          </tr>
+        </thead>
+        <tbody id="names-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Name Detail Panel (hidden by default, shown on click) -->
+  <div id="name-detail" style="display:none;margin-top:24px;">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-size:1.6rem;font-weight:700;" id="detail-name"></div>
+          <div class="text-muted" id="detail-stats"></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="closeDetail()">إغلاق</button>
+      </div>
+      <div id="detail-entities" style="max-height:400px;overflow-y:auto;"></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="js/app.js"></script>
+<script>
+let allNames = [];
+let chartInstance = null;
+let entitiesData = [];
+
+async function load() {
+  const namesRes = await fetch('data/names.json').then(r => r.json());
+  const entitiesRes = await fetch('data/entities.json').then(r => r.json());
+  allNames = namesRes.entityFrequency;
+  entitiesData = entitiesRes;
+
+  const urlParams = new URLSearchParams(location.search);
+  const q = urlParams.get('q');
+  if (q) {
+    document.getElementById('name-search').value = q;
+    render(q, 99999);
+  } else {
+    render('', 10);
+  }
+}
+
+function render(searchQ, limit) {
+  const normQ = window.arNormalize(searchQ);
+  let filtered = allNames;
+
+  if (normQ) {
+    filtered = allNames.filter(n =>
+      window.arNormalize(n.text).includes(normQ) ||
+      window.arNormalize(n.firstPart).includes(normQ)
+    );
+  }
+
+  filtered = filtered.slice(0, limit);
+
+  document.getElementById('results-info').textContent =
+    `عرض ${filtered.length} من ${allNames.length} اسم فريد` +
+    (searchQ ? ` — نتائج البحث عن "${searchQ}"` : '');
+
+  // Render chart
+  renderChart(filtered.slice(0, 30));
+
+  // Render table
+  const tbody = document.getElementById('names-tbody');
+  tbody.innerHTML = '';
+  filtered.forEach((n, i) => {
+    const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => showDetail(n);
+    tr.innerHTML = `
+      <td class="rank">${i + 1}</td>
+      <td class="name-cell">${n.text}</td>
+      <td class="number">${n.count.toLocaleString('ar-SA')}</td>
+      <td class="number">${((n.count / (entitiesData.filter(e => e.type === 'name').length)) * 100).toFixed(2)}%</td>
+      <td>${n.length > 1 ? n.length + ' كلمات' : 'كلمة واحدة'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderChart(data) {
+  const ctx = document.getElementById('namesChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(n => n.text),
+      datasets: [{
+        label: 'التكرار',
+        data: data.map(n => n.count),
+        backgroundColor: data.map((_, i) =>
+          i < 3 ? 'rgba(13,118,189,0.85)' :
+          i < 10 ? 'rgba(74,205,123,0.75)' :
+          'rgba(52,43,36,0.15)'
+        ),
+        borderRadius: 6,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { rtl: true, callbacks: { label: ctx => ctx.raw + ' تكرار' } }
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' } },
+        y: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans Arabic'", size: 12 } } }
+      }
+    }
+  });
+}
+
+function showDetail(nameObj) {
+  // Find all entities matching this name
+  const matches = entitiesData.filter(e =>
+    window.arNormalize(e.text) === window.arNormalize(nameObj.text) || e.text === nameObj.text
+  );
+
+  document.getElementById('detail-name').textContent = nameObj.text;
+  const pct = ((nameObj.count / (entitiesData.filter(e => e.type === 'name').length)) * 100).toFixed(2);
+  document.getElementById('detail-stats').innerHTML = `
+    <span class="badge badge-green">${nameObj.count} تكرار</span>
+    <span class="badge badge-gold">${pct}% من النصوص</span>
+    <span class="badge badge-muted">${nameObj.length > 1 ? 'مركب' : 'مفرد'}</span>
+  `;
+
+  const entDiv = document.getElementById('detail-entities');
+  entDiv.innerHTML = matches.map(e => `
+    <div style="padding:8px 12px;border-bottom:1px solid var(--color-border);font-size:0.9rem;">
+      <span style="font-weight:600;">${e.text}</span>
+      <span class="text-muted" style="font-size:0.8rem;"> — موضع: (${e.x}, ${e.y})</span>
+    </div>
+  `).join('');
+
+  document.getElementById('name-detail').style.display = 'block';
+  document.getElementById('name-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeDetail() {
+  document.getElementById('name-detail').style.display = 'none';
+}
+
+// Search
+const searchEl = document.getElementById('name-search');
+let searchTmr;
+searchEl.addEventListener('input', () => {
+  clearTimeout(searchTmr);
+  searchTmr = setTimeout(() => {
+    const activeBtn = document.querySelector('.top-filter.active');
+    const limit = activeBtn ? parseInt(activeBtn.dataset.n) : 99999;
+    render(searchEl.value, limit);
+  }, 250);
+});
+
+// Top filter buttons
+document.querySelectorAll('.top-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.top-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render(searchEl.value, parseInt(btn.dataset.n));
+  });
+});
+
+load();
+</script>
+</body>
+</html>

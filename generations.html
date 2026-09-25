@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="أجيال عائلة السويلم - التوزيع والتاريخ">
+<title>الأجيال — شجرة عائلة السويلم</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<main class="container">
+
+  <div class="page-hero">
+    <h1>الأجيال</h1>
+    <p>١١ جيلاً من الجد سويلم حتى اليوم — التواريخ تقريبية وباعتبار القرن يتكون من ثلاثة أجيال.</p>
+  </div>
+
+  <!-- Generations Chart -->
+  <div class="chart-container mb-3" style="min-height:400px;">
+    <canvas id="genChart"></canvas>
+  </div>
+
+  <!-- Generations Table -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">بيانات الأجيال</h2>
+        <p class="section-desc">توزيع أعداد الذكور عبر الأجيال مع التواريخ التقريبية</p>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="overflow-x-auto">
+        <table class="data-table" id="gen-table">
+          <thead>
+            <tr>
+              <th>الجيل</th>
+              <th>النسبة</th>
+              <th>القرن</th>
+              <th>الأبناء</th>
+              <th>منهم ذكور</th>
+              <th>النسبة من الإجمالي</th>
+            </tr>
+          </thead>
+          <tbody id="gen-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+<script>
+async function load() {
+  const stats = await fetch('data/statistics.json').then(r => r.json());
+  const gens = stats.generations;
+  const total = stats.totalPeopleLatest;
+
+  // Chart
+  new Chart(document.getElementById('genChart'), {
+    type: 'bar',
+    data: {
+      labels: gens.map(g => g.label),
+      datasets: [
+        { label: 'عدد الأفراد', data: gens.map(g => g.sons), backgroundColor: 'rgba(13,118,189,0.8)', borderRadius: 6, barPercentage: 0.65 },
+        { label: 'الذكور', data: gens.map(g => g.sonsMale), backgroundColor: 'rgba(74,205,123,0.7)', borderRadius: 6, barPercentage: 0.65 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', rtl: true, labels: { font: { family: "'IBM Plex Sans Arabic'" } } },
+        tooltip: { rtl: true }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans Arabic'", size: 11 } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' }, ticks: { callback: v => v.toLocaleString('ar-SA') } }
+      }
+    }
+  });
+
+  // Table
+  const tbody = document.getElementById('gen-tbody');
+  gens.forEach(g => {
+    const pct = ((g.sons / total) * 100).toFixed(1);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="name-cell">${g.label}${g.name ? ' — ' + g.name : ''}</td>
+      <td class="number">${g.number}</td>
+      <td class="text-muted">${g.century}</td>
+      <td class="number">${g.sons.toLocaleString('ar-SA')}</td>
+      <td class="number">${g.sonsMale.toLocaleString('ar-SA')}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="number" style="min-width:48px;">${pct}%</span>
+          <div class="progress-bar" style="flex:1;max-width:120px;">
+            <div class="progress-bar-fill" style="width:${pct}%"></div>
+          </div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+load();
+</script>
+</body>
+</html>

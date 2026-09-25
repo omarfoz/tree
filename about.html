@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="عن شجرة عائلة السويلم - المصادر والمراجع والإصدارات">
+<title>عن الشجرة — شجرة عائلة السويلم</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<main class="container">
+
+  <div class="page-hero">
+    <h1>عن شجرة عائلة السويلم</h1>
+    <p>شجرة نسب عائلة السويلم — الإصدار الثالث ١٤٤٨هـ مع الإصدارين الأول ١٤٢٠هـ والثاني ١٤٣١هـ.</p>
+  </div>
+
+  <!-- Editions -->
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">إصدارات الشجرة</h2></div>
+    </div>
+    <div class="grid grid-3" id="editions-grid"></div>
+  </section>
+
+  <!-- Editors & Publisher -->
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">فريق العمل</h2></div>
+    </div>
+    <div class="card">
+      <div style="font-size:0.95rem;line-height:1.8;" dir="rtl">
+        <p><strong>المحرر:</strong> الأستاذ / عبدالله بن عبدالرحمن بن سويلم الفوزان السويلم</p>
+        <p><strong>الناشر:</strong> إدارة بيانات العائلة — صندوق أسرة السويلم</p>
+        <p><strong>الموقع الرسمي:</strong> <a href="https://www.swailem.org.sa" target="_blank">www.swailem.org.sa</a></p>
+        <p><strong>العارض الإلكتروني:</strong> <a href="https://tree.alswailem.app/family-tree" target="_blank">tree.alswailem.app</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sources -->
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">المصادر والمراجع</h2></div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px;">المصادر الشفهية</div>
+        <div id="oral-sources"></div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px;">المراجع من الكتب</div>
+        <div id="book-sources"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amirs -->
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">أمراء ثادق من الأسرة</h2></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="overflow-x-auto">
+        <table class="data-table" id="amirs-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>الجيل</th>
+              <th>تاريخ الإمارة</th>
+            </tr>
+          </thead>
+          <tbody id="amirs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="section">
+    <div class="section-header">
+      <div><h2 class="section-title">منهجية الاستخراج</h2></div>
+    </div>
+    <div class="card" style="font-size:0.9rem;line-height:1.8;" dir="rtl">
+      <p><strong>المصدر:</strong> تم استخراج البيانات من الموقع الرسمي لصندوق أسرة السويلم (<a href="https://tree.alswailem.app" target="_blank">tree.alswailem.app</a>).</p>
+      <p><strong>طريقة الاستخراج:</strong></p>
+      <ol style="padding-right:20px;">
+        <li>تحميل ملف HTML الخاص بعارض الشجرة (v10.html)</li>
+        <li>استخراج بيانات <code>ENTS</code> — مصفوفة JSON تحتوي على (x, y, عرض، ارتفاع، نص) لكل تسمية ظاهرة على الشجرة</li>
+        <li>تصنيف التسميات إلى أسماء / موصلات (بن/بنت) / غير أسماء (عناوين/أرقام)</li>
+        <li>تطبيع النص العربي لأغراض البحث (إزالة التشكيل، توحيد الألف، إلخ)</li>
+        <li>حساب تكرار الأسماء مع ملاحظة أنّ التسميات هي <strong>مواضع نصية</strong> وليست سجلات أفراد</li>
+      </ol>
+      <p><strong>القيود:</strong></p>
+      <ul style="padding-right:20px;">
+        <li>لا توجد علاقات أب-ابن في البيانات المستخرجة</li>
+        <li>لا توجد معرفات فريدة للأفراد</li>
+        <li>التوزيع حسب الجيل والفرع هو إجمالي رسمي، وليس مرتبطاً بكل فرد</li>
+        <li>قد يظهر الاسم كأب أو جد وليس كاسم أول</li>
+      </ul>
+      <p style="margin-top:16px;"><a href="data/extraction-report.json" class="btn btn-ghost btn-sm" download>تنزيل تقرير الاستخراج الكامل (JSON)</a></p>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+<script>
+async function load() {
+  const stats = await fetch('data/statistics.json').then(r => r.json());
+
+  // Editions
+  const edGrid = document.getElementById('editions-grid');
+  stats.editions.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'card animate-in';
+    card.style.animationDelay = (i * 0.08) + 's';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span class="badge ${i === stats.editions.length - 1 ? 'badge-green' : 'badge-muted'}">${e.year}هـ</span>
+        <span class="text-muted" style="font-size:0.8rem;">${e.label}</span>
+      </div>
+      <div style="font-size:1.8rem;font-weight:700;margin-bottom:4px;">${e.total.toLocaleString('ar-SA')}</div>
+      <div class="text-muted" style="font-size:0.85rem;">${e.total} فرد</div>
+      <div style="margin-top:10px;font-size:0.8rem;color:var(--color-ink-muted);">
+        ${e.male.toLocaleString('ar-SA')} ذكر — ${e.female.toLocaleString('ar-SA')} أنثى
+      </div>
+      <div style="margin-top:6px;font-size:0.75rem;color:var(--color-ink-muted);">${e.details}</div>
+    `;
+    edGrid.appendChild(card);
+  });
+
+  // Sources
+  document.getElementById('oral-sources').innerHTML =
+    stats.oralSources.map(s => `<div style="padding:6px 0;border-bottom:1px solid var(--color-border);font-size:0.9rem;">${s}</div>`).join('');
+  document.getElementById('book-sources').innerHTML =
+    stats.sources.map(s => `<div style="padding:6px 0;border-bottom:1px solid var(--color-border);font-size:0.9rem;">${s}</div>`).join('');
+
+  // Amirs
+  const tbody = document.getElementById('amirs-tbody');
+  stats.amirs.forEach((a, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="rank">${i + 1}</td>
+      <td class="name-cell">${a.name}</td>
+      <td class="number">${a.generation}</td>
+      <td class="text-muted">${a.datesH}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+load();
+</script>
+</body>
+</html>

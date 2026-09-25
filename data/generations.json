@@ -1,0 +1,93 @@
+{
+  "generations": [
+    {
+      "number": 1,
+      "name": "الجد سويلم",
+      "label": "الجيل الأول",
+      "century": "10-11هـ",
+      "sons": 2,
+      "sonsMale": 2
+    },
+    {
+      "number": 2,
+      "name": "",
+      "label": "الجيل الثاني",
+      "century": "12هـ",
+      "sons": 4,
+      "sonsMale": 4
+    },
+    {
+      "number": 3,
+      "name": "",
+      "label": "الجيل الثالث",
+      "century": "12هـ",
+      "sons": 10,
+      "sonsMale": 9
+    },
+    {
+      "number": 4,
+      "name": "",
+      "label": "الجيل الرابع",
+      "century": "12هـ",
+      "sons": 29,
+      "sonsMale": 21
+    },
+    {
+      "number": 5,
+      "name": "",
+      "label": "الجيل الخامس",
+      "century": "13هـ",
+      "sons": 59,
+      "sonsMale": 45
+    },
+    {
+      "number": 6,
+      "name": "",
+      "label": "الجيل السادس",
+      "century": "13هـ",
+      "sons": 91,
+      "sonsMale": 64
+    },
+    {
+      "number": 7,
+      "name": "",
+      "label": "الجيل السابع",
+      "century": "13هـ",
+      "sons": 141,
+      "sonsMale": 94
+    },
+    {
+      "number": 8,
+      "name": "",
+      "label": "الجيل الثامن",
+      "century": "14هـ",
+      "sons": 453,
+      "sonsMale": 243
+    },
+    {
+      "number": 9,
+      "name": "",
+      "label": "الجيل التاسع",
+      "century": "14هـ",
+      "sons": 1247,
+      "sonsMale": 633
+    },
+    {
+      "number": 10,
+      "name": "",
+      "label": "الجيل العاشر",
+      "century": "15هـ",
+      "sons": 1155,
+      "sonsMale": 630
+    },
+    {
+      "number": 11,
+      "name": "",
+      "label": "الجيل الحادي عشر",
+      "century": "15هـ",
+      "sons": 207,
+      "sonsMale": 105
+    }
+  ],
+  "total": 11
+}

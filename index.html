@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="شجرة عائلة السويلم - لوحة إحصائيات تفاعلية حديثة">
+<meta name="theme-color" content="#E4DBCF">
+<title>شجرة عائلة السويلم — لوحة الإحصائيات</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<main class="container">
+
+  <!-- Hero -->
+  <section class="hero" style="text-align:center;">
+    <h1 class="hero-title">شجرة العائلة بالأرقام</h1>
+    <p class="hero-subtitle" style="margin-inline:auto;">
+      استكشف تاريخ عائلة السويلم، الأجيال، الفروع، والأسماء من خلال تجربة تفاعلية حديثة.
+      الإصدار الثالث، الطبعة الثانية ١٤٤٨هـ.
+    </p>
+    <div class="search-wrap" style="margin-inline:auto;">
+      <span class="search-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" id="home-search" class="search-input" placeholder="ابحث عن اسم في العائلة..." autocomplete="off" onkeydown="if(event.key==='Enter')goSearch()">
+      <span class="search-kbd">/</span>
+    </div>
+  </section>
+
+  <!-- Stats Cards -->
+  <section class="section" id="stats-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">نظرة عامة</h2>
+        <p class="section-desc">إحصائيات رسمية من صندوق أسرة السويلم — الإصدار ١٤٤٨هـ</p>
+      </div>
+    </div>
+    <div class="grid grid-4" id="stats-grid">
+      <div class="card card-stat animate-in stagger-1">
+        <div class="card-label">إجمالي أفراد العائلة</div>
+        <div class="card-value" data-count="3400" data-duration="1200">0</div>
+        <div class="card-sublabel">مسجل في الشجرة</div>
+        <div class="card-change">+85 / سنة</div>
+      </div>
+      <div class="card card-stat animate-in stagger-2">
+        <div class="card-label">عدد الأجيال</div>
+        <div class="card-value" data-count="11" data-duration="1000">0</div>
+        <div class="card-sublabel">من الجد سويلم حتى اليوم</div>
+      </div>
+      <div class="card card-stat animate-in stagger-3">
+        <div class="card-label">عدد الفروع</div>
+        <div class="card-value" data-count="34" data-duration="1000">0</div>
+        <div class="card-sublabel">فروع متفرعة من الأجداد</div>
+      </div>
+      <div class="card card-stat animate-in stagger-4">
+        <div class="card-label">الذكور</div>
+        <div class="card-value" data-count="1851" data-duration="1200">0</div>
+        <div class="card-sublabel">54.4% من إجمالي العائلة</div>
+      </div>
+      <div class="card card-stat animate-in stagger-5">
+        <div class="card-label">الإناث</div>
+        <div class="card-value" data-count="1549" data-duration="1200">0</div>
+        <div class="card-sublabel">45.6% من إجمالي العائلة</div>
+      </div>
+      <div class="card card-stat animate-in stagger-6">
+        <div class="card-label">أكبر جيل</div>
+        <div class="card-value" style="font-size:1.8rem;">التاسع</div>
+        <div class="card-sublabel">١٬٢٤٧ فرد</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <div class="section">
+    <div class="disclaimer" dir="rtl">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>
+        <strong>ملاحظة مهمة:</strong> الشجرة الأصلية تستخدم عارض صور تفاعلي ولا تتضمن سجلات منظمة لكل فرد على حدة.
+        الإحصائيات هنا تستند إلى البيانات الرسمية المتاحة. توزيع الأسماء مُستخرج من نصوص عناوين الشجرة وقد يتضمن ظهور الأسماء كآباء أو أجداد.
+      </span>
+    </div>
+  </div>
+
+  <!-- Growth Chart -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">نمو العائلة عبر السنين</h2>
+        <p class="section-desc">تعداد أبناء الأسرة التقريبي حسب إصدارات الشجرة</p>
+      </div>
+    </div>
+    <div class="chart-container" style="min-height:360px;">
+      <canvas id="growthChart" height="100"></canvas>
+    </div>
+  </section>
+
+  <!-- Generation Distribution -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">توزيع أفراد العائلة حسب الجيل</h2>
+        <p class="section-desc">عدد الأفراد (الذكور) في كل جيل — مصدر رسمي</p>
+      </div>
+    </div>
+    <div class="chart-container" style="min-height:360px;">
+      <canvas id="genChart" height="100"></canvas>
+    </div>
+  </section>
+
+  <!-- Top Names -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">الأسماء الأكثر انتشاراً</h2>
+        <p class="section-desc">تكرار النصوص في عناوين الشجرة — تشمل ظهور الاسم في أي موضع (اسم أول، أب، أو جد)</p>
+      </div>
+      <a href="names.html" class="btn btn-ghost btn-sm">عرض الكل ←</a>
+    </div>
+    <div class="grid grid-3" id="top-names-grid"></div>
+  </section>
+
+  <!-- Interesting Numbers -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">أرقام مثيرة للاهتمام</h2>
+        <p class="section-desc">رؤى مستخرجة من البيانات الرسمية</p>
+      </div>
+    </div>
+    <div class="grid grid-2" id="insights-grid">
+      <div class="card animate-in stagger-1">
+        <div style="font-size:2rem;font-weight:700;color:var(--color-primary);margin-bottom:8px;">36.7%</div>
+        <div>يمثل الجيل التاسع من كامل أفراد العائلة (١٬٢٤٧ فرد)</div>
+      </div>
+      <div class="card animate-in stagger-2">
+        <div style="font-size:2rem;font-weight:700;color:var(--color-primary);margin-bottom:8px;">3.4×</div>
+        <div>نمو العائلة من الإصدار الأول (١٠٧٨ فرد) إلى الإصدار الثالث (٣٤٠٠ فرد)</div>
+      </div>
+      <div class="card animate-in stagger-3">
+        <div style="font-size:2rem;font-weight:700;color:var(--color-primary);margin-bottom:8px;">215</div>
+        <div>تكرار اسم محمد — الأكثر ظهوراً في الشجرة</div>
+      </div>
+      <div class="card animate-in stagger-4">
+        <div style="font-size:2rem;font-weight:700;color:var(--color-primary);margin-bottom:8px;">85</div>
+        <div>معدل الزيادة السنوية للتعداد</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="section" style="padding-bottom:48px;">
+    <div class="section-header">
+      <div><h2 class="section-title">استكشف المزيد</h2></div>
+    </div>
+    <div class="grid grid-3">
+      <a href="tree.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">الشجرة التفاعلية</div>
+        <div class="text-muted" style="font-size:0.9rem;">تصفح الشجرة الأصلية مع البحث والتقريب</div>
+      </a>
+      <a href="names.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">إحصائيات الأسماء</div>
+        <div class="text-muted" style="font-size:0.9rem;">توزيع الأسماء والتكرارات والبحث المتقدم</div>
+      </a>
+      <a href="branches.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">فروع العائلة</div>
+        <div class="text-muted" style="font-size:0.9rem;">٣٤ فرع مع الأجداد والممثلين</div>
+      </a>
+      <a href="generations.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">الأجيال</div>
+        <div class="text-muted" style="font-size:0.9rem;">١١ جيل من الجد سويلم حتى اليوم</div>
+      </a>
+      <a href="analytics.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">تحليلات متقدمة</div>
+        <div class="text-muted" style="font-size:0.9rem;">إحصائيات مفصلة ومقارنات</div>
+      </a>
+      <a href="data-quality.html" class="card" style="text-decoration:none;color:inherit;">
+        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;color:var(--color-ink);">جودة البيانات</div>
+        <div class="text-muted" style="font-size:0.9rem;">تقرير الاستخراج والتحقق</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+<script>
+function goSearch() {
+  const q = document.getElementById('home-search').value.trim();
+  if (q) location.href = 'names.html?q=' + encodeURIComponent(q);
+}
+
+(async function () {
+  const stats = await fetch('data/statistics.json').then(r => r.json());
+  const namesData = await fetch('data/names.json').then(r => r.json());
+
+  // Growth chart
+  const years = stats.editions.map(e => e.year + 'هـ');
+  const totals = stats.editions.map(e => e.total);
+  const males = stats.editions.map(e => e.male);
+  const females = stats.editions.map(e => e.female);
+
+  new Chart(document.getElementById('growthChart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'الإجمالي', data: totals, borderColor: '#0D76BD', backgroundColor: 'rgba(13,118,189,0.08)', fill: true, tension: 0.4, pointRadius: 6, pointHoverRadius: 8 },
+        { label: 'الذكور', data: males, borderColor: '#342B24', backgroundColor: 'rgba(52,43,36,0.04)', fill: false, tension: 0.4, pointRadius: 4 },
+        { label: 'الإناث', data: females, borderColor: '#666258', backgroundColor: 'rgba(102,98,88,0.04)', fill: false, tension: 0.4, pointRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { position: 'top', rtl: true, labels: { font: { family: "'IBM Plex Sans Arabic'", size: 13 } } },
+        tooltip: { rtl: true, titleFont: { family: "'IBM Plex Sans Arabic'" }, bodyFont: { family: "'IBM Plex Sans Arabic'" } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans Arabic'" } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' }, ticks: { font: { family: "'IBM Plex Sans Arabic'" } } }
+      }
+    }
+  });
+
+  // Generation chart
+  const gens = stats.generations;
+  new Chart(document.getElementById('genChart'), {
+    type: 'bar',
+    data: {
+      labels: gens.map(g => g.label),
+      datasets: [
+        { label: 'عدد الأفراد (الذكور)', data: gens.map(g => g.sons), backgroundColor: '#0D76BD', borderRadius: 6, barPercentage: 0.7 },
+        { label: 'منهم ذكور', data: gens.map(g => g.sonsMale), backgroundColor: '#4ACD7B', borderRadius: 6, barPercentage: 0.7 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', rtl: true, labels: { font: { family: "'IBM Plex Sans Arabic'", size: 13 } } },
+        tooltip: { rtl: true }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans Arabic'", size: 11 } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(47,36,21,0.06)' } }
+      }
+    }
+  });
+
+  // Top names cards
+  const topNames = namesData.entityFrequency.slice(0, 9);
+  const container = document.getElementById('top-names-grid');
+  topNames.forEach((n, i) => {
+    const div = document.createElement('div');
+    div.className = 'card animate-in';
+    div.style.animationDelay = (i * 0.05) + 's';
+    div.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span class="badge badge-green">#${i + 1}</span>
+        <span class="text-muted" style="font-size:0.8rem;font-variant-numeric:tabular-nums;">${((n.count / namesData.totalEntities) * 100).toFixed(2)}%</span>
+      </div>
+      <div style="font-size:1.4rem;font-weight:700;color:var(--color-ink);margin-bottom:4px;">${n.text}</div>
+      <div class="text-muted" style="font-size:0.85rem;">${n.count} تكرار</div>
+      <div class="progress-bar mt-2">
+        <div class="progress-bar-fill" style="width: ${(n.count / topNames[0].count) * 100}%"></div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+})();
+</script>
+</body>
+</html>

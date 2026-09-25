@@ -1,0 +1,258 @@
+[
+  {
+    "category": "duplicate_exact_texts",
+    "description": "Text labels that appear more than once with identical content",
+    "count": 262,
+    "examples": [
+      [
+        "محمد",
+        215
+      ],
+      [
+        "عبداالله",
+        178
+      ],
+      [
+        "عبدالعزيز",
+        113
+      ],
+      [
+        "نورة",
+        113
+      ],
+      [
+        "سارة",
+        92
+      ],
+      [
+        "إبراهيم",
+        87
+      ],
+      [
+        "عبد العزيز",
+        79
+      ],
+      [
+        "خالد",
+        68
+      ],
+      [
+        "حصة",
+        68
+      ],
+      [
+        "فهد",
+        67
+      ],
+      [
+        "عبدالرحمن",
+        62
+      ],
+      [
+        "حمد",
+        56
+      ],
+      [
+        "سليمان",
+        55
+      ],
+      [
+        "الجوهرة",
+        52
+      ],
+      [
+        "فارس",
+        50
+      ],
+      [
+        "عبد الرحمن",
+        49
+      ],
+      [
+        "منيرة",
+        48
+      ],
+      [
+        "ناصر",
+        43
+      ],
+      [
+        "فوزان",
+        42
+      ],
+      [
+        "أحمد",
+        40
+      ]
+    ]
+  },
+  {
+    "category": "duplicate_normalized_names",
+    "description": "Different text forms that normalize to the same string",
+    "count": 260,
+    "examples": [
+      [
+        "محمد",
+        215
+      ],
+      [
+        "عبداالله",
+        178
+      ],
+      [
+        "عبدالعزيز",
+        113
+      ],
+      [
+        "نوره",
+        113
+      ],
+      [
+        "ساره",
+        92
+      ],
+      [
+        "ابراهيم",
+        87
+      ],
+      [
+        "عبد العزيز",
+        79
+      ],
+      [
+        "خالد",
+        68
+      ],
+      [
+        "حصه",
+        68
+      ],
+      [
+        "فهد",
+        67
+      ],
+      [
+        "عبدالرحمن",
+        62
+      ],
+      [
+        "حمد",
+        56
+      ],
+      [
+        "سليمان",
+        55
+      ],
+      [
+        "الجوهره",
+        52
+      ],
+      [
+        "فارس",
+        50
+      ],
+      [
+        "عبد الرحمن",
+        49
+      ],
+      [
+        "منيره",
+        48
+      ],
+      [
+        "ناصر",
+        43
+      ],
+      [
+        "فوزان",
+        42
+      ],
+      [
+        "احمد",
+        40
+      ]
+    ]
+  },
+  {
+    "category": "very_short_labels",
+    "description": "Labels with fewer than 2 characters",
+    "count": 9,
+    "examples": [
+      "١",
+      "٦",
+      "٢",
+      "٨",
+      "٣",
+      "٩",
+      "٤",
+      "٥",
+      "٧"
+    ]
+  },
+  {
+    "category": "very_long_labels",
+    "description": "Labels exceeding 40 characters — possibly headers, compound names, or errors",
+    "count": 1,
+    "examples": [
+      "أمراءثادقمنسنة٨٥١١هإلى١٢٣١ه،ومنسنة٧٥٣١هإلى٤٦٣١ه."
+    ]
+  },
+  {
+    "category": "labels_with_non_arabic",
+    "description": "Labels containing non-Arabic characters",
+    "count": 14,
+    "examples": [
+      "ابلدارɋنادلوارسأهايلثادق",
+      "–رحمهماالله–ومنأبرزهم:-",
+      "سلينبنحمدبنسلينالسويلم",
+      "المراجعمنالكتب:-",
+      "١.عنوانالمجدفيتاريخنجد:ج١/ج٢",
+      "٢.بعضالحوادثالواقعةفينجد.",
+      "٣.الدررالسنيةفيالأجوبةالنجدية.",
+      "٤.المنتخبفيذكرأنسابالعرب.",
+      "٥.أنسابالعرب:ط١.",
+      "لدىأبناءالعمومة.",
+      "الأسرة)الإصدارالثالث(.",
+      "الأستاذ/عبدااللهبنعبدالرحمنبنسويلم",
+      "أمراءثادقمنسنة٨٥١١هإلى١٢٣١ه،ومنسنة٧٥٣١هإلى٤٦٣١ه.",
+      "أجدادالفروعمنالجدسويلم."
+    ]
+  },
+  {
+    "category": "label_type_distribution",
+    "description": "Distribution of connector vs name vs non-name labels",
+    "count": null,
+    "examples": [
+      {
+        "type": "connector",
+        "count": 23
+      },
+      {
+        "type": "name",
+        "count": 3509
+      },
+      {
+        "type": "non-name",
+        "count": 52
+      },
+      {
+        "total": 3584
+      }
+    ]
+  },
+  {
+    "category": "name_omar_occurrences",
+    "description": "Occurrences of the name عمر in the tree text labels",
+    "count": 27,
+    "examples": [
+      {
+        "variant": "عمر",
+        "exact_count": 27
+      },
+      {
+        "variant": "All normalized matches",
+        "normalized_count": 27
+      }
+    ]
+  }
+]
