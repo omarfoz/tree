@@ -29,20 +29,11 @@
     if(diversityChart)diversityChart.destroy();    diversityChart=new Chart(document.getElementById("nameDiversityChart"),{type:"doughnut",data:{labels:["مرة واحدة","٢–٥ مرات","٦–٢٠ مرة","أكثر من ٢٠"],datasets:[{data:[allNames.filter(n=>n.count===1).length,allNames.filter(n=>n.count>=2&&n.count<=5).length,allNames.filter(n=>n.count>=6&&n.count<=20).length,allNames.filter(n=>n.count>20).length],backgroundColor:["#0D76BD","#4ACD7B","#666258","#342B24"],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:"top",rtl:true},tooltip:{rtl:true}}}});
   }
 
-  function verificationBadge(nameText){
-    const v=validationMap.get(window.arCompact(nameText));
-    if(!v)return"";
-    if(v.status==="verified")return" <small class=\"verify-ok\" title=\"تم التحقق مقابل بحث الشجرة الأصلية\">✓</small>";
-    if(v.status==="corrected"||v.status==="reverted")return" <small class=\"verify-fix\" title=\""+esc(v.note||"")+"\">✓صُحّح</small>";
-    if(v.status==="needs_review")return" <small class=\"verify-review\" title=\"بحاجة إلى مراجعة\">؟</small>";
-    return"";
-  }
-
   function renderRarePills(query){
     const pills=document.getElementById("rare-name-pills");if(!pills)return;
     const compactQ=window.arCompact(query);
     const list=compactQ?rareNames.filter(n=>window.arCompact(n.text).includes(compactQ)):rareNames;
-    pills.innerHTML=list.length?list.map(n=>"<button class=\"name-pill\" data-name=\""+esc(n.text)+"\" title=\"ظهر "+arNum(n.count)+" مرة\">"+esc(n.text)+" <small style=\"opacity:.65\">"+arNum(n.count)+"×</small>"+verificationBadge(n.text)+"</button>").join(""):"<span class=\"text-muted\">لا توجد أسماء نادرة مطابقة للبحث.</span>";
+    pills.innerHTML=list.length?list.map(n=>"<button class=\"name-pill\" data-name=\""+esc(n.text)+"\" title=\"ظهر "+arNum(n.count)+" مرة\">"+esc(n.text)+" <small style=\"opacity:.65\">"+arNum(n.count)+"×</small>"+"</button>").join(""):"<span class=\"text-muted\">لا توجد أسماء نادرة مطابقة للبحث.</span>";
     pills.querySelectorAll("[data-name]").forEach(btn=>btn.addEventListener("click",()=>{const item=allNames.find(x=>x.text===btn.dataset.name);if(item)showDetail(item,true);}));
   }
 
@@ -61,9 +52,9 @@
   }
 
   function showDetail(nameObj,updateUrl){
-    const key=window.arCompact(nameObj.text),matches=nameEntities.filter(e=>window.arCompact(e.text)===key),variants=variantsFor(nameObj),similars=similarNames(nameObj),r=rarity(nameObj),rank=rankMap.get(key)||0,pct=nameObj.count/totalNameEntities*100,v=validationMap.get(key);
+    const key=window.arCompact(nameObj.text),matches=nameEntities.filter(e=>window.arCompact(e.text)===key),variants=variantsFor(nameObj),similars=similarNames(nameObj),r=rarity(nameObj),rank=rankMap.get(key)||0,pct=nameObj.count/totalNameEntities*100;
     document.getElementById("detail-name").textContent=nameObj.text;
-    document.getElementById("detail-stats").innerHTML="<span class=\"badge badge-green\">الترتيب "+arNum(rank)+"</span><span class=\"badge badge-green\">"+arNum(nameObj.count)+" ظهور</span><span class=\"badge badge-gold\">"+pct.toFixed(2)+"%</span><span class=\"badge "+r.cls+"\">"+r.label+"</span>"+(v?("<span class=\"badge "+(v.status==="needs_review"?"badge-muted":"badge-green")+"\" title=\""+esc(v.note||"")+"\">"+(v.status==="verified"?"تم التحقق من الشجرة الأصلية":v.status==="corrected"?"صحّحنا الإملاء وفق الشجرة":v.status==="reverted"?"أعيد للأصل وفق الشجرة":"بحاجة إلى مراجعة")+"</span>"):"");
+    document.getElementById("detail-stats").innerHTML="<span class=\"badge badge-green\">الترتيب "+arNum(rank)+"</span><span class=\"badge badge-green\">"+arNum(nameObj.count)+" ظهور</span><span class=\"badge badge-gold\">"+pct.toFixed(2)+"%</span><span class=\"badge "+r.cls+"\">"+r.label+"</span>";
     document.getElementById("detail-variants").innerHTML=variants.length?variants.map(v=>"<span class=\"name-pill\">"+esc(v[0])+" <small>"+arNum(v[1])+"</small></span>").join(""):"<span class=\"text-muted\">لا توجد صيغ أخرى.</span>";
     document.getElementById("detail-similar").innerHTML=similars.length?similars.map(x=>"<button class=\"name-pill similar-name\" data-name=\""+esc(x.name.text)+"\">"+esc(x.name.text)+" <small>Δ"+x.distance+" · "+arNum(x.name.count)+"</small></button>").join(""):"<span class=\"text-muted\">لا توجد أسماء قريبة كتابيًا ضمن الحد المستخدم.</span>";
     document.querySelectorAll("#detail-similar .similar-name").forEach(btn=>btn.addEventListener("click",()=>{const item=allNames.find(x=>x.text===btn.dataset.name);if(item)showDetail(item,true);}));
