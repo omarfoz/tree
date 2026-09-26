@@ -69,7 +69,8 @@
         </a>
         <nav class="main-nav" dir="rtl">
           <a href="./">الرئيسية</a>
-          <a href="tree.html">الشجرة</a>
+          <a href="tree.html">الشجرة الأصلية</a>
+          <a href="digital-tree.html">الشجرة الإلكترونية</a>
           <a href="names.html">الأسماء</a>
           <a href="generations.html">الأجيال</a>
           <a href="branches.html">الفروع</a>
@@ -95,7 +96,8 @@
           <button class="theme-toggle" onclick="toggleMobileMenu()">${ICON_X}</button>
         </div>
         <a href="./">الرئيسية</a>
-        <a href="tree.html">الشجرة</a>
+        <a href="tree.html">الشجرة الأصلية</a>
+        <a href="digital-tree.html">الشجرة الإلكترونية</a>
         <a href="names.html">الأسماء</a>
         <a href="generations.html">الأجيال</a>
         <a href="branches.html">الفروع</a>
