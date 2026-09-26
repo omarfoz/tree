@@ -17,9 +17,10 @@
   var dupLabel=document.getElementById("dupLabel");
 
   var entities=[],nameEntities=[],freq=new Map(),byId=new Map(),spatial=new Map();
-  var chain=[],selected=null,waitingParent=false,daughter=false;
+  var verifiedParentByChild=new Map(),localParentByChild=new Map();
+  var chain=[],selected=null,waitingParent=false,daughter=false,pendingParent=null;
   var viewer=null,viewerHooked=false,selectionEl=null,currentOccurrences=[],occurrenceIndex=0;
-  var GRID=140;
+  var GRID=140,LOCAL_REL_KEY="smart-tree-confirmed-relations-v1";
 
   function norm(s){
     return String(s||"").normalize("NFKD")
@@ -31,6 +32,134 @@
 
   function center(e){return{x:+e.x+(+e.w||0)/2,y:+e.y+(+e.h||0)/2};}
   function cellKey(x,y){return Math.floor(x/GRID)+"|"+Math.floor(y/GRID);}
+
+  function loadLocalRelations(){
+    localParentByChild.clear();
+    try{
+      var raw=localStorage.getItem(LOCAL_REL_KEY);
+      var parsed=raw?JSON.parse(raw):null;
+      var rels=(parsed&&Array.isArray(parsed.relations))?parsed.relations:[];
+      rels.forEach(function(r){
+        var child=+r.childId,parent=+r.parentId;
+        if(Number.isFinite(child)&&Number.isFinite(parent)&&child!==parent)localParentByChild.set(child,parent);
+      });
+    }catch(e){}
+  }
+
+  function saveLocalRelations(){
+    var rels=[];
+    localParentByChild.forEach(function(parentId,childId){
+      rels.push({childId:+childId,parentId:+parentId,status:"verified",source:"manual-confirmation"});
+    });
+    try{
+      localStorage.setItem(LOCAL_REL_KEY,JSON.stringify({version:1,policy:"explicit-only",relations:rels}));
+    }catch(e){}
+  }
+
+  function effectiveParentId(childId){
+    childId=+childId;
+    if(verifiedParentByChild.has(childId))return verifiedParentByChild.get(childId);
+    if(localParentByChild.has(childId))return localParentByChild.get(childId);
+    return null;
+  }
+
+  function relationSource(childId){
+    childId=+childId;
+    if(verifiedParentByChild.has(childId))return "file";
+    if(localParentByChild.has(childId))return "local";
+    return null;
+  }
+
+  function graphChainFrom(start){
+    if(!start)return[];
+    var out=[start],seen=new Set([+start.id]),cur=start,guard=0;
+    while(cur&&guard++<64){
+      var pid=effectiveParentId(cur.id);
+      if(pid===null||pid===undefined||seen.has(+pid))break;
+      var p=byId.get(+pid);
+      if(!p)break;
+      out.push(p);seen.add(+pid);cur=p;
+    }
+    return out;
+  }
+
+  function graphLabel(start){
+    var c=graphChainFrom(start);
+    if(c.length<2)return "";
+    return c.map(function(e){return e.text;}).join(" ← ");
+  }
+
+  function addVerifiedRelation(child,parent){
+    if(!child||!parent||child.id===parent.id)return false;
+    if(verifiedParentByChild.has(+child.id)){
+      return verifiedParentByChild.get(+child.id)===+parent.id;
+    }
+    localParentByChild.set(+child.id,+parent.id);
+    saveLocalRelations();
+    return true;
+  }
+
+  function injectVerifiedUI(){
+    if(document.getElementById("pendingRelationCard"))return;
+    var style=document.createElement("style");
+    style.textContent=
+      ".pending-relation{display:none;margin-top:11px;border-radius:18px;padding:12px 13px;background:#fff8e8;border:1px solid rgba(164,118,24,.24)}"+
+      ".pending-relation.show{display:block}.pending-kicker{font-size:.72rem;color:#8a6514;font-weight:850}.pending-title{font-size:1rem;font-weight:900;margin-top:3px}"+
+      ".pending-desc{font-size:.77rem;color:#776a4b;line-height:1.65;margin-top:4px}.pending-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}"+
+      ".pending-actions button{min-height:44px;border-radius:13px;font-weight:850}.confirm-parent{border:0;background:#22302e;color:#fff}.reject-parent{border:1px solid rgba(47,41,35,.15);background:#fff;color:#514941}"+
+      ".result-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}.result-lineage{font-size:.72rem;color:#6f665d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}"+
+      ".verified-note{margin-top:9px;font-size:.72rem;color:#6f665d;line-height:1.6}.verified-note strong{color:#22302e}";
+    document.head.appendChild(style);
+
+    var next=document.querySelector(".next-card");
+    var card=document.createElement("div");
+    card.id="pendingRelationCard";card.className="pending-relation";
+    card.innerHTML='<div class="pending-kicker">مراجعة يدوية مطلوبة</div><div id="pendingRelationTitle" class="pending-title"></div><div class="pending-desc">لن نعتمد أي علاقة من القرب أو الإحداثيات. راجع اتصال الغصن في الصورة ثم أكّد فقط إذا كنت متأكدًا.</div><div class="pending-actions"><button id="confirmParent" class="confirm-parent" type="button">تأكيد أنه الأب</button><button id="rejectParent" class="reject-parent" type="button">اختيار اسم آخر</button></div>';
+    next.parentNode.insertBefore(card,next);
+
+    var row=document.querySelector(".secondary-row");
+    var note=document.createElement("div");
+    note.className="verified-note";
+    note.innerHTML='<strong>سياسة الدقة:</strong> لا توجد علاقات أب/ابن مستنتجة آليًا. السلسلة الذكية تستخدم العلاقات المؤكدة فقط.';
+    row.parentNode.insertBefore(note,row);
+
+    var exportBtn=document.createElement("button");
+    exportBtn.id="exportRelations";exportBtn.type="button";exportBtn.className="small-btn";exportBtn.textContent="نسخ العلاقات المؤكدة";
+    row.appendChild(exportBtn);
+
+    document.getElementById("confirmParent").addEventListener("click",function(){
+      if(!pendingParent||!chain.length)return;
+      var child=chain[chain.length-1];
+      if(!addVerifiedRelation(child,pendingParent)){
+        showToast("توجد علاقة موثقة مختلفة لهذا الشخص. لم يتم تغييرها.",3200);
+        pendingParent=null;refresh(false);return;
+      }
+      chain.push(pendingParent);
+      var tail=graphChainFrom(pendingParent);
+      for(var i=1;i<tail.length;i++){
+        if(!chain.some(function(x){return x.id===tail[i].id;}))chain.push(tail[i]);
+      }
+      selected=pendingParent;pendingParent=null;waitingParent=false;
+      showToast("تم اعتماد العلاقة يدويًا على هذا الجهاز.");
+      refresh(false);
+    });
+
+    document.getElementById("rejectParent").addEventListener("click",function(){
+      pendingParent=null;waitingParent=true;selected=chain[chain.length-1];
+      showToast("اختر الأب الصحيح من الشجرة أو البحث.");
+      refresh(false);
+      setTimeout(function(){smartSearch.focus();},120);
+    });
+
+    exportBtn.addEventListener("click",function(){
+      var rels=[];
+      localParentByChild.forEach(function(parentId,childId){
+        rels.push({childId:+childId,parentId:+parentId,status:"verified",source:"manual-confirmation"});
+      });
+      var payload=JSON.stringify({version:1,policy:"explicit-only",relations:rels},null,2);
+      copyText(payload,"تم نسخ العلاقات المؤكدة بصيغة JSON.");
+    });
+  }
 
   function relationName(){
     if(chain.length<=1)return "الأب";
@@ -71,8 +200,7 @@
       if(location.hash)history.replaceState(null,"",location.pathname+location.search);
       return;
     }
-    var ids=chain.map(function(e){return e.id;}).filter(function(id){return id!==null&&id!==undefined;});
-    var h="chain="+ids.join(",");
+    var h="person="+chain[0].id;
     if(daughter)h+="&daughter=1";
     history.replaceState(null,"",location.pathname+location.search+"#"+h);
   }
@@ -81,23 +209,27 @@
     var raw=(location.hash||"").replace(/^#/,"");
     if(!raw)return null;
     var p=new URLSearchParams(raw);
-    var ids=(p.get("chain")||"").split(",").map(function(v){return parseInt(v,10);}).filter(Number.isFinite);
-    return{ids:ids,daughter:p.get("daughter")==="1"};
+    var personId=parseInt(p.get("person")||"",10);
+    if(!Number.isFinite(personId)){
+      var legacy=(p.get("chain")||"").split(",").map(function(v){return parseInt(v,10);}).filter(Number.isFinite);
+      personId=legacy.length?legacy[0]:NaN;
+    }
+    return{personId:personId,daughter:p.get("daughter")==="1"};
   }
 
   function restoreHash(){
     var state=parseHash();
-    if(!state||!state.ids.length)return;
-    var restored=state.ids.map(function(id){return byId.get(id);}).filter(Boolean);
-    if(!restored.length)return;
-    chain=restored;
-    selected=chain[chain.length-1];
+    if(!state||!Number.isFinite(state.personId))return;
+    var start=byId.get(+state.personId);
+    if(!start)return;
+    chain=graphChainFrom(start);
+    selected=start;
     daughter=state.daughter;
     guide.classList.add("open");
     startHint.classList.add("hidden");
-    refresh();
-    locate(chain[0]);
-    showToast("تم استعادة سلسلة النسب من الرابط.");
+    refresh(false);
+    locate(start);
+    showToast(chain.length>1?"تم استعادة السلسلة من علاقات مؤكدة فقط.":"تم فتح الشخص. لا توجد له سلسلة مؤكدة بعد.");
   }
 
   function findViewer(){
@@ -223,6 +355,15 @@
     document.getElementById("genderConnector").textContent="الرابط: "+(daughter?"بنت":"بن");
 
     guide.classList.toggle("waiting",waitingParent);
+    var pendingCard=document.getElementById("pendingRelationCard");
+    if(pendingCard){
+      pendingCard.classList.toggle("show",!!pendingParent);
+      if(pendingParent&&chain.length){
+        document.getElementById("pendingRelationTitle").textContent=chain[chain.length-1].text+" ← "+pendingParent.text;
+      }
+    }
+    var nextCard=document.querySelector(".next-card");
+    if(nextCard)nextCard.style.display=pendingParent?"none":"";
     if(selected){
       personName.textContent=selected.text;
       syncOccurrence(selected);
@@ -251,21 +392,23 @@
 
     if(waitingParent&&chain.length){
       if(chain.some(function(x){return x.id===e.id;})){showToast("هذا الاسم موجود بالفعل في السلسلة.");return;}
-      chain.push(e);
+      pendingParent=e;
       selected=e;
       waitingParent=false;
-      showToast("تمت إضافة "+e.text+" إلى سلسلة النسب.");
+      showToast("راجع اتصال الغصن ثم أكّد العلاقة.");
     }else{
-      chain=[e];
+      chain=graphChainFrom(e);
       selected=e;
       waitingParent=false;
+      pendingParent=null;
+      if(chain.length>1)showToast("تم تحميل سلسلة مبنية على علاقات مؤكدة فقط.");
     }
 
     if(doLocate!==false)locate(e);else highlight(e);
     guide.classList.add("open");
     startHint.classList.add("hidden");
     searchResults.classList.remove("open");
-    refresh();
+    refresh(false);
   }
 
   function searchNames(q){
@@ -296,10 +439,18 @@
       var b=document.createElement("button");
       b.type="button";
       b.className="result-btn";
+      var copy=document.createElement("span");copy.className="result-copy";
       var n=document.createElement("span");n.className="result-name";n.textContent=e.text;
+      copy.appendChild(n);
+      var lineage=graphLabel(e);
+      if(lineage){
+        var l=document.createElement("span");l.className="result-lineage";l.textContent=lineage;
+        copy.appendChild(l);
+      }
       var m=document.createElement("span");m.className="result-meta";
-      m.textContent=total>1?("موضع "+idx+" من "+total):("الموضع #"+e.id);
-      b.appendChild(n);b.appendChild(m);
+      var src=relationSource(e.id);
+      m.textContent=(src?(src==="file"?"موثق":"مؤكد")+" · ":"")+(total>1?("موضع "+idx+" من "+total):("الموضع #"+e.id));
+      b.appendChild(copy);b.appendChild(m);
       b.addEventListener("click",function(){
         smartSearch.value=e.text;
         searchResults.classList.remove("open");
@@ -325,8 +476,9 @@
 
   document.getElementById("nextRelation").addEventListener("click",function(){
     if(!chain.length){showToast("اختر الشخص أولًا.");return;}
+    pendingParent=null;
     waitingParent=true;
-    refresh();
+    refresh(false);
     guide.classList.add("open");
     smartSearch.value="";
     renderSearch("");
@@ -335,7 +487,8 @@
 
   document.getElementById("cancelWait").addEventListener("click",function(){
     waitingParent=false;
-    refresh();
+    pendingParent=null;
+    refresh(false);
   });
 
   document.getElementById("undo").addEventListener("click",function(){
@@ -349,7 +502,7 @@
   });
 
   document.getElementById("reset").addEventListener("click",function(){
-    chain=[];selected=null;waitingParent=false;currentOccurrences=[];
+    chain=[];selected=null;waitingParent=false;pendingParent=null;currentOccurrences=[];
     guide.classList.remove("open");
     startHint.classList.remove("hidden");
     smartSearch.value="";
@@ -403,13 +556,21 @@
   function loadData(){
     return Promise.all([
       fetch("data/entities.json",{cache:"no-store"}).then(function(r){return r.json();}),
-      fetch("data/names.json",{cache:"no-store"}).then(function(r){return r.json();})
+      fetch("data/names.json",{cache:"no-store"}).then(function(r){return r.json();}),
+      fetch("data/verified-relations.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():{relations:[]};}).catch(function(){return{relations:[]};})
     ]).then(function(data){
       entities=data[0]||[];
       nameEntities=entities.filter(function(e){return e.type==="name";});
       nameEntities.forEach(function(e){byId.set(+e.id,e);});
       ((data[1]&&data[1].entityFrequency)||[]).forEach(function(n){freq.set(norm(n.text),n.count);});
+      verifiedParentByChild.clear();
+      ((data[2]&&data[2].relations)||[]).forEach(function(r){
+        var child=+r.childId,parent=+r.parentId;
+        if(r.status==="verified"&&Number.isFinite(child)&&Number.isFinite(parent)&&child!==parent)verifiedParentByChild.set(child,parent);
+      });
+      loadLocalRelations();
       buildSpatial();
+      injectVerifiedUI();
       restoreHash();
     }).catch(function(){showToast("تعذر تحميل بيانات الأسماء، العارض نفسه ما زال يعمل.",3500);});
   }
