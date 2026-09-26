@@ -200,8 +200,7 @@
       if(location.hash)history.replaceState(null,"",location.pathname+location.search);
       return;
     }
-    var ids=chain.map(function(e){return e.id;}).filter(function(id){return id!==null&&id!==undefined;});
-    var h="chain="+ids.join(",");
+    var h="person="+chain[0].id;
     if(daughter)h+="&daughter=1";
     history.replaceState(null,"",location.pathname+location.search+"#"+h);
   }
@@ -210,23 +209,27 @@
     var raw=(location.hash||"").replace(/^#/,"");
     if(!raw)return null;
     var p=new URLSearchParams(raw);
-    var ids=(p.get("chain")||"").split(",").map(function(v){return parseInt(v,10);}).filter(Number.isFinite);
-    return{ids:ids,daughter:p.get("daughter")==="1"};
+    var personId=parseInt(p.get("person")||"",10);
+    if(!Number.isFinite(personId)){
+      var legacy=(p.get("chain")||"").split(",").map(function(v){return parseInt(v,10);}).filter(Number.isFinite);
+      personId=legacy.length?legacy[0]:NaN;
+    }
+    return{personId:personId,daughter:p.get("daughter")==="1"};
   }
 
   function restoreHash(){
     var state=parseHash();
-    if(!state||!state.ids.length)return;
-    var restored=state.ids.map(function(id){return byId.get(id);}).filter(Boolean);
-    if(!restored.length)return;
-    chain=restored;
-    selected=chain[chain.length-1];
+    if(!state||!Number.isFinite(state.personId))return;
+    var start=byId.get(+state.personId);
+    if(!start)return;
+    chain=graphChainFrom(start);
+    selected=start;
     daughter=state.daughter;
     guide.classList.add("open");
     startHint.classList.add("hidden");
-    refresh();
-    locate(chain[0]);
-    showToast("تم استعادة سلسلة النسب من الرابط.");
+    refresh(false);
+    locate(start);
+    showToast(chain.length>1?"تم استعادة السلسلة من علاقات مؤكدة فقط.":"تم فتح الشخص. لا توجد له سلسلة مؤكدة بعد.");
   }
 
   function findViewer(){
