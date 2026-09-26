@@ -3,137 +3,198 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="شجرة عائلة السويلم التفاعلية — ابحث عن الاسم، اضغط عليه، وابنِ سلسلة النسب بوضوح.">
+<meta name="description" content="شجرة عائلة السويلم الذكية — اختر الشخص ثم الأب والجد لبناء سلسلة النسب بشكل واضح.">
 <title>الشجرة الذكية — عائلة السويلم</title>
 <style>
-:root{--paper:#f6f1e8;--ink:#2f2923;--muted:#81786c;--line:rgba(47,41,35,.14);--green:#22302e;--accent:#0d76bd;--card:rgba(255,255,255,.96);--danger:#8d3a3a}
+:root{
+  --paper:#f7f2e9;--paper2:#eee7dc;--ink:#2f2923;--muted:#7e756b;--line:rgba(47,41,35,.13);
+  --green:#22302e;--green2:#314540;--accent:#0d76bd;--accent-soft:rgba(13,118,189,.10);
+  --card:rgba(255,253,249,.97);--danger:#8a3d3d;--shadow:0 18px 55px rgba(0,0,0,.25)
+}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;background:#181714;color:var(--ink);overflow:hidden}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Arabic",Tahoma,sans-serif;background:#181714;color:var(--ink)}
 button,input{font:inherit}
 button{cursor:pointer}
 #app{position:fixed;inset:0;background:#ddd}
 #viewerFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#e4dbcf}
-.smart-search{position:absolute;z-index:50;top:calc(10px + env(safe-area-inset-top));right:10px;left:10px;max-width:720px;margin:auto}
-.search-shell{display:flex;align-items:center;gap:8px;background:rgba(250,247,240,.96);border:1px solid rgba(47,41,35,.22);border-radius:22px;padding:7px 9px;box-shadow:0 10px 34px rgba(0,0,0,.23);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.search-shell input{min-width:0;flex:1;height:46px;border:0;outline:0;background:transparent;color:var(--ink);font-size:1rem;padding:0 8px}
-.search-shell input::placeholder{color:#7b7268}
-.search-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#eee8df;color:#4d463f;font-size:19px;flex:0 0 auto}
-.search-clear{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#70675e;font-size:22px;display:none}
-.search-results{display:none;margin-top:7px;background:rgba(255,252,247,.98);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.22);overflow:hidden;max-height:min(48vh,430px);overflow-y:auto}
+
+/* search */
+.topbar{position:absolute;z-index:50;top:calc(10px + env(safe-area-inset-top));right:10px;left:10px;max-width:760px;margin:auto}
+.search-shell{display:flex;align-items:center;gap:7px;background:rgba(255,252,247,.97);border:1px solid rgba(47,41,35,.2);border-radius:24px;padding:7px;box-shadow:0 10px 34px rgba(0,0,0,.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.search-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:var(--paper2);color:#534b43;flex:0 0 auto}
+.search-shell input{min-width:0;flex:1;height:44px;border:0;outline:0;background:transparent;color:var(--ink);font-size:1rem;padding:0 6px}
+.search-shell input::placeholder{color:#7f766c}
+.icon-btn{width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#6d645b;font-size:20px;display:grid;place-items:center}
+#searchClear{display:none}
+.search-results{display:none;margin-top:7px;background:rgba(255,253,249,.99);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.22);overflow:hidden;max-height:min(48vh,430px);overflow-y:auto}
 .search-results.open{display:block}
-.result-btn{width:100%;border:0;border-bottom:1px solid rgba(47,41,35,.08);background:transparent;color:var(--ink);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:right}
+.result-btn{width:100%;border:0;border-bottom:1px solid rgba(47,41,35,.07);background:transparent;color:var(--ink);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:right}
 .result-btn:last-child{border-bottom:0}
-.result-btn:active{background:#f0e9df}
-.result-name{font-weight:800}
+.result-btn:active{background:#f1ebe2}
+.result-name{font-size:1rem;font-weight:800}
 .result-meta{font-size:.72rem;color:var(--muted);white-space:nowrap}
-.no-result{padding:14px;color:var(--muted);font-size:.85rem}
-.modebar{position:absolute;z-index:21;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center}
-.pick-toggle,.help-btn{min-height:44px;border:1px solid rgba(255,255,255,.5);background:rgba(31,29,25,.90);color:#fff;border-radius:999px;padding:10px 14px;font-weight:750;box-shadow:0 8px 28px rgba(0,0,0,.25);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.help-btn{width:44px;padding:0;font-size:18px}
-.pick-toggle.off{background:rgba(246,241,232,.95);color:#3b342d;border-color:var(--line)}
-.toast{position:absolute;z-index:60;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);background:#22302e;color:#fff;border-radius:999px;padding:10px 16px;font-size:.86rem;opacity:0;pointer-events:none;transition:.2s;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.no-result{padding:15px;color:var(--muted);font-size:.86rem}
+
+/* onboarding */
+.start-hint{position:absolute;z-index:28;right:12px;left:12px;bottom:calc(16px + env(safe-area-inset-bottom));max-width:560px;margin:auto;background:rgba(34,48,46,.94);color:#fff;border:1px solid rgba(255,255,255,.17);border-radius:22px;padding:16px;box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:.25s}
+.start-hint.hidden{opacity:0;transform:translateY(20px);pointer-events:none}
+.start-title{font-weight:850;font-size:1rem;margin-bottom:5px}
+.start-text{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.78)}
+
+/* guided card */
+.guide{position:absolute;z-index:42;right:10px;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:600px;margin:auto;background:var(--card);border:1px solid rgba(255,255,255,.88);border-radius:26px;box-shadow:var(--shadow);padding:13px 14px 15px;transform:translateY(calc(100% + 40px));transition:transform .28s ease;max-height:min(72vh,650px);overflow:auto;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.guide.open{transform:translateY(0)}
+.guide.compact{padding-bottom:13px}
+.handle{width:42px;height:5px;border-radius:999px;background:#c9c1b6;margin:0 auto 10px}
+.guide-head{display:flex;align-items:flex-start;gap:10px}
+.guide-copy{flex:1;min-width:0}
+.kicker{font-size:.72rem;color:var(--accent);font-weight:800;margin-bottom:2px}
+.guide h2{margin:0;font-size:1.45rem;line-height:1.25}
+.meta{margin:5px 0 0;color:var(--muted);font-size:.77rem}
+.close{width:38px;height:38px;border:0;border-radius:50%;background:#eee8df;color:#514941;font-size:20px;flex:0 0 auto}
+
+/* chain */
+.chain-card{margin-top:12px;background:#fbf8f2;border:1px solid var(--line);border-radius:18px;padding:12px}
+.chain-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.chain-title span:first-child{font-size:.75rem;color:var(--muted);font-weight:700}
+.chain-count{font-size:.7rem;color:var(--muted)}
+.chain-flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;line-height:1.7}
+.chain-person{border:1px solid rgba(47,41,35,.11);background:white;color:var(--ink);border-radius:999px;padding:7px 11px;font-weight:800}
+.chain-person.root{background:var(--green);color:#fff;border-color:var(--green)}
+.chain-link{font-size:.78rem;color:#8d8378;font-weight:800}
+
+/* action prompt */
+.next-card{margin-top:11px;border-radius:18px;padding:12px 13px;background:var(--accent-soft);border:1px solid rgba(13,118,189,.15)}
+.next-label{font-size:.72rem;color:#496474;font-weight:800;margin-bottom:3px}
+.next-title{font-size:1rem;font-weight:900}
+.next-desc{font-size:.77rem;color:#66757d;line-height:1.65;margin-top:3px}
+.primary{width:100%;min-height:50px;margin-top:10px;border:0;border-radius:15px;background:var(--green);color:#fff;font-weight:850;font-size:.95rem;padding:10px 14px}
+.primary.wait{background:var(--accent)}
+.secondary-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.small-btn{min-height:42px;border:1px solid var(--line);border-radius:13px;background:#f3eee6;color:var(--ink);font-weight:750;padding:8px 12px}
+.small-btn.danger{color:var(--danger)}
+.small-btn:disabled{opacity:.4;cursor:not-allowed}
+.duplicate-nav{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.duplicate-nav.show{display:flex}
+.dup-label{font-size:.76rem;color:var(--muted)}
+.dup-actions{display:flex;gap:7px}
+.dup-actions button{min-height:38px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 11px;font-weight:750}
+
+/* waiting state */
+.wait-banner{display:none;margin-top:12px;border-radius:18px;background:var(--green);color:#fff;padding:14px}
+.guide.waiting .wait-banner{display:block}
+.guide.waiting .chain-card{margin-top:10px}
+.guide.waiting .next-card,.guide.waiting .secondary-row,.guide.waiting .duplicate-nav{display:none}
+.wait-step{font-size:.72rem;color:rgba(255,255,255,.7);font-weight:800}
+.wait-title{font-size:1.05rem;font-weight:900;margin-top:2px}
+.wait-desc{font-size:.78rem;color:rgba(255,255,255,.76);line-height:1.7;margin-top:4px}
+.cancel-wait{margin-top:10px;width:100%;min-height:44px;border:1px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-weight:800}
+
+/* toast/help */
+.toast{position:absolute;z-index:65;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);background:#22302e;color:#fff;border-radius:999px;padding:10px 16px;font-size:.84rem;opacity:0;pointer-events:none;transition:.2s;max-width:88vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.sheet{position:absolute;z-index:40;right:10px;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));background:var(--card);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.85);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.28);padding:14px 14px 16px;transform:translateY(calc(100% + 40px));transition:transform .28s ease;max-height:min(68vh,620px);overflow:auto}
-.sheet.open{transform:translateY(0)}
-.handle{width:42px;height:5px;border-radius:999px;background:#c8c0b5;margin:0 auto 12px}
-.sheet-head{display:flex;align-items:flex-start;gap:10px}
-.sheet-title{min-width:0;flex:1}
-.sheet-title h2{margin:0;font-size:1.45rem;line-height:1.25}
-.sheet-title p{margin:5px 0 0;color:var(--muted);font-size:.78rem}
-.close{width:38px;height:38px;border-radius:50%;border:0;background:#eee8df;color:#50483f;font-size:20px}
-.chainbox{margin-top:13px;border:1px solid var(--line);background:#fbf8f2;border-radius:18px;padding:13px}
-.chain-label{font-size:.74rem;color:var(--muted);margin-bottom:6px}
-.chain{font-weight:850;font-size:1.04rem;line-height:1.9;word-break:break-word}
-.helper{font-size:.75rem;color:var(--muted);line-height:1.65;margin-top:7px}
-.actions{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin-top:12px}
-.btn{min-height:44px;border-radius:13px;border:1px solid var(--line);background:#f3eee6;color:var(--ink);font-weight:750;padding:9px 10px}
-.btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
-.btn.danger{color:var(--danger)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.waiting .primary{background:var(--accent);border-color:var(--accent)}
-.subrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-size:.76rem;color:#4b433b;font-weight:700}
-.near{margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
-.near h3{margin:0 0 8px;font-size:.82rem;color:#665d53}
-.near-list{display:flex;gap:7px;overflow:auto;padding-bottom:2px;scrollbar-width:none}
-.near-list::-webkit-scrollbar{display:none}
-.near-btn{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;color:var(--ink);font-weight:700}
-.empty{color:var(--muted);font-size:.78rem}
-.help{position:absolute;z-index:70;inset:0;background:rgba(20,18,16,.56);display:none;place-items:center;padding:22px}
+.help{position:absolute;z-index:75;inset:0;background:rgba(20,18,16,.58);display:none;place-items:center;padding:22px}
 .help.open{display:grid}
-.help-card{width:min(480px,100%);background:#fffaf2;border-radius:24px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.32)}
+.help-card{width:min(470px,100%);background:#fffaf2;border-radius:24px;padding:22px;box-shadow:0 22px 70px rgba(0,0,0,.32)}
 .help-card h2{margin:0 0 10px;font-size:1.2rem}
 .help-card p{margin:8px 0;color:#655c52;line-height:1.8;font-size:.9rem}
-.help-card .btn{width:100%;margin-top:10px;background:var(--green);color:#fff;border-color:var(--green)}
-.selection-ring{border:3px solid #0d76bd;border-radius:14px;background:rgba(13,118,189,.08);box-shadow:0 0 0 4px rgba(255,255,255,.8);pointer-events:none}
-@media(min-width:800px){.smart-search{top:16px}.sheet{right:18px;left:auto;width:440px;bottom:18px}.modebar{left:18px;bottom:18px}}
-@media(max-width:520px){.actions{grid-template-columns:1fr 1fr}.actions .primary{grid-column:1/-1}.modebar{left:10px;bottom:calc(10px + env(safe-area-inset-bottom))}.pick-toggle{font-size:.78rem;padding:9px 12px}.smart-search{right:8px;left:8px}}
+.help-card button{width:100%;min-height:46px;border:0;border-radius:14px;background:var(--green);color:#fff;font-weight:800;margin-top:10px}
+.selection-ring{border:3px solid #0d76bd;border-radius:14px;background:rgba(13,118,189,.08);box-shadow:0 0 0 4px rgba(255,255,255,.85);pointer-events:none}
+
+@media(min-width:820px){
+  .topbar{top:16px}
+  .guide{right:18px;left:auto;width:470px;bottom:18px;margin:0}
+  .start-hint{right:auto;left:18px;width:420px;bottom:18px;margin:0}
+}
+@media(max-width:520px){
+  .topbar{right:8px;left:8px}
+  .guide{right:8px;left:8px}
+  .secondary-row{display:grid;grid-template-columns:1fr 1fr}
+  .small-btn{width:100%}
+}
 </style>
 </head>
 <body>
 <div id="app">
   <iframe id="viewerFrame" src="pages/v10.html" title="الشجرة الذكية"></iframe>
 
-  <div class="smart-search">
+  <div class="topbar">
     <div class="search-shell">
       <div class="search-icon" aria-hidden="true">⌕</div>
-      <input id="smartSearch" type="search" inputmode="search" autocomplete="off" placeholder="ابحث بالاسم، مثال: عمر">
-      <button id="searchClear" class="search-clear" type="button" aria-label="مسح البحث">×</button>
+      <input id="smartSearch" type="search" inputmode="search" autocomplete="off" placeholder="ابدأ بكتابة اسم الشخص، مثال: عمر">
+      <button id="searchClear" class="icon-btn" type="button" aria-label="مسح البحث">×</button>
+      <button id="helpBtn" class="icon-btn" type="button" aria-label="طريقة الاستخدام">؟</button>
     </div>
     <div id="searchResults" class="search-results"></div>
   </div>
 
-  <div class="modebar">
-    <button id="pickToggle" class="pick-toggle" type="button">اختيار الأسماء: مفعّل</button>
-    <button id="helpBtn" class="help-btn" type="button" aria-label="طريقة الاستخدام">؟</button>
+  <div id="startHint" class="start-hint">
+    <div class="start-title">ابدأ من اسم الشخص</div>
+    <div class="start-text">ابحث من الأعلى أو اضغط على الاسم مباشرة في الشجرة. بعد اختياره سأطلب منك الأب ثم الجد خطوة بخطوة.</div>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <section id="sheet" class="sheet" aria-live="polite">
+  <section id="guide" class="guide" aria-live="polite">
     <div class="handle"></div>
-    <div class="sheet-head">
-      <div class="sheet-title">
+    <div class="guide-head">
+      <div class="guide-copy">
+        <div id="guideKicker" class="kicker">تم اختيار الشخص</div>
         <h2 id="personName">—</h2>
-        <p id="personMeta">ابحث عن اسم أو اضغط عليه في الشجرة</p>
+        <p id="personMeta" class="meta"></p>
       </div>
-      <button id="closeSheet" class="close" type="button" aria-label="إغلاق">×</button>
+      <button id="closeGuide" class="close" type="button" aria-label="إغلاق">×</button>
     </div>
 
-    <div class="chainbox">
-      <div class="chain-label">سلسلة النسب</div>
-      <div id="chainText" class="chain">—</div>
-      <div class="helper">اختر الشخص، ثم اضغط «أضف الأب» واختر والده من الشجرة. كررها لبناء الاسم الكامل مثل: عمر بن يحيى بن إبراهيم بن يحيى بن محمد… لا يتم تخمين الأب من قرب الأسماء في الصورة.</div>
+    <div class="chain-card">
+      <div class="chain-title">
+        <span>سلسلة النسب الحالية</span>
+        <span id="chainCount" class="chain-count"></span>
+      </div>
+      <div id="chainFlow" class="chain-flow"></div>
     </div>
 
-    <div id="actions" class="actions">
-      <button id="addFather" class="btn primary" type="button">أضف الأب من الشجرة</button>
-      <button id="undo" class="btn" type="button">تراجع</button>
-      <button id="reset" class="btn danger" type="button">مسح</button>
+    <div id="waitBanner" class="wait-banner">
+      <div id="waitStep" class="wait-step">الخطوة التالية</div>
+      <div id="waitTitle" class="wait-title">اختر الأب</div>
+      <div id="waitDesc" class="wait-desc">اضغط على اسم الأب داخل الشجرة، أو ابحث عنه من شريط البحث بالأعلى.</div>
+      <button id="cancelWait" class="cancel-wait" type="button">إلغاء اختيار الأب</button>
     </div>
 
-    <div class="subrow">
-      <button id="genderConnector" class="chip" type="button">الرابط: بن</button>
-      <button id="focusSelected" class="chip" type="button">حدّد على الشجرة</button>
-      <button id="prevOccurrence" class="chip" type="button">السابق</button>
-      <button id="nextOccurrence" class="chip" type="button">التالي</button>
-      <button id="copyChain" class="chip" type="button">نسخ السلسلة</button>
-      <button id="copyLink" class="chip" type="button">نسخ الرابط</button>
+    <div class="next-card">
+      <div class="next-label">الخطوة التالية</div>
+      <div id="nextTitle" class="next-title">اختر الأب</div>
+      <div id="nextDesc" class="next-desc">اضغط الزر ثم اختر اسم الأب من الشجرة.</div>
+      <button id="nextRelation" class="primary" type="button">ابدأ اختيار الأب</button>
     </div>
 
-    <div class="near">
-      <h3>أسماء قريبة في الرسم، للمساعدة على التنقل فقط وليست إثبات نسب</h3>
-      <div id="nearList" class="near-list"><span class="empty">اختر اسمًا أولًا.</span></div>
+    <div id="duplicateNav" class="duplicate-nav">
+      <div id="dupLabel" class="dup-label"></div>
+      <div class="dup-actions">
+        <button id="prevOccurrence" type="button">السابق</button>
+        <button id="nextOccurrence" type="button">التالي</button>
+      </div>
+    </div>
+
+    <div class="secondary-row">
+      <button id="genderConnector" class="small-btn" type="button">الرابط: بن</button>
+      <button id="focusSelected" class="small-btn" type="button">إظهار على الشجرة</button>
+      <button id="undo" class="small-btn" type="button">تراجع خطوة</button>
+      <button id="copyChain" class="small-btn" type="button">نسخ الاسم الكامل</button>
+      <button id="copyLink" class="small-btn" type="button">نسخ الرابط</button>
+      <button id="reset" class="small-btn danger" type="button">ابدأ من جديد</button>
     </div>
   </section>
 
   <div id="help" class="help">
     <div class="help-card">
-      <h2>الشجرة الذكية</h2>
-      <p>ابحث من الشريط الجديد أعلى الصفحة، أو اضغط مباشرة على أي اسم داخل الشجرة. سيتم تكبير موضعه وإظهار بطاقته.</p>
-      <p>إذا تكرر الاسم، استخدم «السابق» و«التالي» للتنقل بين جميع مواضعه.</p>
-      <p>لإنشاء الاسم الكامل بالنسب، اضغط «أضف الأب من الشجرة» واختر الأب، ثم كررها للجد. بيانات اللوحة الحالية لا تحتوي علاقة أب/ابن منظمة، لذلك لا نخمنها آليًا.</p>
-      <button id="closeHelp" class="btn" type="button">فهمت</button>
+      <h2>طريقة الاستخدام</h2>
+      <p><strong>١.</strong> ابحث عن الشخص أو اضغط اسمه في الشجرة.</p>
+      <p><strong>٢.</strong> اضغط «ابدأ اختيار الأب»، ثم اضغط اسم الأب في الرسم أو ابحث عنه بالأعلى.</p>
+      <p><strong>٣.</strong> بعد إضافة الأب سيتحول الزر تلقائيًا إلى اختيار الجد، ثم الجد الأعلى.</p>
+      <p>مثال النتيجة: <strong>عمر بن يحيى بن إبراهيم بن يحيى بن محمد…</strong></p>
+      <p>نحن لا نخمن علاقة الأب تلقائيًا لأن بيانات الصورة الحالية لا تحتوي روابط أب/ابن منظمة.</p>
+      <button id="closeHelp" type="button">فهمت</button>
     </div>
   </div>
 </div>

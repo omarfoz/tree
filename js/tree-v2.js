@@ -2,21 +2,22 @@
   "use strict";
 
   var frame=document.getElementById("viewerFrame");
-  var sheet=document.getElementById("sheet");
+  var guide=document.getElementById("guide");
+  var startHint=document.getElementById("startHint");
   var toast=document.getElementById("toast");
-  var pickToggle=document.getElementById("pickToggle");
   var personName=document.getElementById("personName");
   var personMeta=document.getElementById("personMeta");
-  var chainText=document.getElementById("chainText");
-  var nearList=document.getElementById("nearList");
-  var actions=document.getElementById("actions");
+  var chainFlow=document.getElementById("chainFlow");
+  var chainCount=document.getElementById("chainCount");
   var help=document.getElementById("help");
   var smartSearch=document.getElementById("smartSearch");
   var searchResults=document.getElementById("searchResults");
   var searchClear=document.getElementById("searchClear");
+  var duplicateNav=document.getElementById("duplicateNav");
+  var dupLabel=document.getElementById("dupLabel");
 
   var entities=[],nameEntities=[],freq=new Map(),byId=new Map(),spatial=new Map();
-  var chain=[],selected=null,waitingParent=false,pickMode=true,daughter=false;
+  var chain=[],selected=null,waitingParent=false,daughter=false;
   var viewer=null,viewerHooked=false,selectionEl=null,currentOccurrences=[],occurrenceIndex=0;
   var GRID=140;
 
@@ -30,6 +31,17 @@
 
   function center(e){return{x:+e.x+(+e.w||0)/2,y:+e.y+(+e.h||0)/2};}
   function cellKey(x,y){return Math.floor(x/GRID)+"|"+Math.floor(y/GRID);}
+
+  function relationName(){
+    if(chain.length<=1)return "الأب";
+    if(chain.length===2)return "الجد";
+    return "الجد الأعلى";
+  }
+
+  function targetName(){
+    if(!chain.length)return "";
+    return chain[chain.length-1].text||"";
+  }
 
   function buildSpatial(){
     spatial.clear();
@@ -48,9 +60,9 @@
   }
 
   function chainString(){
-    if(!chain.length)return "—";
+    if(!chain.length)return "";
     var out=String(chain[0].text||"");
-    for(var i=1;i<chain.length;i++) out+=(i===1&&daughter?" بنت ":" بن ")+String(chain[i].text||"");
+    for(var i=1;i<chain.length;i++)out+=(i===1&&daughter?" بنت ":" بن ")+String(chain[i].text||"");
     return out;
   }
 
@@ -78,8 +90,13 @@
     if(!state||!state.ids.length)return;
     var restored=state.ids.map(function(id){return byId.get(id);}).filter(Boolean);
     if(!restored.length)return;
-    chain=restored;selected=chain[chain.length-1];daughter=state.daughter;
-    sheet.classList.add("open");refresh();locate(chain[0]);
+    chain=restored;
+    selected=chain[chain.length-1];
+    daughter=state.daughter;
+    guide.classList.add("open");
+    startHint.classList.add("hidden");
+    refresh();
+    locate(chain[0]);
     showToast("تم استعادة سلسلة النسب من الرابط.");
   }
 
@@ -100,29 +117,25 @@
 
   function waitForViewer(tries){
     viewer=findViewer();
-    if(viewer){
-      hookViewer();
-      return;
-    }
-    if((tries||0)<40)setTimeout(function(){waitForViewer((tries||0)+1);},300);
-    else showToast("تعذر ربط وضع الضغط بالشجرة، البحث الذكي سيبقى متاحًا.",3500);
+    if(viewer){hookViewer();return;}
+    if((tries||0)<45)setTimeout(function(){waitForViewer((tries||0)+1);},300);
+    else showToast("البحث الذكي متاح، لكن الضغط المباشر على الرسم لم يرتبط بعد.",3500);
   }
 
   function hookViewer(){
     if(!viewer||viewerHooked)return;
     viewerHooked=true;
     viewer.addHandler("canvas-click",function(ev){
-      if(!pickMode||!ev||ev.quick===false||!ev.position)return;
+      if(!ev||ev.quick===false||!ev.position)return;
       var vp=viewer.viewport.pointFromPixel(ev.position);
       var img=viewer.viewport.viewportToImageCoordinates(vp);
       var e=nearestAt(img.x,img.y);
-      if(e){
-        if(ev.preventDefaultAction!==undefined)ev.preventDefaultAction=true;
-        acceptEntity(e,false);
-      }
+      if(!e)return;
+      if(ev.preventDefaultAction!==undefined)ev.preventDefaultAction=true;
+      acceptEntity(e,false);
     });
     viewer.addHandler("open",function(){if(selected)highlight(selected);});
-    showToast("الشجرة الذكية جاهزة — ابحث أو اضغط على اسم.",2600);
+    showToast("جاهز — ابحث عن الشخص أو اضغط على اسمه.",2400);
   }
 
   function nearestAt(x,y){
@@ -170,56 +183,89 @@
   function syncOccurrence(e){
     currentOccurrences=occurrencesFor(e);
     occurrenceIndex=Math.max(0,currentOccurrences.findIndex(function(x){return x.id===e.id;}));
-    document.getElementById("prevOccurrence").disabled=currentOccurrences.length<2;
-    document.getElementById("nextOccurrence").disabled=currentOccurrences.length<2;
+    duplicateNav.classList.toggle("show",currentOccurrences.length>1);
+    if(currentOccurrences.length>1)dupLabel.textContent="هذا الاسم موجود "+currentOccurrences.length+" مرات · "+(occurrenceIndex+1)+" من "+currentOccurrences.length;
   }
 
-  function refresh(){
-    chainText.textContent=chainString();
+  function renderChain(){
+    chainFlow.innerHTML="";
+    if(!chain.length){
+      chainFlow.innerHTML='<span style="color:#81786c;font-size:.82rem">لم تبدأ السلسلة بعد.</span>';
+      chainCount.textContent="";
+      return;
+    }
+    chain.forEach(function(e,i){
+      if(i>0){
+        var link=document.createElement("span");
+        link.className="chain-link";
+        link.textContent=(i===1&&daughter)?"بنت":"بن";
+        chainFlow.appendChild(link);
+      }
+      var b=document.createElement("button");
+      b.type="button";
+      b.className="chain-person"+(i===0?" root":"");
+      b.textContent=e.text;
+      b.title="إظهار "+e.text+" على الشجرة";
+      b.addEventListener("click",function(){selected=e;locate(e);refresh(false);});
+      chainFlow.appendChild(b);
+    });
+    chainCount.textContent=chain.length===1?"شخص واحد":chain.length+" أسماء";
+  }
+
+  function refresh(updateSelected){
+    if(updateSelected!==false&&chain.length)selected=chain[chain.length-1];
+    renderChain();
+
     document.getElementById("undo").disabled=chain.length<2;
     document.getElementById("reset").disabled=chain.length===0;
     document.getElementById("copyChain").disabled=chain.length===0;
     document.getElementById("copyLink").disabled=chain.length===0;
     document.getElementById("genderConnector").textContent="الرابط: "+(daughter?"بنت":"بن");
-    actions.classList.toggle("waiting",waitingParent);
-    document.getElementById("addFather").textContent=waitingParent?"اضغط الآن على اسم الأب":"أضف الأب من الشجرة";
 
+    guide.classList.toggle("waiting",waitingParent);
     if(selected){
       personName.textContent=selected.text;
       syncOccurrence(selected);
       var c=freq.get(norm(selected.text))||currentOccurrences.length||0;
-      personMeta.textContent="الموضع #"+selected.id+" · "+(c?("ظهر "+c+" مرة"):"اسم في الشجرة")+(currentOccurrences.length>1?(" · النتيجة "+(occurrenceIndex+1)+" من "+currentOccurrences.length):"");
-      renderNear(selected);
+      personMeta.textContent=(c?("ظهر الاسم "+c+" مرة في الشجرة"):"اسم في الشجرة")+" · الموضع #"+selected.id;
     }
-    updateHash();
-  }
 
-  function renderNear(base){
-    if(!nameEntities.length){nearList.innerHTML='<span class="empty">جارٍ تحميل البيانات…</span>';return;}
-    var bc=center(base);
-    var list=nameEntities.filter(function(e){return e.id!==base.id;}).map(function(e){
-      var ec=center(e),dx=ec.x-bc.x,dy=ec.y-bc.y;
-      return{e:e,d:Math.sqrt(dx*dx+dy*dy)};
-    }).sort(function(a,b){return a.d-b.d;}).slice(0,10);
-    nearList.innerHTML="";
-    list.forEach(function(item){
-      var b=document.createElement("button");b.type="button";b.className="near-btn";b.textContent=item.e.text;
-      b.addEventListener("click",function(){acceptEntity(item.e,true);});
-      nearList.appendChild(b);
-    });
+    var rel=relationName();
+    document.getElementById("nextTitle").textContent="اختر "+rel;
+    document.getElementById("nextDesc").textContent=chain.length===1
+      ?"بعد الضغط على الزر اختر اسم الأب من الشجرة أو ابحث عنه بالأعلى."
+      :"أكمل السلسلة باختيار "+rel+" للشخص الأخير.";
+    document.getElementById("nextRelation").textContent="ابدأ اختيار "+rel;
+
+    document.getElementById("waitStep").textContent="أنت الآن تختار "+rel;
+    document.getElementById("waitTitle").textContent="اختر "+rel+" لـ "+targetName();
+    document.getElementById("waitDesc").textContent="اضغط على الاسم داخل الشجرة، أو اكتب اسمه في البحث بالأعلى. عند الاختيار سيضاف مباشرة إلى السلسلة.";
+    document.getElementById("cancelWait").textContent="إلغاء اختيار "+rel;
+
+    smartSearch.placeholder=waitingParent?("ابحث عن "+rel+" لـ "+targetName()):"ابدأ بكتابة اسم الشخص، مثال: عمر";
+    updateHash();
   }
 
   function acceptEntity(e,doLocate){
     if(!e||e.type!=="name"){showToast("هذا الموضع ليس اسمًا معتمدًا في بيانات الأسماء.");return;}
-    selected=e;
+
     if(waitingParent&&chain.length){
       if(chain.some(function(x){return x.id===e.id;})){showToast("هذا الاسم موجود بالفعل في السلسلة.");return;}
-      chain.push(e);waitingParent=false;showToast("تمت إضافة "+e.text+" إلى سلسلة النسب.");
+      chain.push(e);
+      selected=e;
+      waitingParent=false;
+      showToast("تمت إضافة "+e.text+" إلى سلسلة النسب.");
     }else{
-      chain=[e];waitingParent=false;
+      chain=[e];
+      selected=e;
+      waitingParent=false;
     }
+
     if(doLocate!==false)locate(e);else highlight(e);
-    sheet.classList.add("open");refresh();
+    guide.classList.add("open");
+    startHint.classList.add("hidden");
+    searchResults.classList.remove("open");
+    refresh();
   }
 
   function searchNames(q){
@@ -237,20 +283,28 @@
 
   function renderSearch(q){
     var list=searchNames(q);
-    searchClear.style.display=q?"block":"none";
+    searchClear.style.display=q?"grid":"none";
     if(!q){searchResults.classList.remove("open");searchResults.innerHTML="";return;}
     searchResults.classList.add("open");
     if(!list.length){searchResults.innerHTML='<div class="no-result">لا توجد نتيجة مطابقة في بيانات الأسماء.</div>';return;}
+
     var seen=new Map();
     searchResults.innerHTML="";
     list.forEach(function(e){
       var k=norm(e.text),idx=(seen.get(k)||0)+1;seen.set(k,idx);
       var total=freq.get(k)||occurrencesFor(e).length||1;
-      var b=document.createElement("button");b.type="button";b.className="result-btn";
+      var b=document.createElement("button");
+      b.type="button";
+      b.className="result-btn";
       var n=document.createElement("span");n.className="result-name";n.textContent=e.text;
-      var m=document.createElement("span");m.className="result-meta";m.textContent=total>1?("موضع "+idx+" من "+total):("الموضع #"+e.id);
+      var m=document.createElement("span");m.className="result-meta";
+      m.textContent=total>1?("موضع "+idx+" من "+total):("الموضع #"+e.id);
       b.appendChild(n);b.appendChild(m);
-      b.addEventListener("click",function(){smartSearch.value=e.text;searchResults.classList.remove("open");acceptEntity(e,true);});
+      b.addEventListener("click",function(){
+        smartSearch.value=e.text;
+        searchResults.classList.remove("open");
+        acceptEntity(e,true);
+      });
       searchResults.appendChild(b);
     });
   }
@@ -262,49 +316,75 @@
   }
 
   function fallbackCopy(text,ok){
-    var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.opacity="0";
+    var ta=document.createElement("textarea");
+    ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.opacity="0";
     document.body.appendChild(ta);ta.select();
     try{document.execCommand("copy");showToast(ok);}catch(e){showToast("تعذر النسخ تلقائيًا.");}
     ta.remove();
   }
 
-  document.getElementById("addFather").addEventListener("click",function(){
-    if(!chain.length){showToast("اختر الشخص أولًا من الشجرة.");return;}
-    waitingParent=!waitingParent;refresh();
-    if(waitingParent){sheet.classList.remove("open");showToast("اضغط الآن على اسم الأب في الشجرة.",3200);}
+  document.getElementById("nextRelation").addEventListener("click",function(){
+    if(!chain.length){showToast("اختر الشخص أولًا.");return;}
+    waitingParent=true;
+    refresh();
+    guide.classList.add("open");
+    smartSearch.value="";
+    renderSearch("");
+    setTimeout(function(){smartSearch.focus();},120);
+  });
+
+  document.getElementById("cancelWait").addEventListener("click",function(){
+    waitingParent=false;
+    refresh();
   });
 
   document.getElementById("undo").addEventListener("click",function(){
-    if(chain.length>1){chain.pop();selected=chain[chain.length-1];locate(selected);refresh();}
+    if(chain.length>1){
+      chain.pop();
+      selected=chain[chain.length-1];
+      waitingParent=false;
+      locate(selected);
+      refresh();
+    }
   });
 
   document.getElementById("reset").addEventListener("click",function(){
-    chain=[];selected=null;waitingParent=false;currentOccurrences=[];sheet.classList.remove("open");refresh();
+    chain=[];selected=null;waitingParent=false;currentOccurrences=[];
+    guide.classList.remove("open");
+    startHint.classList.remove("hidden");
+    smartSearch.value="";
+    renderSearch("");
+    smartSearch.placeholder="ابدأ بكتابة اسم الشخص، مثال: عمر";
     if(viewer&&selectionEl){try{viewer.removeOverlay(selectionEl);}catch(e){}}
+    updateHash();
   });
 
-  document.getElementById("genderConnector").addEventListener("click",function(){daughter=!daughter;refresh();});
-  document.getElementById("focusSelected").addEventListener("click",function(){if(selected){locate(selected);showToast("تم تحديد الاسم على الشجرة.");}});
+  document.getElementById("genderConnector").addEventListener("click",function(){daughter=!daughter;refresh(false);});
+  document.getElementById("focusSelected").addEventListener("click",function(){if(selected){locate(selected);showToast("تم إظهار الاسم على الشجرة.");}});
 
   document.getElementById("prevOccurrence").addEventListener("click",function(){
     if(currentOccurrences.length<2)return;
     occurrenceIndex=(occurrenceIndex-1+currentOccurrences.length)%currentOccurrences.length;
-    acceptEntity(currentOccurrences[occurrenceIndex],true);
+    var e=currentOccurrences[occurrenceIndex];
+    if(chain.length===1)chain=[e];
+    selected=e;
+    locate(e);
+    refresh(false);
   });
+
   document.getElementById("nextOccurrence").addEventListener("click",function(){
     if(currentOccurrences.length<2)return;
     occurrenceIndex=(occurrenceIndex+1)%currentOccurrences.length;
-    acceptEntity(currentOccurrences[occurrenceIndex],true);
+    var e=currentOccurrences[occurrenceIndex];
+    if(chain.length===1)chain=[e];
+    selected=e;
+    locate(e);
+    refresh(false);
   });
 
-  document.getElementById("copyChain").addEventListener("click",function(){if(chain.length)copyText(chainString(),"تم نسخ سلسلة النسب.");});
+  document.getElementById("copyChain").addEventListener("click",function(){if(chain.length)copyText(chainString(),"تم نسخ الاسم الكامل.");});
   document.getElementById("copyLink").addEventListener("click",function(){if(chain.length)copyText(location.href,"تم نسخ رابط السلسلة.");});
-  document.getElementById("closeSheet").addEventListener("click",function(){sheet.classList.remove("open");});
-
-  pickToggle.addEventListener("click",function(){
-    pickMode=!pickMode;pickToggle.classList.toggle("off",!pickMode);pickToggle.textContent="اختيار الأسماء: "+(pickMode?"مفعّل":"متوقف");
-    showToast(pickMode?"اضغط على أي اسم لعرضه.":"تم تعطيل اختيار الأسماء، ويمكنك تحريك الشجرة بحرية.");
-  });
+  document.getElementById("closeGuide").addEventListener("click",function(){guide.classList.remove("open");});
 
   document.getElementById("helpBtn").addEventListener("click",function(){help.classList.add("open");});
   document.getElementById("closeHelp").addEventListener("click",function(){help.classList.remove("open");});
@@ -312,14 +392,13 @@
 
   var st;
   smartSearch.addEventListener("input",function(){
-    clearTimeout(st);var q=smartSearch.value.trim();
-    st=setTimeout(function(){renderSearch(q);},80);
+    clearTimeout(st);
+    var q=smartSearch.value.trim();
+    st=setTimeout(function(){renderSearch(q);},70);
   });
   smartSearch.addEventListener("focus",function(){if(smartSearch.value.trim())renderSearch(smartSearch.value.trim());});
   searchClear.addEventListener("click",function(){smartSearch.value="";renderSearch("");smartSearch.focus();});
-  document.addEventListener("pointerdown",function(e){
-    if(!e.target.closest(".smart-search"))searchResults.classList.remove("open");
-  });
+  document.addEventListener("pointerdown",function(e){if(!e.target.closest(".topbar"))searchResults.classList.remove("open");});
 
   function loadData(){
     return Promise.all([
@@ -330,10 +409,11 @@
       nameEntities=entities.filter(function(e){return e.type==="name";});
       nameEntities.forEach(function(e){byId.set(+e.id,e);});
       ((data[1]&&data[1].entityFrequency)||[]).forEach(function(n){freq.set(norm(n.text),n.count);});
-      buildSpatial();restoreHash();
+      buildSpatial();
+      restoreHash();
     }).catch(function(){showToast("تعذر تحميل بيانات الأسماء، العارض نفسه ما زال يعمل.",3500);});
   }
 
   frame.addEventListener("load",function(){setTimeout(function(){waitForViewer(0);},350);});
-  loadData().then(function(){setTimeout(function(){if(frame.contentDocument&&frame.contentDocument.readyState==="complete")waitForViewer(0);},400);});
+  loadData().then(function(){setTimeout(function(){try{if(frame.contentDocument&&frame.contentDocument.readyState==="complete")waitForViewer(0);}catch(e){}},400);});
 })();
