@@ -665,3 +665,46 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin: 6px 0 0;
   max-width: 640px;
 }
+
+
+/* ─── Robust responsive text/layout fixes ─── */
+.card,
+.chart-container,
+.section,
+.section-header,
+.section-header > *,
+.grid > *,
+.site-footer-inner > *,
+.page-hero,
+.analytics-table-card {
+  min-width: 0;
+}
+.card,
+.card-sublabel,
+.section-title,
+.section-desc,
+.page-hero p,
+.disclaimer,
+.data-table td,
+.data-table th,
+.site-footer,
+.hero-subtitle {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.chart-container {
+  overflow: hidden;
+}
+.chart-container canvas {
+  max-width: 100% !important;
+}
+@media (max-width: 640px) {
+  .card { padding: 18px; }
+  .card-stat .card-value { font-size: 2rem; }
+  .card-stat .card-label,
+  .card-stat .card-sublabel { line-height: 1.55; }
+  .section-header { margin-bottom: 18px; }
+  .section-title { font-size: 1.2rem; line-height: 1.5; }
+  .section-desc { line-height: 1.7; margin-bottom: 14px; }
+  .site-footer-inner { align-items: flex-start; }
+}

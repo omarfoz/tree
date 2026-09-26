@@ -566,6 +566,17 @@
         if(gender.people[k]&&gender.people[k].gender)genders.set(+k,gender.people[k].gender);
       });
       buildIndexes();renderStats();renderGraph({keepView:false});
+      var initialQuery=new URLSearchParams(location.search).get("q");
+      if(initialQuery){
+        search.value=initialQuery;
+        var rows=searchPeople(initialQuery);
+        if(rows.length===1){
+          selectPerson(rows[0].id,true);
+        }else{
+          renderSearch(initialQuery);
+          search.focus();
+        }
+      }
     }).catch(function(err){
       empty.classList.remove("hidden");
       empty.querySelector("h1").textContent="تعذر تحميل بيانات الشجرة";
