@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-09-26T17:28:26.262938+00:00",
+  "totalNameEntities": 3409,
+  "resolvedParents": 8,
+  "unresolvedParents": 3401,
+  "ambiguousParents": 0,
+  "coveragePercent": 0.235,
+  "confidenceDistribution": {
+    "1.0": 8,
+    "unknown": 3401
+  },
+  "cycles": [],
+  "invalidReferences": [],
+  "conflictingParents": [],
+  "groundTruthTests": [
+    {
+      "expected": "عمر بن يحيى بن إبراهيم بن يحيى بن محمد",
+      "matches": [
+        {
+          "id": 1465,
+          "lineage": "عمر يحيى إبراهيم يحيى محمد"
+        }
+      ],
+      "passed": true,
+      "connector": "بن"
+    },
+    {
+      "expected": "سلمى بنت دباس بن عبدالعزيز بن حمد بن فارس",
+      "matches": [
+        {
+          "id": 2904,
+          "lineage": "سلمى دباس عبد العزيز حمد فارس"
+        }
+      ],
+      "passed": true,
+      "connector": "بنت"
+    }
+  ],
+  "visualPathExtraction": {
+    "performed": false,
+    "reason": "The captured artwork is embedded as OpenSeadragon WebP tiles, but the existing verified relation records contain no traced branch polylines or graph nodes. No branch paths were fabricated."
+  }
+}
