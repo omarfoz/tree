@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="الشجرة الإلكترونية لعائلة السويلم، مبنية من بيانات النسب الموثقة.">
+  <title>الشجرة الإلكترونية — عائلة السويلم</title>
+  <link rel="stylesheet" href="css/digital-tree.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="العودة للرئيسية">
+        <span class="brand-mark">س</span>
+        <span>
+          <strong>عائلة السويلم</strong>
+          <small>الشجرة الإلكترونية</small>
+        </span>
+      </a>
+
+      <div class="search-wrap">
+        <div class="search-box">
+          <span class="search-icon">⌕</span>
+          <input id="treeSearch" type="search" autocomplete="off" inputmode="search"
+                 placeholder="اكتب الاسم والنسب، مثال: عمر يحيى إبراهيم">
+          <button id="clearSearch" class="icon-button" type="button" aria-label="مسح">×</button>
+        </div>
+        <div id="searchResults" class="search-results" role="listbox"></div>
+      </div>
+
+      <div class="header-actions">
+        <button id="fitView" class="soft-button" type="button">إظهار الكل</button>
+        <button id="resetView" class="soft-button" type="button">الرئيسية</button>
+      </div>
+    </header>
+
+    <section class="statusbar">
+      <div>
+        <span class="eyebrow">شجرة مبنية من البيانات</span>
+        <strong id="statusTitle">العلاقات الموثقة فقط</strong>
+      </div>
+      <div id="stats" class="stats"></div>
+    </section>
+
+    <section id="graphStage" class="graph-stage" aria-label="الشجرة الإلكترونية">
+      <svg id="treeSvg" class="tree-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم شجرة العائلة">
+        <g id="viewport">
+          <g id="edgesLayer"></g>
+          <g id="nodesLayer"></g>
+        </g>
+      </svg>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-mark">س</div>
+        <h1>شجرة إلكترونية، وليست صورة</h1>
+        <p>ابحث باسم الشخص أو بالنسب. عند وجود علاقة موثقة، سيُفتح المسار تلقائيًا ويظهر الشخص داخل الشجرة.</p>
+        <div class="examples">
+          <button type="button" data-query="عمر يحيى">عمر يحيى</button>
+          <button type="button" data-query="سلمى دباس">سلمى دباس</button>
+        </div>
+      </div>
+
+      <div class="zoom-controls" aria-label="التحكم بالتقريب">
+        <button id="zoomIn" type="button" aria-label="تكبير">+</button>
+        <button id="zoomOut" type="button" aria-label="تصغير">−</button>
+        <button id="centerSelected" type="button" aria-label="توسيط المحدد">◎</button>
+      </div>
+
+      <div class="legend">
+        <span><i class="legend-dot selected-dot"></i> المحدد</span>
+        <span><i class="legend-dot ancestor-dot"></i> مسار الأجداد</span>
+        <span><i class="legend-dot normal-dot"></i> قريب مرتبط</span>
+      </div>
+    </section>
+
+    <aside id="personSheet" class="person-sheet" aria-live="polite">
+      <div class="sheet-handle"></div>
+      <div class="sheet-head">
+        <div>
+          <span class="eyebrow">الشخص المحدد</span>
+          <h2 id="sheetName">—</h2>
+        </div>
+        <button id="closeSheet" class="icon-button sheet-close" type="button" aria-label="إغلاق">×</button>
+      </div>
+
+      <p id="fullLineage" class="full-lineage"></p>
+
+      <dl class="person-meta">
+        <div><dt>الأب</dt><dd id="fatherValue">—</dd></div>
+        <div><dt>الأبناء المرتبطون</dt><dd id="childrenValue">—</dd></div>
+        <div><dt>حالة النسب</dt><dd id="statusValue">—</dd></div>
+      </dl>
+
+      <div class="sheet-actions">
+        <button id="showAncestors" type="button">عرض الأجداد</button>
+        <button id="showChildren" type="button">عرض الأبناء</button>
+        <button id="copyLineage" type="button">نسخ الاسم الكامل</button>
+      </div>
+    </aside>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script src="js/digital-tree.js"></script>
+</body>
+</html>
