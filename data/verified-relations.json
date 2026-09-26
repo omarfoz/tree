@@ -1,6 +1,63 @@
 {
   "version": 1,
   "policy": "explicit-only",
-  "description": "Only explicitly verified parent-child relations belong here. Never infer relations from proximity, coordinates, OCR, or visual guesses.",
-  "relations": []
+  "description": "Only explicitly verified parent-child relations belong here. These relations were confirmed by the user against the visible branch path in the source tree; no proximity-only inference is accepted.",
+  "relations": [
+    {
+      "childId": 1465,
+      "parentId": 481,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "عمر (10/27) ← يحيى"
+    },
+    {
+      "childId": 481,
+      "parentId": 779,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "يحيى ← إبراهيم"
+    },
+    {
+      "childId": 779,
+      "parentId": 480,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "إبراهيم ← يحيى"
+    },
+    {
+      "childId": 480,
+      "parentId": 313,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "يحيى ← محمد"
+    },
+    {
+      "childId": 2904,
+      "parentId": 569,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "سلمى (4/9) ← دباس"
+    },
+    {
+      "childId": 569,
+      "parentId": 106,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "دباس ← عبد العزيز"
+    },
+    {
+      "childId": 106,
+      "parentId": 570,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "عبد العزيز ← حمد"
+    },
+    {
+      "childId": 570,
+      "parentId": 309,
+      "status": "verified",
+      "source": "user-confirmed visual trace",
+      "note": "حمد ← فارس"
+    }
+  ]
 }
