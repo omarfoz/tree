@@ -3,92 +3,203 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="إحصائيات متقدمة لعائلة السويلم">
-<title>الإحصائيات المتقدمة — شجرة عائلة السويلم</title>
+<meta name="description" content="لوحة تحليلات عائلة السويلم: الأفراد، الأسماء، الأجيال، الفروع، وجودة البيانات">
+<title>التحليلات — شجرة عائلة السويلم</title>
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-.heatmap-wrap{width:100%;padding:16px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg)}.heatmap-wrap canvas{display:block;max-width:100%;margin:auto;border-radius:var(--radius-md)}.spatial-mode.active{background:var(--color-primary-soft);color:var(--color-ink);border-color:var(--color-primary)}
+.analytics-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;padding:42px 0 28px;border-bottom:1px solid var(--color-border)}
+.analytics-hero h1{margin:0;font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.2}
+.analytics-hero p{max-width:720px;margin:10px 0 0;color:var(--color-ink-muted);line-height:1.9;overflow-wrap:anywhere}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--color-border-strong);background:var(--color-bg-elevated);border-radius:999px;padding:8px 12px;font-size:.78rem;color:var(--color-ink-soft);white-space:nowrap}
+.analytics-kpis{margin-top:24px}
+.kpi-card{min-width:0}
+.kpi-card .card-value{font-size:clamp(1.8rem,5vw,2.5rem)}
+.kpi-card .card-sublabel{line-height:1.65;overflow-wrap:anywhere}
+.analytics-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:16px}
+.analytics-grid.reverse{grid-template-columns:minmax(280px,.8fr) minmax(0,1.45fr)}
+.chart-shell{position:relative;height:360px;min-width:0}
+.chart-shell.tall{height:420px}
+.chart-shell canvas{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:100%!important}
+.summary-list{display:grid;gap:10px}
+.summary-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--color-border)}
+.summary-row:last-child{border-bottom:0}
+.summary-row span:first-child{min-width:0;overflow-wrap:anywhere;color:var(--color-ink-soft)}
+.summary-row strong{white-space:nowrap}
+.coverage-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.coverage-ring{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--color-primary) var(--coverage),var(--color-paper) 0);position:relative;flex:0 0 auto}
+.coverage-ring::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--color-bg-elevated)}
+.coverage-ring strong{position:relative;z-index:1;font-size:1.2rem}
+.coverage-copy{min-width:0}.coverage-copy h3{margin:0 0 6px}.coverage-copy p{margin:0;color:var(--color-ink-muted);line-height:1.8;overflow-wrap:anywhere}
+.analytics-table-card{padding:0;overflow:hidden}
+.table-title{padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700}
+.table-scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.data-table{min-width:620px}
+.data-table td{overflow-wrap:anywhere}
+.name-trend{display:flex;align-items:center;gap:10px;min-width:0}
+.name-trend strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-badge{width:28px;height:28px;border-radius:9px;background:var(--color-primary-soft);display:grid;place-items:center;font-weight:700;color:var(--color-primary-text);flex:0 0 auto}
+.heatmap-wrap{width:100%;padding:12px;overflow:auto;background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg)}
+.heatmap-wrap canvas{display:block;margin:auto;border-radius:var(--radius-md);max-width:none}
+.spatial-mode.active{background:var(--color-primary-soft);color:var(--color-ink);border-color:var(--color-primary)}
+.insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.insight-card{min-width:0}.insight-card h3{margin:0 0 8px;font-size:1rem}.insight-card p{margin:0;color:var(--color-ink-muted);font-size:.88rem;line-height:1.8;overflow-wrap:anywhere}
+.report-copy{font-size:.9rem;line-height:1.9}.report-copy p,.report-copy li,.report-copy a{overflow-wrap:anywhere;word-break:break-word}
+.report-copy ul{margin:8px 0;padding-right:20px}
+.section-header>div{min-width:0}.section-title,.section-desc{overflow-wrap:anywhere}
+@media(max-width:900px){
+  .analytics-grid,.analytics-grid.reverse{grid-template-columns:1fr}
+  .insight-grid{grid-template-columns:1fr}
+  .analytics-hero{grid-template-columns:1fr}.analytics-hero .hero-badge{justify-self:start}
+}
+@media(max-width:640px){
+  .analytics-hero{padding:26px 0 20px}
+  .section{padding:28px 0}
+  .section-header{align-items:flex-start}
+  .section-header .flex{width:100%;overflow:auto;padding-bottom:2px}
+  .chart-container{padding:14px}
+  .chart-shell{height:310px}.chart-shell.tall{height:340px}
+  .coverage-card{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .coverage-ring{width:106px;height:106px}
+  .data-table{font-size:.82rem}
+  .data-table th,.data-table td{padding:11px 12px}
+  .heatmap-wrap{padding:8px}
+}
 </style>
 </head>
 <body>
 
 <main class="container">
-
-  <div class="page-hero">
-    <h1>الإحصائيات المتقدمة</h1>
-    <p>تحليل مفصل للبيانات المستخرجة من الشجرة والصفحة الرسمية.</p>
-  </div>
-
-  <!-- Official vs Extracted -->
-  <section class="section">
-    <div class="section-header">
-      <div>
-        <h2 class="section-title">مقارنة البيانات الرسمية والمستخرجة</h2>
-        <p class="section-desc">توثيق الفروقات بين الإحصائيات الرسمية وما يمكن استخراجه من العارض</p>
-      </div>
+  <section class="analytics-hero">
+    <div>
+      <span class="badge badge-green">لوحة بيانات</span>
+      <h1>تحليلات شجرة عائلة السويلم</h1>
+      <p>ملخص واضح للأفراد، الأسماء، تطور الإصدارات، توزيع الأجيال، البيانات المكانية، وحالة ربط النسب الإلكتروني. جميع الأرقام موصوفة بحسب مصدرها حتى لا تختلط الإحصاءات الرسمية مع النصوص المستخرجة.</p>
     </div>
-    <div class="grid grid-3" id="compare-grid"></div>
+    <a class="hero-badge" href="digital-tree.html">فتح الشجرة الإلكترونية ←</a>
   </section>
 
-  <!-- Name diversity -->
+  <section class="analytics-kpis">
+    <div class="grid grid-4" id="overview-kpis"></div>
+  </section>
+
   <section class="section">
     <div class="section-header">
       <div>
-        <h2 class="section-title">تنوع الأسماء</h2>
-        <p class="section-desc">توزيع تكرار الأسماء — كم اسم يظهر مرة واحدة فقط؟</p>
+        <h2 class="section-title">الأفراد والإصدارات</h2>
+        <p class="section-desc">كيف تغير عدد أفراد العائلة عبر الإصدارات الموثقة.</p>
       </div>
     </div>
-    <div class="grid grid-2">
-      <div class="chart-container" style="min-height:300px;">
-        <canvas id="diversityChart"></canvas>
+    <div class="analytics-grid">
+      <div class="chart-container">
+        <div class="chart-shell"><canvas id="editionChart"></canvas></div>
       </div>
       <div class="card">
-        <div style="font-weight:700;margin-bottom:12px;">ملخص التنوع</div>
-        <div id="diversity-summary"></div>
+        <div style="font-weight:700;margin-bottom:8px">الإصدار الأحدث</div>
+        <div id="latest-edition-summary" class="summary-list"></div>
       </div>
     </div>
   </section>
 
-  <!-- Edition comparison -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">الأجيال</h2>
+        <p class="section-desc">توزيع الأفراد المسجلين في كل جيل بحسب البيانات الرسمية.</p>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-shell tall"><canvas id="generationChart"></canvas></div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="section-header">
       <div>
-        <h2 class="section-title">تطور الإصدارات</h2>
-        <p class="section-desc">مقارنة أعداد الفروع والأفراد عبر الإصدارات</p>
+        <h2 class="section-title">الأسماء الأكثر ظهورًا</h2>
+        <p class="section-desc">تكرار التسميات النصية داخل الشجرة، وليس عدد أشخاص مؤكدين لكل اسم.</p>
       </div>
     </div>
-    <div class="chart-container" style="min-height:350px;">
-      <canvas id="editionChart"></canvas>
+    <div class="analytics-grid reverse">
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:10px">تنوع الأسماء</div>
+        <div id="diversity-summary" class="summary-list"></div>
+      </div>
+      <div class="analytics-table-card card">
+        <div class="table-title">أعلى الأسماء تكرارًا</div>
+        <div class="table-scroller">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>الاسم</th><th>مرات الظهور</th><th>النسبة</th></tr></thead>
+            <tbody id="top-names-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="chart-container mt-3">
+      <div class="chart-shell"><canvas id="diversityChart"></canvas></div>
     </div>
   </section>
 
   <section class="section">
     <div class="section-header">
-      <div><h2 class="section-title">التحليل المكاني للشجرة</h2><p class="section-desc">خريطة استكشافية مبنية على إحداثيات النصوص الأصلية، لقياس الكثافة واكتشاف مناطق التداخل المحتملة.</p></div>
-      <div class="flex items-center" style="gap:8px"><button class="btn btn-ghost btn-sm spatial-mode active" data-mode="heat">خريطة حرارية</button><button class="btn btn-ghost btn-sm spatial-mode" data-mode="points">نقاط النصوص</button></div>
+      <div>
+        <h2 class="section-title">حالة الشجرة الإلكترونية</h2>
+        <p class="section-desc">نسبة علاقات الأب الموثقة فعليًا في ملف النسب الإلكتروني، من دون تخمين مكاني.</p>
+      </div>
+    </div>
+    <div class="analytics-grid">
+      <div class="card coverage-card" id="coverage-card"></div>
+      <div class="card" id="genealogy-tests"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">التحليل المكاني للنصوص</h2>
+        <p class="section-desc">يعرض مواضع التسميات في المصدر الأصلي لأغراض الجودة والكثافة فقط. لا تُستخدم الإحداثيات لإثبات النسب.</p>
+      </div>
+      <div class="flex items-center" style="gap:8px">
+        <button class="btn btn-ghost btn-sm spatial-mode active" data-mode="heat">خريطة حرارية</button>
+        <button class="btn btn-ghost btn-sm spatial-mode" data-mode="points">نقاط النصوص</button>
+      </div>
     </div>
     <div class="grid grid-4" id="spatial-metrics"></div>
     <div class="heatmap-wrap mt-3"><canvas id="spatial-map"></canvas></div>
-    <div class="disclaimer mt-2">الخريطة تمثل مواقع التسميات النصية فقط، ولا تستنتج قرابة أو فرعًا أو جيلًا من الإحداثيات.</div>
-    <div class="grid grid-2 mt-3">
-      <div class="chart-container" style="min-height:330px"><canvas id="spatialBandChart"></canvas></div>
-      <div class="card" style="padding:0;overflow:hidden"><div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700">أكثر خلايا الخريطة كثافة</div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>صف</th><th>عمود</th><th>النصوص</th><th>النطاق</th></tr></thead><tbody id="dense-cells-tbody"></tbody></table></div></div>
+    <div class="disclaimer mt-2">هذه الخريطة تمثل مواقع النصوص فقط. التداخل أو القرب لا يعني وجود علاقة عائلية.</div>
+    <div class="analytics-grid mt-3">
+      <div class="chart-container"><div class="chart-shell"><canvas id="spatialBandChart"></canvas></div></div>
+      <div class="analytics-table-card card">
+        <div class="table-title">أكثر الخلايا كثافة</div>
+        <div class="table-scroller">
+          <table class="data-table">
+            <thead><tr><th>صف</th><th>عمود</th><th>النصوص</th><th>النطاق</th></tr></thead>
+            <tbody id="dense-cells-tbody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="card mt-3" style="padding:0;overflow:hidden"><div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700">أعلى مرشحات التداخل الهندسي للمراجعة</div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>النص الأول</th><th>النص الثاني</th><th>مساحة التداخل</th><th>الموضع</th></tr></thead><tbody id="overlap-tbody"></tbody></table></div></div>
   </section>
 
-  <!-- Extraction report summary -->
   <section class="section">
     <div class="section-header">
       <div>
-        <h2 class="section-title">تقرير الاستخراج</h2>
-        <p class="section-desc">ملخص عملية استخراج البيانات من المصدر</p>
+        <h2 class="section-title">جودة البيانات</h2>
+        <p class="section-desc">ملخص للفروقات والملاحظات التي يجب الانتباه لها عند استخدام البيانات المستخرجة.</p>
       </div>
     </div>
-    <div class="card" id="report-card"></div>
+    <div class="insight-grid" id="quality-insights"></div>
   </section>
 
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">المصدر والاستخراج</h2>
+        <p class="section-desc">ما الذي تم استخراجه، وما الذي لا يمكن اعتباره علاقة نسب مؤكدة.</p>
+      </div>
+    </div>
+    <div class="card report-copy" id="report-card"></div>
+  </section>
 </main>
 
 <script src="js/app.js"></script>
