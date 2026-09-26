@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مراجعة علاقات النسب — شجرة السويلم</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Noto Sans Arabic",sans-serif;background:#f5f1e9;color:#29241f}.layout{height:100vh;display:grid;grid-template-columns:minmax(290px,390px) 1fr}.side{overflow:auto;padding:18px;background:#fff;border-left:1px solid #ddd}.side h1{font-size:1.25rem}.notice{padding:12px;background:#fff2ce;border-radius:10px;line-height:1.7;font-size:.9rem}.item{border:1px solid #ddd;border-radius:10px;padding:10px;margin:10px 0}.item button{border:0;border-radius:7px;background:#176c9c;color:#fff;padding:7px 10px;cursor:pointer}.names{font-weight:700}.why{font-size:.8rem;color:#6e655b;margin-top:5px}iframe{width:100%;height:100%;border:0;background:#e4dbcf}@media(max-width:760px){.layout{height:auto;min-height:100vh;grid-template-columns:1fr;grid-template-rows:48vh 52vh}.side{grid-row:2;border:0;border-top:1px solid #ddd}iframe{grid-row:1}}
+</style>
+</head>
+<body><main class="layout"><aside class="side"><h1>مراجعة علاقات النسب ومساراتها</h1><div class="notice">هذه الصفحة تعرض العلاقات المسجلة صراحةً في <code>verified-relations.json</code>. ملف المصدر لا يحتوي على نقاط تتبع الغصن أو مساراته؛ لذلك لا ترسم الصفحة خطوطًا مستقيمة توحي باتصال غير متحقق. اضغط لعرض موضع الشخص على الشجرة، ثم راجع الغصن بصريًا.</div><p id="summary"></p><button id="toggleUnresolved">عرض العلاقات غير المحسومة</button><div id="relations"></div></aside><iframe id="tree" src="tree-v2.html" title="عارض شجرة النسب"></iframe></main>
+<script>
+(async function(){
+ const [g,e,review]=await Promise.all([fetch('data/genealogy.json').then(r=>r.json()),fetch('data/entities.json').then(r=>r.json()),fetch('data/genealogy-review.json').then(r=>r.json())]);
+ const entities=new Map(e.filter(x=>x.type==='name').map(x=>[+x.id,x]));
+ const rows=Object.values(g.people).filter(p=>p.status==='verified');
+ document.getElementById('summary').textContent=rows.length+' علاقة مؤكدة من أصل '+Object.keys(g.people).length+' اسمًا';
+ const root=document.getElementById('relations'),frame=document.getElementById('tree');
+ rows.forEach(p=>{const parent=entities.get(+p.fatherId);const box=document.createElement('section');box.className='item';
+  const label=document.createElement('div');label.className='names';label.textContent=p.name+' ← '+(parent?parent.text:'؟')+' · #'+p.id;
+  const why=document.createElement('div');why.className='why';why.textContent=p.evidence&&p.evidence.note||p.source;
+  const btn=document.createElement('button');btn.textContent='إظهار الشخص على الشجرة';btn.onclick=()=>{frame.src='tree-v2.html#person='+p.id;};
+  box.append(label,why,btn);root.appendChild(box);
+ });
+ document.getElementById('toggleUnresolved').onclick=function(){
+  const pending=review.unresolved||[];root.replaceChildren();
+  document.getElementById('summary').textContent=pending.length+' علاقة غير محسومة';
+  pending.forEach(p=>{const box=document.createElement('section');box.className='item';const label=document.createElement('div');label.className='names';label.textContent=p.childName+' · #'+p.childId;
+   const why=document.createElement('div');why.className='why';why.textContent=p.reason;const btn=document.createElement('button');btn.textContent='إظهار الموضع';btn.onclick=()=>{frame.src='tree-v2.html#person='+p.childId;};box.append(label,why,btn);root.appendChild(box);});
+ };
+})().catch(()=>{document.getElementById('summary').textContent='تعذر تحميل بيانات المراجعة.';});
+</script></body></html>

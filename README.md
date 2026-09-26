@@ -88,3 +88,18 @@ python3 -m http.server 8080
 
 جميع الحقوق محفوظة لصندوق أسرة السويلم.
 هذا المشروع هو أداة تحليلية مستقلة تستند إلى البيانات العامة المنشورة.
+
+# Genealogy graph data
+
+`python scripts/build_genealogy_graph.py` regenerates `data/genealogy.json`,
+`data/genealogy-review.json`, and `data/genealogy-report.json` from the
+explicitly verified relations in `data/verified-relations.json`. It never
+derives parentage from label positions. Run `python -m unittest discover -s
+tests -v` to check the known Omar and Salma chains, search queries, and graph
+integrity.
+
+Open `genealogy-debug.html` from the hosted site to browse resolved and
+unresolved records and jump to a person's location. Existing verified data
+does not include traced branch polylines, so the debug page does not draw a
+branch overlay. The extraction report records this limitation and current
+coverage.

@@ -17,7 +17,7 @@
   var dupLabel=document.getElementById("dupLabel");
 
   var entities=[],nameEntities=[],freq=new Map(),byId=new Map(),spatial=new Map();
-  var verifiedParentByChild=new Map(),localParentByChild=new Map();
+  var verifiedParentByChild=new Map(),genealogyParentByChild=new Map(),localParentByChild=new Map();
   var chain=[],selected=null,waitingParent=false,daughter=false,pendingParent=null;
   var viewer=null,viewerHooked=false,selectionEl=null,currentOccurrences=[],occurrenceIndex=0;
   var GRID=140,LOCAL_REL_KEY="smart-tree-confirmed-relations-v1";
@@ -87,6 +87,20 @@
     var c=graphChainFrom(start);
     if(c.length<2)return "";
     return c.map(function(e){return e.text;}).join(" ← ");
+  }
+
+  // Public search reads the persistent generated graph only. The manual review
+  // workflow above may still use locally confirmed edges for its own display.
+  function genealogyChainFrom(start){
+    if(!start)return[];
+    var out=[start],seen=new Set([+start.id]),cur=start,guard=0;
+    while(cur&&guard++<64){
+      var pid=genealogyParentByChild.get(+cur.id);
+      if(pid===undefined||seen.has(+pid))break;
+      var p=byId.get(+pid);if(!p)break;
+      out.push(p);seen.add(+pid);cur=p;
+    }
+    return out;
   }
 
   function addVerifiedRelation(child,parent){
@@ -190,8 +204,9 @@
 
   function chainString(){
     if(!chain.length)return "";
+    var female=daughter||chain[0].gender==="female";
     var out=String(chain[0].text||"");
-    for(var i=1;i<chain.length;i++)out+=(i===1&&daughter?" بنت ":" بن ")+String(chain[i].text||"");
+    for(var i=1;i<chain.length;i++)out+=(i===1&&female?" بنت ":" بن ")+String(chain[i].text||"");
     return out;
   }
 
@@ -330,7 +345,7 @@
       if(i>0){
         var link=document.createElement("span");
         link.className="chain-link";
-        link.textContent=(i===1&&daughter)?"بنت":"بن";
+        link.textContent=(i===1&&(daughter||chain[0].gender==="female"))?"بنت":"بن";
         chainFlow.appendChild(link);
       }
       var b=document.createElement("button");
@@ -387,7 +402,7 @@
     updateHash();
   }
 
-  function acceptEntity(e,doLocate){
+  function acceptEntity(e,doLocate,persistentOnly){
     if(!e||e.type!=="name"){showToast("هذا الموضع ليس اسمًا معتمدًا في بيانات الأسماء.");return;}
 
     if(waitingParent&&chain.length){
@@ -397,7 +412,8 @@
       waitingParent=false;
       showToast("راجع اتصال الغصن ثم أكّد العلاقة.");
     }else{
-      chain=graphChainFrom(e);
+      chain=persistentOnly?genealogyChainFrom(e):graphChainFrom(e);
+      daughter=!!(persistentOnly&&e.gender==="female");
       selected=e;
       waitingParent=false;
       pendingParent=null;
@@ -412,14 +428,16 @@
   }
 
   function queryParts(q){
-    return String(q||"").trim().split(/\s+/).map(norm).filter(function(x){
+    // The source sometimes stores this compound as one label and sometimes
+    // writes it with a space; keep it as one ancestor token either way.
+    return String(q||"").replace(/عبد\s+العزيز/g,"عبدالعزيز").trim().split(/\s+/).map(norm).filter(function(x){
       return x&&x!=="بن"&&x!=="بنت"&&x!=="ابن"&&x!=="ابنه";
     });
   }
 
   function lineageMatches(e,parts){
     if(!parts.length)return false;
-    var c=graphChainFrom(e);
+    var c=genealogyChainFrom(e);
     if(c.length<parts.length)return false;
     for(var i=0;i<parts.length;i++){
       var n=norm(c[i].text);
@@ -462,7 +480,7 @@
     }
 
     if(parts.length>1&&list.length===1){
-      var only=list[0],chain=graphChainFrom(only);
+      var only=list[0],chain=genealogyChainFrom(only);
       var exactEnough=true;
       for(var pi=0;pi<parts.length;pi++){
         if(!chain[pi]||norm(chain[pi].text)!==parts[pi]){exactEnough=false;break;}
@@ -470,7 +488,7 @@
       if(exactEnough){
         smartSearch.value=chain.slice(0,Math.max(parts.length,Math.min(chain.length,5))).map(function(x){return x.text;}).join(" ");
         searchResults.classList.remove("open");
-        acceptEntity(only,true);
+        acceptEntity(only,true,true);
         return;
       }
     }
@@ -486,7 +504,7 @@
       var copy=document.createElement("span");copy.className="result-copy";
       var n=document.createElement("span");n.className="result-name";n.textContent=e.text;
       copy.appendChild(n);
-      var lineage=graphLabel(e);
+      var lineage=genealogyChainFrom(e).slice(1).map(function(x){return x.text;}).join(" ← ");
       if(lineage){
         var l=document.createElement("span");l.className="result-lineage";l.textContent=lineage;
         copy.appendChild(l);
@@ -498,7 +516,7 @@
       b.addEventListener("click",function(){
         smartSearch.value=e.text;
         searchResults.classList.remove("open");
-        acceptEntity(e,true);
+        acceptEntity(e,true,true);
       });
       searchResults.appendChild(b);
     });
@@ -601,7 +619,8 @@
     return Promise.all([
       fetch("data/entities.json",{cache:"no-store"}).then(function(r){return r.json();}),
       fetch("data/names.json",{cache:"no-store"}).then(function(r){return r.json();}),
-      fetch("data/verified-relations.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():{relations:[]};}).catch(function(){return{relations:[]};})
+      fetch("data/verified-relations.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():{relations:[]};}).catch(function(){return{relations:[]};}),
+      fetch("data/genealogy.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():{people:{}};}).catch(function(){return{people:{}};})
     ]).then(function(data){
       entities=data[0]||[];
       nameEntities=entities.filter(function(e){return e.type==="name";});
@@ -611,6 +630,12 @@
       ((data[2]&&data[2].relations)||[]).forEach(function(r){
         var child=+r.childId,parent=+r.parentId;
         if(r.status==="verified"&&Number.isFinite(child)&&Number.isFinite(parent)&&child!==parent)verifiedParentByChild.set(child,parent);
+      });
+      genealogyParentByChild.clear();
+      Object.keys((data[3]&&data[3].people)||{}).forEach(function(id){
+        var person=data[3].people[id],parent=person&&person.fatherId;
+        if(person&&person.gender&&byId.has(+id))byId.get(+id).gender=person.gender;
+        if(person&&person.status==="verified"&&Number.isFinite(+parent)&&+parent!==+id)genealogyParentByChild.set(+id,+parent);
       });
       loadLocalRelations();
       buildSpatial();

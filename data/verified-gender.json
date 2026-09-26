@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "description": "Explicit gender metadata supplied with the verified Salma regression case.",
+  "people": {
+    "2904": {
+      "gender": "female",
+      "source": "user-provided verified ground truth"
+    }
+  }
+}
