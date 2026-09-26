@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "policy": "explicit-only",
+  "description": "Only explicitly verified parent-child relations belong here. Never infer relations from proximity, coordinates, OCR, or visual guesses.",
+  "relations": []
+}
