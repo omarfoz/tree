@@ -383,7 +383,7 @@
     document.getElementById("waitDesc").textContent="اضغط على الاسم داخل الشجرة، أو اكتب اسمه في البحث بالأعلى. عند الاختيار سيضاف مباشرة إلى السلسلة.";
     document.getElementById("cancelWait").textContent="إلغاء اختيار "+rel;
 
-    smartSearch.placeholder=waitingParent?("ابحث عن "+rel+" لـ "+targetName()):"ابدأ بكتابة اسم الشخص، مثال: عمر";
+    smartSearch.placeholder=waitingParent?("ابحث عن "+rel+" لـ "+targetName()):"اكتب الاسم والنسب، مثال: عمر يحيى";
     updateHash();
   }
 
@@ -411,12 +411,38 @@
     refresh(false);
   }
 
+  function queryParts(q){
+    return String(q||"").trim().split(/\s+/).map(norm).filter(function(x){
+      return x&&x!=="بن"&&x!=="بنت"&&x!=="ابن"&&x!=="ابنه";
+    });
+  }
+
+  function lineageMatches(e,parts){
+    if(!parts.length)return false;
+    var c=graphChainFrom(e);
+    if(c.length<parts.length)return false;
+    for(var i=0;i<parts.length;i++){
+      var n=norm(c[i].text);
+      if(i===0){
+        if(n!==parts[i]&&n.indexOf(parts[i])!==0&&n.indexOf(parts[i])<0)return false;
+      }else{
+        if(n!==parts[i]&&n.indexOf(parts[i])!==0)return false;
+      }
+    }
+    return true;
+  }
+
   function searchNames(q){
-    var k=norm(q);
-    if(!k)return[];
+    var parts=queryParts(q);
+    if(!parts.length)return[];
     var exact=[],starts=[],contains=[];
     nameEntities.forEach(function(e){
       var n=norm(e.text);
+      if(parts.length>1){
+        if(lineageMatches(e,parts))exact.push(e);
+        return;
+      }
+      var k=parts[0];
       if(n===k)exact.push(e);
       else if(n.indexOf(k)===0)starts.push(e);
       else if(n.indexOf(k)>=0)contains.push(e);
@@ -425,11 +451,29 @@
   }
 
   function renderSearch(q){
+    var parts=queryParts(q);
     var list=searchNames(q);
     searchClear.style.display=q?"grid":"none";
     if(!q){searchResults.classList.remove("open");searchResults.innerHTML="";return;}
     searchResults.classList.add("open");
-    if(!list.length){searchResults.innerHTML='<div class="no-result">لا توجد نتيجة مطابقة في بيانات الأسماء.</div>';return;}
+    if(!list.length){
+      searchResults.innerHTML='<div class="no-result">'+(parts.length>1?'لا توجد سلسلة نسب موثقة تطابق هذا البحث. لن يتم التخمين من قرب الأسماء.':'لا توجد نتيجة مطابقة في بيانات الأسماء.')+'</div>';
+      return;
+    }
+
+    if(parts.length>1&&list.length===1){
+      var only=list[0],chain=graphChainFrom(only);
+      var exactEnough=true;
+      for(var pi=0;pi<parts.length;pi++){
+        if(!chain[pi]||norm(chain[pi].text)!==parts[pi]){exactEnough=false;break;}
+      }
+      if(exactEnough){
+        smartSearch.value=chain.slice(0,Math.max(parts.length,Math.min(chain.length,5))).map(function(x){return x.text;}).join(" ");
+        searchResults.classList.remove("open");
+        acceptEntity(only,true);
+        return;
+      }
+    }
 
     var seen=new Map();
     searchResults.innerHTML="";
@@ -507,7 +551,7 @@
     startHint.classList.remove("hidden");
     smartSearch.value="";
     renderSearch("");
-    smartSearch.placeholder="ابدأ بكتابة اسم الشخص، مثال: عمر";
+    smartSearch.placeholder="اكتب الاسم والنسب، مثال: عمر يحيى";
     if(viewer&&selectionEl){try{viewer.removeOverlay(selectionEl);}catch(e){}}
     updateHash();
   });
